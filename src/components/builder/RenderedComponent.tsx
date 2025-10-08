@@ -1,18 +1,27 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { useContextMenu } from 'react-contexify';
 import { motion } from 'framer-motion';
-import { Component, DraggableComponentType, ItemTypes, LayoutType, StyleProperties, BlockType } from '../../types/builder';
+import { Component, DraggableComponentType, ItemTypes, LayoutType, StyleProperties, BlockType, ImageFilters } from '../../types/builder';
 import { useBuilderStore } from '../../store/builderStore';
 import * as LucideIcons from 'lucide-react';
+import FloatingToolbar from './FloatingToolbar';
+import InsertionPoint from './InsertionPoint';
+import { Plus } from 'lucide-react';
 
-const CONTEXT_MENU_ID = 'component-context-menu';
-
-interface RenderedComponentProps {
-  component: Component;
-  index: number;
-  path: number[];
-}
+const typeToColorClass: Record<string, { outline: string; bg: string }> = {
+  Section: { outline: 'outline-blue-500', bg: 'bg-blue-500' },
+  Container: { outline: 'outline-green-500', bg: 'bg-green-500' },
+  Row: { outline: 'outline-orange-500', bg: 'bg-orange-500' },
+  Column: { outline: 'outline-purple-500', bg: 'bg-purple-500' },
+  Heading: { outline: 'outline-sky-500', bg: 'bg-sky-500' },
+  Paragraph: { outline: 'outline-sky-500', bg: 'bg-sky-500' },
+  Button: { outline: 'outline-pink-500', bg: 'bg-pink-500' },
+  Image: { outline: 'outline-teal-500', bg: 'bg-teal-500' },
+  Video: { outline: 'outline-teal-500', bg: 'bg-teal-500' },
+  Link: { outline: 'outline-indigo-500', bg: 'bg-indigo-500' },
+  Icon: { outline: 'outline-yellow-500', bg: 'bg-yellow-500' },
+  Divider: { outline: 'outline-slate-500', bg: 'bg-slate-500' },
+};
 
 const getYoutubeEmbedUrl = (url: string | undefined): string | undefined => {
   if (!url) return undefined;
@@ -22,7 +31,8 @@ const getYoutubeEmbedUrl = (url: string | undefined): string | undefined => {
     if (urlObj.hostname === 'youtu.be') {
       videoId = urlObj.pathname.slice(1);
     } else if (urlObj.hostname.includes('youtube.com')) {
-      videoId = urlObj.searchParams.get('v');
+      const params = new URLSearchParams(urlObj.search);
+      videoId = params.get('v');
     }
     return videoId ? `https://www.youtube.com/embed/${videoId}` : undefined;
   } catch (error) {
@@ -30,20 +40,36 @@ const getYoutubeEmbedUrl = (url: string | undefined): string | undefined => {
   }
 };
 
+const constructFilterString = (filters: ImageFilters | undefined): string => {
+  if (!filters) return 'none';
+  return [
+    filters.brightness !== undefined && `brightness(${filters.brightness}%)`,
+    filters.contrast !== undefined && `contrast(${filters.contrast}%)`,
+    filters.saturate !== undefined && `saturate(${filters.saturate}%)`,
+    filters.blur !== undefined && `blur(${filters.blur}px)`,
+  ].filter(Boolean).join(' ');
+};
+
+interface RenderedComponentProps {
+  component: Component;
+  index: number;
+  path: number[];
+}
+
 const RenderedComponent: React.FC<RenderedComponentProps> = ({ component, index, path }) => {
   const { id, type, props, children, parent } = component;
   const { 
     selectedComponentId, selectComponent, addComponent, addLayout, addBlock, moveComponent, device, isPreviewMode,
-    editingComponentId, setEditingComponentId, updateComponentProps
+    editingComponentId, setEditingComponentId, updateComponentProps, openContextMenu,
+    hoveredComponentId, setHoveredComponentId, setActiveTab
   } = useBuilderStore();
   
   const ref = useRef<HTMLDivElement>(null);
   const isSelected = selectedComponentId === id;
+  const isCurrentlyHovered = hoveredComponentId === id;
   const isEditing = editingComponentId === id;
 
   const [dropIndicator, setDropIndicator] = useState<'top' | 'bottom' | 'inside' | null>(null);
-
-  const { show } = useContextMenu({ id: CONTEXT_MENU_ID });
 
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.CANVAS_COMPONENT,
@@ -67,7 +93,7 @@ const RenderedComponent: React.FC<RenderedComponentProps> = ({ component, index,
       const hoverMiddleY = hoverBoundingRect.height / 2;
       
       let newIndicator: 'top' | 'bottom' | 'inside' | null = null;
-      const canDropInside = (type === 'Container' || type === 'Link');
+      const canDropInside = ['Section', 'Container', 'Row', 'Column', 'Link'].includes(type);
       
       if (canDropInside && monitor.isOver({ shallow: true })) {
         newIndicator = 'inside';
@@ -115,7 +141,7 @@ const RenderedComponent: React.FC<RenderedComponentProps> = ({ component, index,
     }
   }, [isOver]);
 
-  drag(drop(ref));
+  drop(ref);
 
   const handleClick = (e: React.MouseEvent) => {
     if (isPreviewMode) return;
@@ -135,7 +161,24 @@ const RenderedComponent: React.FC<RenderedComponentProps> = ({ component, index,
     if (isPreviewMode) return;
     e.preventDefault();
     e.stopPropagation();
-    show({ event: e, props: { id } });
+    openContextMenu(id, e.clientX, e.clientY);
+  };
+
+  const handleMouseEnter = (e: React.MouseEvent) => {
+    if (isPreviewMode) return;
+    e.stopPropagation();
+    setHoveredComponentId(id);
+  };
+
+  const handleMouseLeave = (e: React.MouseEvent) => {
+    if (isPreviewMode) return;
+    e.stopPropagation();
+    if (ref.current) {
+      const relatedTarget = e.relatedTarget;
+      if (!relatedTarget || !(relatedTarget instanceof Node) || !ref.current.contains(relatedTarget)) {
+        setHoveredComponentId(null);
+      }
+    }
   };
   
   const getResponsiveStyles = (): StyleProperties => {
@@ -149,7 +192,17 @@ const RenderedComponent: React.FC<RenderedComponentProps> = ({ component, index,
     }
   };
   
-  const finalStyle = getResponsiveStyles();
+  const baseStyle = getResponsiveStyles();
+  const hoverStyle = props.style.hover || {};
+  const finalStyle = isCurrentlyHovered && !isPreviewMode ? { ...baseStyle, ...hoverStyle } : baseStyle;
+  
+  if (props.filters) {
+    finalStyle.filter = constructFilterString(props.filters);
+  }
+  if (props.rotation) {
+    finalStyle.transform = `rotate(${props.rotation}deg)`;
+  }
+
   const isVisible = props.visibility ? props.visibility[device] ?? true : true;
   if (!isVisible) return null;
 
@@ -176,7 +229,16 @@ const RenderedComponent: React.FC<RenderedComponentProps> = ({ component, index,
   };
 
   const renderContent = () => {
-    const combinedProps = { style: finalStyle, className: props.customClassName || '' };
+    let combinedProps: any = { style: finalStyle, className: props.customClassName || '' };
+
+    if (finalStyle.backgroundClip === 'text' || finalStyle.WebkitBackgroundClip === 'text') {
+      combinedProps.style = {
+        ...combinedProps.style,
+        WebkitBackgroundClip: 'text',
+        backgroundClip: 'text',
+        color: 'transparent',
+      };
+    }
     
     if (isEditing && props.text !== undefined) {
       return (
@@ -191,12 +253,58 @@ const RenderedComponent: React.FC<RenderedComponentProps> = ({ component, index,
         />
       );
     }
+    
+    const renderChildren = () => (
+      <>
+        <InsertionPoint parentId={id} index={0} />
+        {children?.map((child, i) => (
+          <React.Fragment key={child.id}>
+            <RenderedComponent component={child} index={i} path={[...path, i]} />
+            <InsertionPoint parentId={id} index={i + 1} />
+          </React.Fragment>
+        ))}
+      </>
+    );
+
+    const emptyPlaceholder = () => !isPreviewMode && (
+      <div className={`flex items-center justify-center p-4 min-h-[80px] border-2 border-dashed rounded-md transition-colors ${dropIndicator === 'inside' ? 'border-primary-purple bg-primary-purple/10' : 'border-gray-300'}`}>
+        <button onClick={() => setActiveTab('components')} className="flex items-center gap-2 text-gray-500 hover:text-primary-purple">
+          <Plus size={16} />
+          Add Element
+        </button>
+      </div>
+    );
+
+    const renderIcon = (iconName: string | undefined) => {
+      if (!iconName) return null;
+      const IconComponent = (LucideIcons as any)[iconName];
+      return IconComponent ? <IconComponent /> : null;
+    };
 
     switch (type) {
-      case 'Heading': return <h1 {...combinedProps}>{props.text}</h1>;
-      case 'Paragraph': return <p {...combinedProps}>{props.text}</p>;
-      case 'Button': return <button {...combinedProps}>{props.text}</button>;
-      case 'Image': return <img src={props.src} alt={props.text || 'Image'} {...combinedProps} />;
+      case 'Heading': {
+        const Tag = (props.htmlTag && ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'div'].includes(props.htmlTag)) ? props.htmlTag : 'h1';
+        return <Tag {...combinedProps}>{props.text}</Tag>;
+      }
+      case 'Paragraph': {
+        const Tag = (props.htmlTag && ['p', 'div'].includes(props.htmlTag)) ? props.htmlTag : 'p';
+        return <Tag {...combinedProps}>{props.text}</Tag>;
+      }
+      case 'Button': {
+        const icon = renderIcon(props.icon);
+        const content = (
+          <>
+            {props.iconPosition === 'before' && icon}
+            <span>{props.text}</span>
+            {props.iconPosition === 'after' && icon}
+          </>
+        );
+        if (props.href) {
+          return <a href={props.href} target={props.linkTarget} {...combinedProps}>{content}</a>;
+        }
+        return <button {...combinedProps}>{content}</button>;
+      }
+      case 'Image': return <img src={props.src} alt={props.altText || 'Image'} {...combinedProps} />;
       case 'Video': {
         const embedUrl = getYoutubeEmbedUrl(props.src);
         return embedUrl ? (
@@ -210,52 +318,143 @@ const RenderedComponent: React.FC<RenderedComponentProps> = ({ component, index,
           />
         ) : <div {...combinedProps} className="flex items-center justify-center bg-gray-200 text-gray-500">Invalid YouTube URL</div>;
       }
-      case 'Divider': return <div {...combinedProps} />;
+      case 'Divider': {
+        const { borderStyle, borderWidth, borderColor, ...restStyle } = finalStyle;
+        const dividerStyle = {
+            ...restStyle,
+            borderBottomStyle: borderStyle || 'solid',
+            borderBottomWidth: borderWidth || '1px',
+            borderBottomColor: borderColor || '#A0A0A0',
+        };
+        return <div style={dividerStyle} />;
+      }
       case 'Icon': {
         const IconComponent = (LucideIcons as any)[props.icon || 'Smile'];
         return IconComponent ? <IconComponent {...combinedProps} /> : null;
       }
       case 'Link': return (
-        <a href={props.href} {...combinedProps} onDoubleClick={handleDoubleClick}>
-          {isEditing ? props.text : (children?.length ? children.map((child, i) => <RenderedComponent key={child.id} component={child} index={i} path={[...path, i]} />) : props.text)}
+        <a href={props.href} target={props.linkTarget} {...combinedProps} onDoubleClick={handleDoubleClick}>
+          {isEditing ? props.text : (children?.length ? renderChildren() : props.text)}
         </a>
       );
-      case 'Container': return (
-        <div {...combinedProps}>
-          {children && children.length > 0 ? (
-            children.map((child, i) => <RenderedComponent key={child.id} component={child} index={i} path={[...path, i]} />)
-          ) : (
-            !isPreviewMode && <div className={`text-center text-gray-400 text-sm pointer-events-none p-4 border-2 border-dashed rounded-md ${dropIndicator === 'inside' ? 'border-primary-purple bg-primary-purple/10' : 'border-gray-300'}`}>Drop components here</div>
-          )}
-        </div>
-      );
+      case 'Section':
+        const sectionProps = props.sectionSpecificProps || {};
+        const background = sectionProps.background || {};
+        
+        const bgStyle: React.CSSProperties = {};
+        const overlayStyle: React.CSSProperties = { position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 1 };
+
+        if (background.type === 'color') {
+          bgStyle.backgroundColor = background.color;
+        } else if (background.type === 'gradient') {
+          bgStyle.backgroundImage = background.gradient;
+        } else if (background.type === 'image' && background.image?.src) {
+          bgStyle.backgroundImage = `url(${background.image.src})`;
+          bgStyle.backgroundPosition = background.image.position || 'center';
+          bgStyle.backgroundRepeat = background.image.repeat || 'no-repeat';
+          bgStyle.backgroundSize = background.image.size || 'cover';
+          bgStyle.backgroundAttachment = background.image.attachment || 'scroll';
+        }
+
+        if (background.overlay?.color) {
+          overlayStyle.backgroundColor = background.overlay.color;
+          overlayStyle.opacity = background.overlay.opacity ?? 0.5;
+        }
+
+        const borderTopStyle = sectionProps.borderTop ? {
+          borderTopStyle: sectionProps.borderTop.style,
+          borderTopWidth: sectionProps.borderTop.width,
+          borderTopColor: sectionProps.borderTop.color,
+        } : {};
+
+        const borderBottomStyle = sectionProps.borderBottom ? {
+          borderBottomStyle: sectionProps.borderBottom.style,
+          borderBottomWidth: sectionProps.borderBottom.width,
+          borderBottomColor: sectionProps.borderBottom.color,
+        } : {};
+
+        const combinedSectionStyle = { ...finalStyle, ...borderTopStyle, ...borderBottomStyle, position: 'relative' as const };
+        
+        const videoEmbedUrl = background.type === 'video' ? getYoutubeEmbedUrl(background.video?.src) : undefined;
+        const videoId = videoEmbedUrl?.split('/').pop();
+
+        return (
+          <div style={combinedSectionStyle}>
+            <div style={{...bgStyle, position: 'absolute', inset: 0, zIndex: 0}} />
+            
+            {videoEmbedUrl && (
+              <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+                 <iframe
+                    className="absolute top-1/2 left-1/2 w-full h-full -translate-x-1/2 -translate-y-1/2"
+                    style={{ minWidth: '177.77vh', minHeight: '100vw' }} // Maintain 16:9 aspect ratio and cover
+                    src={`${videoEmbedUrl}?autoplay=1&mute=1&loop=1&controls=0&playlist=${videoId}`}
+                    frameBorder="0"
+                    allow="autoplay; encrypted-media"
+                    title="Background Video"
+                  />
+              </div>
+            )}
+
+            <div style={overlayStyle} />
+
+            <div className="relative z-10">
+              {children && children.length > 0 ? renderChildren() : emptyPlaceholder()}
+            </div>
+          </div>
+        );
+      case 'Container':
+      case 'Row':
+      case 'Column':
+        return (
+          <div {...combinedProps}>
+            {children && children.length > 0 ? renderChildren() : emptyPlaceholder()}
+          </div>
+        );
       default: return null;
     }
   };
 
-  let selectionStyle = '';
+  const colorClasses = typeToColorClass[type] || { outline: 'outline-gray-500', bg: 'bg-gray-500' };
+  let outlineStyle = '';
   if (!isPreviewMode) {
-    selectionStyle = isSelected ? 'outline outline-2 outline-offset-2 outline-primary-purple' : 'hover:outline hover:outline-1 hover:outline-primary-purple/50';
+    if (isSelected) {
+      outlineStyle = `outline outline-2 outline-offset-2 outline-primary-purple`;
+    } else if (isCurrentlyHovered) {
+      outlineStyle = `outline outline-1 ${colorClasses.outline}`;
+    }
   }
   
-  const dropIndicatorStyle = dropIndicator === 'inside' && (type === 'Container' || type === 'Link')
+  const dropIndicatorStyle = dropIndicator === 'inside' && ['Section', 'Container', 'Row', 'Column', 'Link'].includes(type)
     ? 'outline outline-2 outline-primary-purple outline-dashed'
     : dropIndicator === 'top' ? 'border-t-2 border-primary-purple'
     : dropIndicator === 'bottom' ? 'border-b-2 border-primary-purple'
     : '';
 
+  const isLayoutElement = ['Section', 'Container', 'Row', 'Column'].includes(type);
+  const MotionTag = (motion as any)[isLayoutElement ? (props.htmlTag || 'div') : 'div'];
+
   return (
-    <motion.div
+    <MotionTag
       ref={ref}
+      id={props.customId}
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}
       onContextMenu={handleContextMenu}
-      className={`relative transition-all ${!isEditing ? 'cursor-pointer' : ''} ${selectionStyle} ${isDragging ? 'opacity-50' : 'opacity-100'} ${dropIndicatorStyle}`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className={`relative transition-all ${!isEditing && !isPreviewMode ? 'cursor-pointer' : ''} ${outlineStyle} ${isDragging ? 'opacity-50' : 'opacity-100'} ${dropIndicatorStyle}`}
       {...animationProps}
     >
-      {isSelected && !isPreviewMode && <div className="absolute -top-5 left-0 text-xs bg-primary-purple text-white px-1.5 py-0.5 rounded z-20">{type}</div>}
+      {isSelected && !isPreviewMode && (
+        <FloatingToolbar componentId={id} dragHandleRef={drag} />
+      )}
+      {isCurrentlyHovered && !isSelected && !isPreviewMode && (
+        <div className={`absolute -top-5 left-0 text-xs text-white px-1.5 py-0.5 rounded z-20 ${colorClasses.bg}`}>
+          {type}
+        </div>
+      )}
       {renderContent()}
-    </motion.div>
+    </MotionTag>
   );
 };
 

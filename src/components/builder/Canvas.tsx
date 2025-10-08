@@ -2,6 +2,7 @@ import React from 'react';
 import { useDrop } from 'react-dnd';
 import { ItemTypes, DraggableComponentType, LayoutType, BlockType } from '../../types/builder';
 import RenderedComponent from './RenderedComponent';
+import InsertionPoint from './InsertionPoint';
 import { useBuilderStore } from '../../store/builderStore';
 
 const deviceWidths = {
@@ -53,7 +54,7 @@ const Canvas: React.FC = () => {
         ref={drop}
         onClick={handleCanvasClick}
         className={canvasClass}
-        style={{ width: deviceWidths[device], minHeight: isPreviewMode ? '100vh' : 'calc(100vh - 128px)' }}
+        style={{ width: deviceWidths[device], minHeight: isPreviewMode ? '100vh' : 'calc(100vh - 168px)' /* Adjusted for breadcrumbs */ }}
       >
         {components.length === 0 ? (
           <div className={`flex items-center justify-center h-full pointer-events-none py-48 transition-colors border-2 border-dashed ${isOver && canDrop ? 'border-primary-purple bg-primary-purple/10' : 'border-gray-300'}`}>
@@ -64,13 +65,16 @@ const Canvas: React.FC = () => {
           </div>
         ) : (
           <div className={isPreviewMode ? '' : 'p-0'}>
+            <InsertionPoint parentId={null} index={0} />
             {components.map((component, index) => (
-              <RenderedComponent 
-                key={component.id} 
-                component={component} 
-                index={index}
-                path={[index]}
-              />
+              <React.Fragment key={component.id}>
+                <RenderedComponent 
+                  component={component} 
+                  index={index}
+                  path={[index]}
+                />
+                <InsertionPoint parentId={null} index={index + 1} />
+              </React.Fragment>
             ))}
           </div>
         )}

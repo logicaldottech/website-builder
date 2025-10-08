@@ -1,6 +1,6 @@
 import React from 'react';
 import { Component } from '../../types/builder';
-import { Type, Pilcrow, MousePointerClick, Box, ChevronRight, ChevronDown, Image, Link, Smile, Minus, Video } from 'lucide-react';
+import { Type, Pilcrow, MousePointerClick, Box, ChevronRight, ChevronDown, Image, Link, Smile, Minus, Video, Square, RectangleHorizontal, RectangleVertical } from 'lucide-react';
 import { useBuilderStore } from '../../store/builderStore';
 
 interface LayerItemProps {
@@ -16,10 +16,13 @@ const LayerItem: React.FC<LayerItemProps> = ({ component, level }) => {
 
   const getIcon = (type: Component['type']) => {
     switch (type) {
+      case 'Section': return <Square size={14} />;
+      case 'Container': return <Box size={14} />;
+      case 'Row': return <RectangleHorizontal size={14} />;
+      case 'Column': return <RectangleVertical size={14} />;
       case 'Heading': return <Type size={14} />;
       case 'Paragraph': return <Pilcrow size={14} />;
       case 'Button': return <MousePointerClick size={14} />;
-      case 'Container': return <Box size={14} />;
       case 'Image': return <Image size={14} />;
       case 'Video': return <Video size={14} />;
       case 'Link': return <Link size={14} />;

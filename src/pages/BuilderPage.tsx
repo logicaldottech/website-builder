@@ -5,9 +5,14 @@ import { X } from 'lucide-react';
 import EditorHeader from '../components/builder/EditorHeader';
 import LeftSidebar from '../components/builder/LeftSidebar';
 import Canvas from '../components/builder/Canvas';
+import Breadcrumbs from '../components/builder/Breadcrumbs';
 import { useBuilderStore } from '../store/builderStore';
-import ComponentContextMenu from '../components/builder/ComponentContextMenu';
+import ContextMenu from '../components/builder/ContextMenu';
 import ExportModal from '../components/builder/ExportModal';
+import ConfirmModal from '../components/builder/ConfirmModal';
+import SectionLibraryModal from '../components/builder/SectionLibraryModal';
+import ImageManagerModal from '../components/builder/advanced-controls/ImageManagerModal';
+import IconPickerModal from '../components/builder/advanced-controls/IconPickerModal';
 import { generatePageTsx, generatePackageJson, generateTailwindConfig, generateGlobalCss } from '../utils/generateNextJsCode';
 
 const BuilderPage: React.FC = () => {
@@ -17,7 +22,11 @@ const BuilderPage: React.FC = () => {
     openExportModal, 
     closeExportModal,
     isPreviewMode,
-    togglePreviewMode
+    togglePreviewMode,
+    confirmModal,
+    closeConfirmModal,
+    isSectionLibraryOpen,
+    closeSectionLibrary,
   } = useBuilderStore();
   
   const [generatedCode, setGeneratedCode] = React.useState<Record<string, string> | null>(null);
@@ -35,6 +44,13 @@ const BuilderPage: React.FC = () => {
     });
     openExportModal();
   }, [components, openExportModal]);
+
+  const handleConfirm = () => {
+    if (confirmModal.onConfirm) {
+      confirmModal.onConfirm();
+    }
+    closeConfirmModal();
+  };
 
   if (isPreviewMode) {
     return (
@@ -61,9 +77,10 @@ const BuilderPage: React.FC = () => {
           </div>
           <main className="flex-1 flex flex-col overflow-hidden">
             <Canvas />
+            <Breadcrumbs />
           </main>
         </div>
-        <ComponentContextMenu />
+        <ContextMenu />
         {generatedCode && (
           <ExportModal
             isOpen={isExportModalOpen}
@@ -71,6 +88,18 @@ const BuilderPage: React.FC = () => {
             generatedCode={generatedCode}
           />
         )}
+        <ConfirmModal
+          isOpen={confirmModal.isOpen}
+          message={confirmModal.message}
+          onConfirm={handleConfirm}
+          onCancel={closeConfirmModal}
+        />
+        <SectionLibraryModal 
+          isOpen={isSectionLibraryOpen}
+          onClose={closeSectionLibrary}
+        />
+        <ImageManagerModal />
+        <IconPickerModal />
       </div>
     </DndProvider>
   );

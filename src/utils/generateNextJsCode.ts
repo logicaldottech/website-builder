@@ -123,7 +123,7 @@ function generateComponentJsx(component: Component, indentLevel = 1): string {
     case 'Image': 
         tag = 'img';
         content = undefined;
-        tagProps.push(`src="${props.src || 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://placehold.co/600x400'}"`);
+        tagProps.push(`src="${props.src || 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://placehold.co/600x400'}"`);
         tagProps.push(`alt="${props.text || 'Image'}"`);
         break;
     case 'Video':

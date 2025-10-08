@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowUp, ArrowRight, ArrowDown, ArrowLeft } from 'lucide-react';
+import SmartInput from './advanced-controls/SmartInput';
 
 type Side = 'Top' | 'Right' | 'Bottom' | 'Left';
 
@@ -28,15 +29,13 @@ const FourPointInput: React.FC<FourPointInputProps> = ({ label, values, onValueC
       <div className="grid grid-cols-2 gap-2">
         {inputs.map(({ side, icon }) => (
           <div key={side} className="relative">
-            <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
+            <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none z-10">
               {icon}
             </div>
-            <input
-              type="text"
-              placeholder="0px"
+            <SmartInput
               value={values[side.toLowerCase() as keyof typeof values] || ''}
-              onChange={(e) => onValueChange(side, e.target.value)}
-              className="w-full pl-7 pr-2 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary-purple focus:outline-none transition-all text-sm"
+              onChange={(val) => onValueChange(side, val)}
+              placeholder="0px"
             />
           </div>
         ))}

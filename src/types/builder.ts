@@ -174,3 +174,10 @@ export interface GlobalColorState {
   savedColors: string[];
   recentColors: string[];
 }
+
+export interface Template {
+  id: string;
+  name: string;
+  description: string;
+  previewImage: string;
+}

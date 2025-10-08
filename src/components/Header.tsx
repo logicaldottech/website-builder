@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 
 const navLinks = [
   { name: "Features", href: "#" },
+  { name: "Templates", href: "/templates" },
   { name: "Layout Guide", href: "/guide" },
   { name: "Importer Guide", href: "/importer-guide" },
-  { name: "Community", href: "#" },
 ];
 
 const Header: React.FC = () => {

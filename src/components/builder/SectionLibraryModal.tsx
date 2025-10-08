@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { X, Layout, Star } from 'lucide-react';
+import { X, Layout, Star, MessageSquare, Target, Mail, Users } from 'lucide-react';
 import { useBuilderStore } from '../../store/builderStore';
-import { modernHeroSectionBlueprint, threeColumnFeatureSectionBlueprint } from '../../data/sectionBlueprints';
-import RenderedComponent from './RenderedComponent'; // Import for preview
+import { 
+  testimonialSectionBlueprint,
+  ctaSectionBlueprint,
+  aboutUsSectionBlueprint,
+  contactSectionBlueprint,
+  logoCloudSectionBlueprint
+} from '../../data/sectionBlueprints';
 
 interface SectionLibraryModalProps {
   isOpen: boolean;
@@ -11,23 +16,43 @@ interface SectionLibraryModalProps {
 
 const categories = [
   { name: 'All', icon: Layout },
-  { name: 'Hero', icon: Star },
-  { name: 'Features', icon: Star },
-  // Add more categories here: About, Testimonials, Contact, CTA
+  { name: 'About', icon: Star },
+  { name: 'Testimonials', icon: MessageSquare },
+  { name: 'CTA', icon: Target },
+  { name: 'Contact', icon: Mail },
+  { name: 'Social Proof', icon: Users },
 ];
 
 const libraryItems = [
   {
-    name: 'Modern Hero',
-    category: 'Hero',
-    preview: 'https://i.ibb.co/LgLwzBq/hero-block-preview.png',
-    blueprint: modernHeroSectionBlueprint,
+    name: 'About Us Section',
+    category: 'About',
+    preview: 'https://i.ibb.co/yYw2zC1/template-portfolio.png',
+    blueprint: aboutUsSectionBlueprint,
   },
   {
-    name: '3-Column Features',
-    category: 'Features',
-    preview: 'https://i.ibb.co/Vv0F5fP/features-block-preview.png',
-    blueprint: threeColumnFeatureSectionBlueprint,
+    name: 'Testimonial Cards',
+    category: 'Testimonials',
+    preview: 'https://i.ibb.co/Jq9xQcZ/testimonial-preview.png',
+    blueprint: testimonialSectionBlueprint,
+  },
+  {
+    name: 'Call to Action',
+    category: 'CTA',
+    preview: 'https://i.ibb.co/gZ3YpPv/cta-preview.png',
+    blueprint: ctaSectionBlueprint,
+  },
+  {
+    name: 'Contact Form & Map',
+    category: 'Contact',
+    preview: 'https://i.ibb.co/hX6sYdZ/contact-preview.png',
+    blueprint: contactSectionBlueprint,
+  },
+  {
+    name: 'Logo Cloud',
+    category: 'Social Proof',
+    preview: 'https://i.ibb.co/k3VzYtB/logo-cloud-preview.png',
+    blueprint: logoCloudSectionBlueprint,
   },
 ];
 

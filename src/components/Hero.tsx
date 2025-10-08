@@ -31,7 +31,7 @@ const Hero: React.FC = () => {
         <div className="mt-16 max-w-5xl mx-auto">
           <div className="aspect-video bg-secondary-gray rounded-xl shadow-2xl shadow-primary-purple/10 p-2 border border-white/10">
             <img 
-              src="https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://placehold.co/1200x675/15141A/6E42E8?text=Builder+Interface" 
+              src="https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://placehold.co/1200x675/15141A/6E42E8?text=Builder+Interface" 
               alt="Website builder interface" 
               className="w-full h-full object-cover rounded-lg"
             />

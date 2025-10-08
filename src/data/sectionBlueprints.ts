@@ -20,126 +20,202 @@ const assignNewIds = (component: Component): Component => {
   return newComponent;
 };
 
-export const modernHeroSectionBlueprint = (): Component => {
-  const blueprint: Component = {
-    id: '', // Will be replaced
-    type: 'Section',
-    parent: null,
-    props: {
-      htmlTag: 'section',
+export const testimonialSectionBlueprint = (): Component => {
+  const testimonialCard: Component = {
+    id: '', type: 'Column', parent: '', props: {
       style: {
         desktop: {
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          paddingTop: '100px',
-          paddingBottom: '100px',
-          backgroundColor: '#15141A'
-        }
+          flex: '1', display: 'flex', flexDirection: 'column', gap: '24px',
+          backgroundColor: '#15141A', border: '1px solid #2A292F', borderRadius: '12px', padding: '32px',
+        },
+        mobile: { padding: '24px' }
       }
     },
     children: [
+      { id: '', type: 'Paragraph', parent: '', props: { text: '"This is an amazing product that completely changed our workflow. The support team is also fantastic!"', style: { desktop: { fontStyle: 'italic', color: '#A0A0A0', fontSize: '16px', lineHeight: '1.7' } } } },
       {
         id: '', type: 'Container', parent: '', props: {
-          style: { desktop: { width: '100%', maxWidth: '1200px' } }
+          style: { desktop: { display: 'flex', alignItems: 'center', gap: '16px', marginTop: '16px' } }
         },
         children: [
+          { id: '', type: 'Image', parent: '', props: { src: 'https://i.pravatar.cc/150?u=a042581f4e29026704d', style: { desktop: { width: '48px', height: '48px', borderRadius: '9999px' } } } },
           {
-            id: '', type: 'Row', parent: '', props: {
-              style: { desktop: { display: 'flex', alignItems: 'center', gap: '48px' } }
+            id: '', type: 'Container', parent: '', props: {
+              style: { desktop: { display: 'flex', flexDirection: 'column' } }
             },
             children: [
-              {
-                id: '', type: 'Column', parent: '', props: {
-                  style: { desktop: { flex: '1', display: 'flex', flexDirection: 'column', gap: '24px' } }
-                },
-                children: [
-                  { id: '', type: 'Heading', parent: '', props: { text: 'Your Powerful Headline Goes Here', htmlTag: 'h1', style: { desktop: { fontSize: '48px', fontWeight: '900', color: '#F0F0F0', lineHeight: '1.2' } } } },
-                  { id: '', type: 'Paragraph', parent: '', props: { text: 'This is a paragraph where you can describe your product or service. Make it compelling and to the point.', style: { desktop: { fontSize: '18px', color: '#A0A0A0', lineHeight: '1.6' } } } },
-                  {
-                    id: '', type: 'Container', parent: '', props: {
-                      style: { desktop: { display: 'flex', gap: '16px', marginTop: '16px' } }
-                    },
-                    children: [
-                      { id: '', type: 'Button', parent: '', props: { text: 'Get Started', style: { desktop: { backgroundColor: '#6E42E8', color: '#FFFFFF', padding: '12px 24px', borderRadius: '8px', fontWeight: '600' } } } },
-                      { id: '', type: 'Button', parent: '', props: { text: 'Learn More', style: { desktop: { backgroundColor: 'transparent', border: '1px solid #2A292F', color: '#F0F0F0', padding: '12px 24px', borderRadius: '8px', fontWeight: '600' } } } }
-                    ]
-                  }
-                ]
-              },
-              {
-                id: '', type: 'Column', parent: '', props: {
-                  style: { desktop: { flex: '1' } }
-                },
-                children: [
-                  { id: '', type: 'Image', parent: '', props: { src: 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://placehold.co/600x400/15141A/6E42E8?text=Your+Image', style: { desktop: { width: '100%', borderRadius: '12px' } } } }
-                ]
-              }
+              { id: '', type: 'Heading', parent: '', props: { text: 'Jane Doe', htmlTag: 'h5', style: { desktop: { fontSize: '16px', fontWeight: '600', color: '#F0F0F0' } } } },
+              { id: '', type: 'Paragraph', parent: '', props: { text: 'CEO, Tech Innovators', style: { desktop: { fontSize: '14px', color: '#A0A0A0' } } } }
             ]
           }
         ]
       }
-    ]
-  };
-  return assignNewIds(blueprint);
-};
-
-export const threeColumnFeatureSectionBlueprint = (): Component => {
-  const featureColumn: Component = {
-    id: '', type: 'Column', parent: '', props: {
-      style: {
-        desktop: {
-          flex: '1', display: 'flex', flexDirection: 'column', alignItems: 'center',
-          backgroundColor: '#15141A', border: '1px solid #2A292F', borderRadius: '12px', padding: '32px',
-          textAlign: 'center'
-        }
-      }
-    },
-    children: [
-      { id: '', type: 'Icon', parent: '', props: { icon: 'Smile', style: { desktop: { color: '#6E42E8', width: '40px', height: '40px', marginBottom: '16px' } } } },
-      { id: '', type: 'Heading', parent: '', props: { text: 'Feature Title', htmlTag: 'h3', style: { desktop: { fontSize: '22px', fontWeight: '700', color: '#F0F0F0' } } } },
-      { id: '', type: 'Paragraph', parent: '', props: { text: 'A short, centered description of the feature goes here.', style: { desktop: { fontSize: '16px', color: '#A0A0A0', lineHeight: '1.6', marginTop: '8px' } } } }
     ]
   };
 
   const blueprint: Component = {
     id: '', type: 'Section', parent: null, props: {
-      htmlTag: 'section',
-      style: {
-        desktop: {
-          display: 'flex', flexDirection: 'column', alignItems: 'center',
-          paddingTop: '80px', paddingBottom: '80px',
-          backgroundColor: '#0B0A0E'
-        }
-      }
+      htmlTag: 'section', style: { desktop: { paddingTop: '80px', paddingBottom: '80px' } }
     },
-    children: [
-      {
-        id: '', type: 'Container', parent: '', props: {
+    children: [{
+      id: '', type: 'Container', parent: '', props: {
+        style: { desktop: { maxWidth: '1200px', paddingLeft: '16px', paddingRight: '16px' } }
+      },
+      children: [
+        { id: '', type: 'Heading', parent: '', props: { text: 'What Our Clients Say', htmlTag: 'h2', style: { desktop: { textAlign: 'center', fontSize: '36px', fontWeight: '900', color: '#F0F0F0', marginBottom: '48px' } } } },
+        {
+          id: '', type: 'Row', parent: '', props: {
+            style: { desktop: { display: 'flex', gap: '32px' }, mobile: { flexDirection: 'column' } }
+          },
+          children: [
+            testimonialCard,
+            assignNewIds({ ...testimonialCard, children: testimonialCard.children!.map(c => c.type === 'Container' ? { ...c, children: c.children!.map(cc => cc.type === 'Image' ? { ...cc, props: { ...cc.props, src: 'https://i.pravatar.cc/150?u=a042581f4e29026704e' } } : cc) } : c) }),
+            assignNewIds({ ...testimonialCard, children: testimonialCard.children!.map(c => c.type === 'Container' ? { ...c, children: c.children!.map(cc => cc.type === 'Image' ? { ...cc, props: { ...cc.props, src: 'https://i.pravatar.cc/150?u=a042581f4e29026704f' } } : cc) } : c) }),
+          ]
+        }
+      ]
+    }]
+  };
+  return assignNewIds(blueprint);
+};
+
+export const ctaSectionBlueprint = (): Component => {
+  const blueprint: Component = {
+    id: '', type: 'Section', parent: null, props: {
+      htmlTag: 'section',
+      sectionSpecificProps: { background: { type: 'gradient', gradient: 'linear-gradient(105deg, #6E42E8, #4A2CB8)' } },
+      style: { desktop: { paddingTop: '64px', paddingBottom: '64px' } }
+    },
+    children: [{
+      id: '', type: 'Container', parent: '', props: {
+        style: { desktop: { maxWidth: '1100px', paddingLeft: '16px', paddingRight: '16px' } }
+      },
+      children: [{
+        id: '', type: 'Row', parent: '', props: {
           style: {
-            desktop: {
-              width: '100%', maxWidth: '1200px', display: 'flex', flexDirection: 'column', alignItems: 'center',
-              textAlign: 'center'
-            }
+            desktop: { display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
+            mobile: { flexDirection: 'column', gap: '24px', textAlign: 'center' }
           }
         },
         children: [
-          { id: '', type: 'Heading', parent: '', props: { text: 'Discover Our Features', htmlTag: 'h2', style: { desktop: { fontSize: '36px', fontWeight: '900', color: '#F0F0F0', marginBottom: '16px' } } } },
-          { id: '', type: 'Paragraph', parent: '', props: { text: 'Explore the key benefits and advantages that make our product stand out.', style: { desktop: { fontSize: '18px', color: '#A0A0A0', lineHeight: '1.6', marginBottom: '48px', maxWidth: '600px' } } } },
           {
-            id: '', type: 'Row', parent: '', props: {
-              style: { desktop: { display: 'flex', gap: '32px', width: '100%' } }
-            },
+            id: '', type: 'Column', parent: '', props: { style: {} },
             children: [
-              featureColumn,
-              { ...featureColumn, children: featureColumn.children?.map(c => ({ ...c, props: { ...c.props, text: c.props.text?.replace('Title', 'Two') } })) },
-              { ...featureColumn, children: featureColumn.children?.map(c => ({ ...c, props: { ...c.props, text: c.props.text?.replace('Title', 'Three') } })) }
+              { id: '', type: 'Heading', parent: '', props: { text: 'Ready to Grow Your Business?', htmlTag: 'h2', style: { desktop: { fontSize: '36px', fontWeight: '900', color: '#FFFFFF' }, mobile: { fontSize: '28px' } } } },
+              { id: '', type: 'Paragraph', parent: '', props: { text: 'Contact us today for a free, no-obligation quote.', style: { desktop: { fontSize: '18px', color: 'rgba(255,255,255,0.8)', marginTop: '8px' } } } }
+            ]
+          },
+          {
+            id: '', type: 'Column', parent: '', props: { style: { mobile: { width: '100%' } } },
+            children: [
+              { id: '', type: 'Button', parent: '', props: { text: 'Get a Free Quote', style: { desktop: { backgroundColor: '#FFFFFF', color: '#6E42E8', padding: '16px 32px', borderRadius: '8px', fontSize: '16px', fontWeight: '700' }, mobile: { width: '100%' } } } }
             ]
           }
         ]
-      }
-    ]
+      }]
+    }]
   };
+  return assignNewIds(blueprint);
+};
 
+export const aboutUsSectionBlueprint = (): Component => {
+  const blueprint: Component = {
+    id: '', type: 'Section', parent: null, props: {
+      htmlTag: 'section', style: { desktop: { paddingTop: '80px', paddingBottom: '80px' } }
+    },
+    children: [{
+      id: '', type: 'Container', parent: '', props: { style: { desktop: { maxWidth: '1100px', paddingLeft: '16px', paddingRight: '16px' } } },
+      children: [{
+        id: '', type: 'Row', parent: '', props: {
+          style: {
+            desktop: { display: 'flex', alignItems: 'center', gap: '64px' },
+            mobile: { flexDirection: 'column', gap: '48px' }
+          }
+        },
+        children: [
+          { id: '', type: 'Column', parent: '', props: { style: { desktop: { flex: '2' } } }, children: [
+            { id: '', type: 'Image', parent: '', props: { src: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=1974&auto=format&fit=crop', style: { desktop: { borderRadius: '12px', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)' } } } }
+          ]},
+          { id: '', type: 'Column', parent: '', props: { style: { desktop: { flex: '3' } } }, children: [
+            { id: '', type: 'Heading', parent: '', props: { text: 'About Our Company', htmlTag: 'h3', style: { desktop: { fontSize: '30px', fontWeight: '800', color: '#F0F0F0', marginBottom: '16px' } } } },
+            { id: '', type: 'Paragraph', parent: '', props: { text: 'We are a passionate team of developers and designers dedicated to creating high-quality software solutions. Our mission is to empower businesses with tools that are both powerful and a joy to use.', style: { desktop: { color: '#A0A0A0', lineHeight: '1.7', marginBottom: '16px' } } } },
+            { id: '', type: 'Paragraph', parent: '', props: { text: 'Founded in 2025, we have been helping clients from all over the world to achieve their goals.', style: { desktop: { color: '#A0A0A0', lineHeight: '1.7', marginBottom: '24px' } } } },
+            { id: '', type: 'Button', parent: '', props: { text: 'Read Our Story', style: { desktop: { backgroundColor: 'transparent', border: '1px solid #2A292F', color: '#F0F0F0', padding: '12px 24px', borderRadius: '8px' } } } }
+          ]}
+        ]
+      }]
+    }]
+  };
+  return assignNewIds(blueprint);
+};
+
+export const contactSectionBlueprint = (): Component => {
+  const formField: Component = {
+    id: '', type: 'Paragraph', parent: '', props: {
+      text: 'Your Name', style: { desktop: { width: '100%', backgroundColor: '#0B0A0E', border: '1px solid #2A292F', borderRadius: '8px', padding: '12px', color: '#A0A0A0' } }
+    }
+  };
+  const blueprint: Component = {
+    id: '', type: 'Section', parent: null, props: {
+      htmlTag: 'section', style: { desktop: { paddingTop: '80px', paddingBottom: '80px' } }
+    },
+    children: [{
+      id: '', type: 'Container', parent: '', props: { style: { desktop: { maxWidth: '1100px', paddingLeft: '16px', paddingRight: '16px' } } },
+      children: [
+        { id: '', type: 'Heading', parent: '', props: { text: 'Get In Touch', htmlTag: 'h2', style: { desktop: { textAlign: 'center', fontSize: '36px', fontWeight: '900', color: '#F0F0F0', marginBottom: '48px' } } } },
+        { id: '', type: 'Row', parent: '', props: { style: { desktop: { display: 'flex', gap: '48px' }, mobile: { flexDirection: 'column' } } },
+          children: [
+            { id: '', type: 'Column', parent: '', props: { style: { desktop: { flex: '1', display: 'flex', flexDirection: 'column', gap: '16px' } } }, children: [
+              { id: '', type: 'Heading', parent: '', props: { text: 'Send Us a Message', htmlTag: 'h4', style: { desktop: { fontSize: '22px', fontWeight: '700', color: '#F0F0F0', marginBottom: '8px' } } } },
+              formField,
+              { ...assignNewIds(formField), props: { ...formField.props, text: 'Your Email' } },
+              { ...assignNewIds(formField), props: { ...formField.props, text: 'Subject' } },
+              { ...assignNewIds(formField), props: { ...formField.props, text: 'Your Message', style: { ...formField.props.style, desktop: { ...formField.props.style.desktop, minHeight: '120px' } } } },
+              { id: '', type: 'Button', parent: '', props: { text: 'Submit Message', style: { desktop: { width: '100%', backgroundColor: '#6E42E8', color: '#FFFFFF', padding: '12px', borderRadius: '8px', marginTop: '8px' } } } }
+            ]},
+            { id: '', type: 'Column', parent: '', props: { style: { desktop: { flex: '1' }, mobile: { minHeight: '300px' } } }, children: [
+              { id: '', type: 'Image', parent: '', props: { src: 'https://i.ibb.co/F8Zt2Yh/map-placeholder.png', style: { desktop: { width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' } } } }
+            ]}
+          ]
+        }
+      ]
+    }]
+  };
+  return assignNewIds(blueprint);
+};
+
+export const logoCloudSectionBlueprint = (): Component => {
+  const logoImage: Component = {
+    id: '', type: 'Image', parent: '', props: {
+      src: 'https://logodownload.org/wp-content/uploads/2014/09/google-logo-1.png',
+      style: {
+        desktop: { height: '32px', width: 'auto', filter: 'grayscale(100%)', opacity: '0.6', transition: 'all 0.3s' },
+        hover: { filter: 'grayscale(0%)', opacity: '1' }
+      }
+    }
+  };
+  const blueprint: Component = {
+    id: '', type: 'Section', parent: null, props: {
+      htmlTag: 'section', style: { desktop: { paddingTop: '64px', paddingBottom: '64px', backgroundColor: '#15141A' } }
+    },
+    children: [{
+      id: '', type: 'Container', parent: '', props: { style: { desktop: { maxWidth: '1100px', paddingLeft: '16px', paddingRight: '16px' } } },
+      children: [
+        { id: '', type: 'Heading', parent: '', props: { text: 'TRUSTED BY COMPANIES WORLDWIDE', htmlTag: 'h6', style: { desktop: { textAlign: 'center', fontSize: '12px', fontWeight: '700', color: '#A0A0A0', letterSpacing: '0.1em', marginBottom: '32px' } } } },
+        { id: '', type: 'Row', parent: '', props: {
+          style: {
+            desktop: { display: 'flex', justifyContent: 'space-around', alignItems: 'center', gap: '48px' },
+            mobile: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px' }
+          }
+        }, children: [
+          logoImage,
+          { ...assignNewIds(logoImage), props: { ...logoImage.props, src: 'https://logodownload.org/wp-content/uploads/2019/09/stripe-logo-1.png' } },
+          { ...assignNewIds(logoImage), props: { ...logoImage.props, src: 'https://logodownload.org/wp-content/uploads/2014/05/amazon-logo-1-1.png' } },
+          { ...assignNewIds(logoImage), props: { ...logoImage.props, src: 'https://logodownload.org/wp-content/uploads/2014/02/netflix-logo-1.png' } },
+          { ...assignNewIds(logoImage), props: { ...logoImage.props, src: 'https://logodownload.org/wp-content/uploads/2019/08/slack-logo-1.png' } }
+        ]}
+      ]
+    }]
+  };
   return assignNewIds(blueprint);
 };

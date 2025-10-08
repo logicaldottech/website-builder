@@ -1,8 +1,9 @@
 import React from 'react';
-import { Monitor, Tablet, Smartphone, Eye, Download, Undo, Redo, Trash2, Library } from 'lucide-react';
+import { Monitor, Tablet, Smartphone, Eye, Download, Undo, Redo, Trash2, Library, GitBranch, LayoutTemplate } from 'lucide-react';
 import { useStore } from 'zustand';
 import { useBuilderStore } from '../../store/builderStore';
 import type { Device } from '../../store/builderStore';
+import { Link } from 'react-router-dom';
 
 interface EditorHeaderProps {
   onExport: () => void;
@@ -44,9 +45,15 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({ onExport }) => {
   return (
     <div className="h-16 w-full bg-secondary-gray border-b border-border-color flex items-center justify-between px-4 z-10 flex-shrink-0">
       <div className="flex items-center gap-2">
+        <Link to="/templates" className="flex items-center gap-2 text-sm px-3 py-1.5 bg-border-color text-text-primary rounded-lg hover:bg-opacity-90 transition-all">
+          <LayoutTemplate size={14} /> <span>Templates</span>
+        </Link>
         <button onClick={() => openSectionLibrary()} className="flex items-center gap-2 text-sm px-3 py-1.5 bg-border-color text-text-primary rounded-lg hover:bg-opacity-90 transition-all">
           <Library size={14} /> <span>Blocks</span>
         </button>
+        <Link to="/importer" className="flex items-center gap-2 text-sm px-3 py-1.5 bg-border-color text-text-primary rounded-lg hover:bg-opacity-90 transition-all">
+          <GitBranch size={14} /> <span>Import Project</span>
+        </Link>
         <div className="w-px h-6 bg-border-color mx-2"></div>
         <button onClick={undo} disabled={pastStatesLength === 0} className="p-2 rounded-md text-text-secondary hover:bg-border-color hover:text-text-primary disabled:text-border-color disabled:hover:bg-transparent disabled:cursor-not-allowed" title="Undo">
           <Undo size={18} />

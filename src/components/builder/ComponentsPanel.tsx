@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDrag } from 'react-dnd';
 import { ItemTypes, DraggableComponentType } from '../../types/builder';
-import { Type, Pilcrow, MousePointerClick, Box, RectangleHorizontal, RectangleVertical, Image, Link, Smile, Minus } from 'lucide-react';
+import { Type, Pilcrow, MousePointerClick, Box, RectangleHorizontal, RectangleVertical, Image, Link, Smile, Minus, Video } from 'lucide-react';
 
 interface DraggableComponentProps {
   type: DraggableComponentType;
@@ -31,9 +31,10 @@ const componentList: { type: DraggableComponentType; icon: React.ReactNode }[] =
   { type: 'Paragraph', icon: <Pilcrow size={20} className="text-text-secondary" /> },
   { type: 'Button', icon: <MousePointerClick size={20} className="text-text-secondary" /> },
   { type: 'Image', icon: <Image size={20} className="text-text-secondary" /> },
+  { type: 'Video', icon: <Video size={20} className="text-text-secondary" /> },
   { type: 'Link', icon: <Link size={20} className="text-text-secondary" /> },
   { type: 'Icon', icon: <Smile size={20} className="text-text-secondary" /> },
-  { type: 'Spacer', icon: <Minus size={20} className="text-text-secondary" /> },
+  { type: 'Divider', icon: <Minus size={20} className="text-text-secondary" /> },
 ];
 
 const ComponentsPanel: React.FC = () => {

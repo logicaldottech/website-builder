@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { X } from 'lucide-react';
 import EditorHeader from '../components/builder/EditorHeader';
 import LeftSidebar from '../components/builder/LeftSidebar';
 import Canvas from '../components/builder/Canvas';
@@ -14,7 +15,9 @@ const BuilderPage: React.FC = () => {
     components, 
     isExportModalOpen, 
     openExportModal, 
-    closeExportModal 
+    closeExportModal,
+    isPreviewMode,
+    togglePreviewMode
   } = useBuilderStore();
   
   const [generatedCode, setGeneratedCode] = React.useState<Record<string, string> | null>(null);
@@ -32,6 +35,21 @@ const BuilderPage: React.FC = () => {
     });
     openExportModal();
   }, [components, openExportModal]);
+
+  if (isPreviewMode) {
+    return (
+      <div className="relative h-screen w-full bg-background text-text-primary">
+        <Canvas />
+        <button 
+          onClick={togglePreviewMode}
+          className="fixed bottom-5 right-5 z-50 flex items-center gap-2 px-4 py-2 bg-secondary-gray text-text-primary rounded-lg shadow-lg border border-border-color hover:bg-border-color"
+        >
+          <X size={16} />
+          Exit Preview
+        </button>
+      </div>
+    );
+  }
 
   return (
     <DndProvider backend={HTML5Backend}>

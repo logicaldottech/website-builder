@@ -1,7 +1,10 @@
 import React from 'react';
-import { Component, StyleProperties } from '../../types/builder';
-import { ChevronDown, AlignCenter, AlignEndHorizontal, AlignStartHorizontal, AlignStartVertical, AlignCenterVertical, AlignEndVertical, RectangleHorizontal, RectangleVertical, Bold, Italic, Underline, AlignLeft, AlignRight } from 'lucide-react';
+import { Component } from '../../types/builder';
+import { ChevronDown, AlignCenter, AlignEndHorizontal, AlignStartHorizontal, AlignStartVertical, AlignCenterVertical, AlignEndVertical, RectangleHorizontal, RectangleVertical, AlignLeft, AlignRight } from 'lucide-react';
 import { useBuilderStore, findComponentPath } from '../../store/builderStore';
+import ColorInput from './ColorInput';
+import FourPointInput from './FourPointInput';
+import SliderInput from './SliderInput';
 
 const StyleSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
   <details className="group border-b border-border-color" open>
@@ -44,10 +47,10 @@ const StylePanel: React.FC = () => {
   }
 
   const pathResult = findComponentPath(selectedComponentId, components);
-  if (!pathResult) return null; // Should not happen if id is valid
+  if (!pathResult) return null;
   const selectedComponent = pathResult.component;
 
-  const handleStyleChange = (style: Partial<StyleProperties>) => {
+  const handleStyleChange = (style: Partial<Component['props']['style']['desktop']>) => {
     updateComponentStyle(selectedComponent.id, style);
   };
 
@@ -55,12 +58,14 @@ const StylePanel: React.FC = () => {
     updateComponentProps(selectedComponent.id, props);
   };
 
-  const responsiveStyles = {
-    ...selectedComponent.props.style.desktop,
-    ...selectedComponent.props.style.tablet,
-    ...selectedComponent.props.style.mobile,
-  }
   const currentDeviceStyle = selectedComponent.props.style[device] || {};
+
+  const parseUnit = (value: string | undefined): { value: number, unit: string } => {
+    if (!value) return { value: 0, unit: 'px' };
+    const num = parseFloat(value);
+    const unit = value.match(/px|%|em|rem|vw|vh/)?.[0] || 'px';
+    return { value: isNaN(num) ? 0 : num, unit };
+  };
 
   return (
     <div className="text-text-primary">
@@ -73,6 +78,14 @@ const StylePanel: React.FC = () => {
         <StyleSection title="Content">
           <StyleInput label="Text">
             <input type="text" value={selectedComponent.props.text} onChange={(e) => handlePropChange({ text: e.target.value })} className="w-full px-3 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary-purple focus:outline-none transition-all text-sm"/>
+          </StyleInput>
+        </StyleSection>
+      )}
+
+      {selectedComponent.type === 'Video' && (
+        <StyleSection title="Content">
+          <StyleInput label="YouTube URL">
+            <input type="text" value={selectedComponent.props.src} onChange={(e) => handlePropChange({ src: e.target.value })} className="w-full px-3 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary-purple focus:outline-none transition-all text-sm"/>
           </StyleInput>
         </StyleSection>
       )}
@@ -105,34 +118,58 @@ const StylePanel: React.FC = () => {
         </StyleSection>
       )}
 
-      <StyleSection title="Appearance">
-        <StyleInput label="Background Color">
-          <div className="flex items-center gap-2">
-             <input type="color" value={currentDeviceStyle.backgroundColor || '#00000000'} onChange={(e) => handleStyleChange({ backgroundColor: e.target.value })} className="w-8 h-8 p-0 border-none rounded cursor-pointer bg-background"/>
-            <input type="text" placeholder="#RRGGBB" value={currentDeviceStyle.backgroundColor || ''} onChange={(e) => handleStyleChange({ backgroundColor: e.target.value })} className="w-full px-3 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary-purple focus:outline-none transition-all text-sm"/>
-          </div>
+      <StyleSection title="Sizing">
+        <StyleInput label="Width">
+          <input type="text" placeholder="e.g., 100%" value={currentDeviceStyle.width || ''} onChange={(e) => handleStyleChange({ width: e.target.value })} className="w-full px-3 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary-purple focus:outline-none transition-all text-sm"/>
         </StyleInput>
+        <StyleInput label="Height">
+          <input type="text" placeholder="e.g., 300px" value={currentDeviceStyle.height || ''} onChange={(e) => handleStyleChange({ height: e.target.value })} className="w-full px-3 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary-purple focus:outline-none transition-all text-sm"/>
+        </StyleInput>
+      </StyleSection>
+
+      <StyleSection title="Appearance">
+        <ColorInput label="Background Color" value={currentDeviceStyle.backgroundColor || ''} onChange={color => handleStyleChange({ backgroundColor: color })} />
+        <SliderInput
+          label="Opacity"
+          value={Number(currentDeviceStyle.opacity || 1) * 100}
+          onChange={v => handleStyleChange({ opacity: String(v / 100) })}
+          min={0} max={100} unit="%"
+        />
         <StyleInput label="Border">
           <input type="text" placeholder="e.g., 1px solid #ccc" value={currentDeviceStyle.border || ''} onChange={(e) => handleStyleChange({ border: e.target.value })} className="w-full px-3 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary-purple focus:outline-none transition-all text-sm"/>
         </StyleInput>
-        <StyleInput label="Border Radius">
-          <input type="text" placeholder="e.g., 8px" value={currentDeviceStyle.borderRadius || ''} onChange={(e) => handleStyleChange({ borderRadius: e.target.value })} className="w-full px-3 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary-purple focus:outline-none transition-all text-sm"/>
+        <SliderInput
+          label="Border Radius"
+          value={parseUnit(currentDeviceStyle.borderRadius).value}
+          onChange={v => handleStyleChange({ borderRadius: `${v}px` })}
+          min={0} max={50} unit="px"
+        />
+        <StyleInput label="Shadow">
+          <input type="text" placeholder="e.g., 0px 4px 6px #0002" value={currentDeviceStyle.boxShadow || ''} onChange={(e) => handleStyleChange({ boxShadow: e.target.value })} className="w-full px-3 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary-purple focus:outline-none transition-all text-sm"/>
         </StyleInput>
       </StyleSection>
 
       <StyleSection title="Spacing">
-        <StyleInput label="Margin">
-          <input type="text" placeholder="e.g., 10px or 0 10px" value={currentDeviceStyle.margin || ''} onChange={(e) => handleStyleChange({ margin: e.target.value })} className="w-full px-3 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary-purple focus:outline-none transition-all text-sm"/>
-        </StyleInput>
-        <StyleInput label="Padding">
-          <input type="text" placeholder="e.g., 10px or 0 10px" value={currentDeviceStyle.padding || ''} onChange={(e) => handleStyleChange({ padding: e.target.value })} className="w-full px-3 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary-purple focus:outline-none transition-all text-sm"/>
-        </StyleInput>
+        <FourPointInput label="Margin"
+          values={{ top: currentDeviceStyle.marginTop, right: currentDeviceStyle.marginRight, bottom: currentDeviceStyle.marginBottom, left: currentDeviceStyle.marginLeft }}
+          onValueChange={(side, value) => handleStyleChange({ [`margin${side}`]: value })}
+        />
+        <FourPointInput label="Padding"
+          values={{ top: currentDeviceStyle.paddingTop, right: currentDeviceStyle.paddingRight, bottom: currentDeviceStyle.paddingBottom, left: currentDeviceStyle.paddingLeft }}
+          onValueChange={(side, value) => handleStyleChange({ [`padding${side}`]: value })}
+        />
       </StyleSection>
 
       <StyleSection title="Typography">
-        <StyleInput label="Font Size">
-          <input type="text" placeholder="e.g., 16px" value={currentDeviceStyle.fontSize || ''} onChange={(e) => handleStyleChange({ fontSize: e.target.value })} className="w-full px-3 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary-purple focus:outline-none transition-all text-sm"/>
+        <StyleInput label="Font Family">
+          <input type="text" placeholder="e.g., Inter, sans-serif" value={currentDeviceStyle.fontFamily || ''} onChange={(e) => handleStyleChange({ fontFamily: e.target.value })} className="w-full px-3 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary-purple focus:outline-none transition-all text-sm"/>
         </StyleInput>
+        <SliderInput
+          label="Font Size"
+          value={parseUnit(currentDeviceStyle.fontSize).value}
+          onChange={v => handleStyleChange({ fontSize: `${v}px` })}
+          min={8} max={100} unit="px"
+        />
         <StyleInput label="Font Weight">
            <ButtonGroup>
               <ButtonGroupButton onClick={() => handleStyleChange({ fontWeight: 'normal' })} isActive={currentDeviceStyle.fontWeight === 'normal'}>Normal</ButtonGroupButton>
@@ -146,12 +183,7 @@ const StylePanel: React.FC = () => {
               <ButtonGroupButton onClick={() => handleStyleChange({ textAlign: 'right' })} isActive={currentDeviceStyle.textAlign === 'right'}><AlignRight size={16}/></ButtonGroupButton>
             </ButtonGroup>
         </StyleInput>
-        <StyleInput label="Color">
-          <div className="flex items-center gap-2">
-             <input type="color" value={currentDeviceStyle.color || '#000000'} onChange={(e) => handleStyleChange({ color: e.target.value })} className="w-8 h-8 p-0 border-none rounded cursor-pointer bg-background"/>
-            <input type="text" placeholder="#RRGGBB" value={currentDeviceStyle.color || ''} onChange={(e) => handleStyleChange({ color: e.target.value })} className="w-full px-3 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary-purple focus:outline-none transition-all text-sm"/>
-          </div>
-        </StyleInput>
+        <ColorInput label="Color" value={currentDeviceStyle.color || ''} onChange={color => handleStyleChange({ color })} />
       </StyleSection>
     </div>
   );

@@ -5,6 +5,7 @@ import ComponentsPanel from './ComponentsPanel';
 import LayersPanel from './LayersPanel';
 import StylePanel from './StylePanel';
 import LayoutsPanel from './LayoutsPanel';
+import BlocksPanel from './BlocksPanel';
 
 const LeftSidebar: React.FC = () => {
   const { activeTab, setActiveTab } = useBuilderStore();
@@ -34,6 +35,7 @@ const LeftSidebar: React.FC = () => {
           <>
             <ComponentsPanel />
             <LayoutsPanel />
+            <BlocksPanel />
           </>
         )}
         {activeTab === 'styles' && <StylePanel />}

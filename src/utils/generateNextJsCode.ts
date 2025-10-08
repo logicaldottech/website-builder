@@ -1,47 +1,171 @@
-import { Component, ComponentStyle } from '../types/builder';
+import { Component, StyleProperties } from '../types/builder';
 
-function toKebabCase(str: string): string {
-  return str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
+// Theme configuration to be used in the exported project
+const theme = {
+  colors: {
+    background: '#0B0A0E',
+    'primary-purple': '#6E42E8',
+    'secondary-gray': '#15141A',
+    'text-primary': '#F0F0F0',
+    'text-secondary': '#A0A0A0',
+    'border-color': '#2A292F',
+    'canvas-bg': '#0F0E13',
+    'canvas-light-bg': '#FFFFFF'
+  }
+};
+
+// A simplified helper to convert style values to Tailwind classes
+function valueToTailwind(value: string, property: string): string | null {
+    if (!value) return null;
+
+    const colorName = Object.entries(theme.colors).find(([, hex]) => hex.toLowerCase() === value.toLowerCase())?.[0];
+    if (colorName) {
+        const prefix = property === 'backgroundColor' ? 'bg' : property === 'color' ? 'text' : 'border';
+        return `${prefix}-${colorName}`;
+    }
+
+    const staticMap: { [key: string]: { [key: string]: string } } = {
+        display: { flex: 'flex' },
+        flexDirection: { row: 'flex-row', column: 'flex-col' },
+        justifyContent: { 'flex-start': 'justify-start', center: 'justify-center', 'flex-end': 'justify-end', 'space-between': 'justify-between' },
+        alignItems: { 'flex-start': 'items-start', center: 'items-center', 'flex-end': 'items-end' },
+        fontWeight: { bold: 'font-bold' },
+        textAlign: { left: 'text-left', center: 'text-center', right: 'text-right' },
+    };
+    
+    if (staticMap[property] && staticMap[property][value]) {
+        return staticMap[property][value];
+    }
+    
+    const pxToRem = (px: string) => parseInt(px, 10) / 4;
+    const match = String(value).match(/^(\d+)px$/);
+    if(match) {
+        const twValue = pxToRem(match[1]);
+        if(!isNaN(twValue)) {
+            const propMap: { [key: string]: string } = {
+                paddingTop: 'pt', paddingBottom: 'pb', paddingLeft: 'pl', paddingRight: 'pr',
+                marginTop: 'mt', marginBottom: 'mb', marginLeft: 'ml', marginRight: 'mr',
+                gap: 'gap', height: 'h', width: 'w', fontSize: 'text', borderRadius: 'rounded'
+            };
+            if (propMap[property]) {
+                if(property === 'fontSize') return `text-[${value}]`; // Use arbitrary values for font size
+                if(property === 'borderRadius') return `rounded-[${value}]`; // Use arbitrary values for border radius
+                return `${propMap[property]}-${twValue}`;
+            }
+        }
+    }
+
+    return null;
 }
+
+// Converts a style object into a className string and a residual inline style object
+function stylesToClasses(styles: StyleProperties): { classNames: string[], inlineStyles: StyleProperties } {
+    const classNames: string[] = [];
+    const inlineStyles: StyleProperties = {};
+
+    for (const [prop, value] of Object.entries(styles)) {
+        if (value === undefined || value === null) continue;
+        const twClass = valueToTailwind(String(value), prop);
+        if (twClass) {
+            classNames.push(twClass);
+        } else {
+            const kebabCaseProp = prop.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
+            // @ts-ignore
+            inlineStyles[kebabCaseProp] = value;
+        }
+    }
+    return { classNames, inlineStyles };
+}
+
+const getYoutubeEmbedUrl = (url: string | undefined): string | undefined => {
+  if (!url) return undefined;
+  let videoId;
+  try {
+    const urlObj = new URL(url);
+    if (urlObj.hostname === 'youtu.be') {
+      videoId = urlObj.pathname.slice(1);
+    } else if (urlObj.hostname.includes('youtube.com')) {
+      videoId = urlObj.searchParams.get('v');
+    }
+    return videoId ? `https://www.youtube.com/embed/${videoId}` : undefined;
+  } catch (error) {
+    return undefined;
+  }
+};
 
 function generateComponentJsx(component: Component, indentLevel = 1): string {
   const { type, props, children } = component;
   const indent = '  '.repeat(indentLevel);
-  const styleObject = props.style || {};
 
-  // Convert style object to a React-friendly style prop object string
-  const styleEntries = Object.entries(styleObject)
-    .map(([key, value]) => `'${key}': '${value}'`)
-    .join(', ');
-  const styleProp = styleEntries ? ` style={{ ${styleEntries} }}` : '';
+  const finalStyle: StyleProperties = {
+      ...(props.style.desktop || {}),
+      ...(props.style.tablet || {}),
+      ...(props.style.mobile || {}),
+  };
+  const { classNames, inlineStyles } = stylesToClasses(finalStyle);
 
-  let tag = 'div';
-  let content = props.text || '';
+  if (props.customClassName) {
+      classNames.push(props.customClassName);
+  }
+
+  const classNameProp = classNames.length > 0 ? ` className="${[...new Set(classNames)].join(' ')}"` : '';
+  const styleProp = Object.keys(inlineStyles).length > 0 ? ` style={{ ${Object.entries(inlineStyles).map(([k, v]) => `'${k}': '${v}'`).join(', ')} }}` : '';
+
+  let tag: string;
+  let content: string | undefined = props.text;
+  const tagProps: string[] = [];
 
   switch (type) {
-    case 'Heading':
-      tag = 'h1'; // A more robust solution might use h2, h3 etc. based on props
-      break;
-    case 'Paragraph':
-      tag = 'p';
-      break;
-    case 'Button':
-      tag = 'button';
-      break;
-    case 'Container':
-      tag = 'div';
-      content = ''; // Container content is its children
-      break;
+    case 'Heading': tag = 'h1'; break;
+    case 'Paragraph': tag = 'p'; break;
+    case 'Button': tag = 'button'; break;
+    case 'Container': tag = 'div'; content = undefined; break;
+    case 'Image': 
+        tag = 'img';
+        content = undefined;
+        tagProps.push(`src="${props.src || 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://placehold.co/600x400'}"`);
+        tagProps.push(`alt="${props.text || 'Image'}"`);
+        break;
+    case 'Video':
+        tag = 'iframe';
+        content = undefined;
+        const embedUrl = getYoutubeEmbedUrl(props.src);
+        tagProps.push(`src="${embedUrl || ''}"`);
+        tagProps.push('frameBorder="0"');
+        tagProps.push('allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"');
+        tagProps.push('allowFullScreen');
+        break;
+    case 'Link':
+        tag = 'a';
+        content = undefined;
+        tagProps.push(`href="${props.href || '#'}"`);
+        break;
+    case 'Icon':
+        tag = 'span';
+        content = `[Icon: ${props.icon}]`; // Representing icon as text
+        break;
+    case 'Divider':
+        tag = 'div';
+        content = undefined;
+        break;
+    default: tag = 'div'; content = '<!-- Unsupported Component -->';
   }
+
+  const propsString = tagProps.length > 0 ? ' ' + tagProps.join(' ') : '';
+  const isSelfClosing = ['img', 'input', 'iframe'].includes(tag);
 
   if (children && children.length > 0) {
     const childrenJsx = children.map(child => generateComponentJsx(child, indentLevel + 1)).join('\n');
-    return `${indent}<${tag}${styleProp}>
+    return `${indent}<${tag}${classNameProp}${styleProp}${propsString}>
 ${childrenJsx}
 ${indent}</${tag}>`;
   }
 
-  return `${indent}<${tag}${styleProp}>${content}</${tag}>`;
+  if (isSelfClosing) {
+      return `${indent}<${tag}${classNameProp}${styleProp}${propsString} />`;
+  }
+
+  return `${indent}<${tag}${classNameProp}${styleProp}${propsString}>${content || ''}</${tag}>`;
 }
 
 export function generatePageTsx(components: Component[]): string {
@@ -109,9 +233,22 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: ${JSON.stringify(theme.colors, null, 8)}
+    },
   },
   plugins: [],
 };
+`;
+}
+
+export function generateGlobalCss(components: Component[]): string {
+    return `@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  /* You can add global body styles here if needed */
+}
 `;
 }

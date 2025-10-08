@@ -1,14 +1,22 @@
 import React from 'react';
 import { Monitor, Tablet, Smartphone, Eye, Download, Undo, Redo, Trash2 } from 'lucide-react';
-import { useBuilderStore, useTemporalStore, Device } from '../../store/builderStore';
+import { useStore } from 'zustand';
+import { useBuilderStore } from '../../store/builderStore';
+import type { Device } from '../../store/builderStore';
 
 interface EditorHeaderProps {
   onExport: () => void;
 }
 
 const EditorHeader: React.FC<EditorHeaderProps> = ({ onExport }) => {
-  const { device, setDevice, clearCanvas } = useBuilderStore();
-  const { undo, redo, futureStates, pastStates } = useTemporalStore();
+  const device = useBuilderStore((state) => state.device);
+  const setDevice = useBuilderStore((state) => state.setDevice);
+  const clearCanvas = useBuilderStore((state) => state.clearCanvas);
+  const togglePreviewMode = useBuilderStore((state) => state.togglePreviewMode);
+  
+  const { undo, redo } = useBuilderStore.temporal;
+  const pastStatesLength = useStore(useBuilderStore.temporal, (state) => state.pastStates.length);
+  const futureStatesLength = useStore(useBuilderStore.temporal, (state) => state.futureStates.length);
 
   const DeviceButton: React.FC<{
     currentDevice: Device;
@@ -30,10 +38,10 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({ onExport }) => {
   return (
     <div className="h-16 w-full bg-secondary-gray border-b border-border-color flex items-center justify-between px-4 z-10 flex-shrink-0">
       <div className="flex items-center gap-2">
-        <button onClick={() => undo()} disabled={pastStates.length === 0} className="p-2 rounded-md text-text-secondary hover:bg-border-color hover:text-text-primary disabled:text-border-color disabled:hover:bg-transparent disabled:cursor-not-allowed">
+        <button onClick={undo} disabled={pastStatesLength === 0} className="p-2 rounded-md text-text-secondary hover:bg-border-color hover:text-text-primary disabled:text-border-color disabled:hover:bg-transparent disabled:cursor-not-allowed">
           <Undo size={18} />
         </button>
-        <button onClick={() => redo()} disabled={futureStates.length === 0} className="p-2 rounded-md text-text-secondary hover:bg-border-color hover:text-text-primary disabled:text-border-color disabled:hover:bg-transparent disabled:cursor-not-allowed">
+        <button onClick={redo} disabled={futureStatesLength === 0} className="p-2 rounded-md text-text-secondary hover:bg-border-color hover:text-text-primary disabled:text-border-color disabled:hover:bg-transparent disabled:cursor-not-allowed">
           <Redo size={18} />
         </button>
          <button onClick={() => { if(window.confirm('Are you sure you want to clear the canvas?')) clearCanvas() }} className="p-2 rounded-md text-text-secondary hover:bg-red-500/20 hover:text-red-400">
@@ -48,7 +56,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({ onExport }) => {
       </div>
 
       <div className="flex items-center gap-3">
-        <button className="flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors">
+        <button onClick={togglePreviewMode} className="flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors">
           <Eye size={16} /> <span>Preview</span>
         </button>
         <button onClick={onExport} className="flex items-center gap-2 text-sm px-4 py-2 bg-primary-purple text-white rounded-lg hover:bg-opacity-90 transition-all">

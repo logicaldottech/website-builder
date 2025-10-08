@@ -1,6 +1,6 @@
 import React from 'react';
 import { Component } from '../../types/builder';
-import { Type, Pilcrow, MousePointerClick, Box, ChevronRight, ChevronDown, Image, Link, Smile, Minus } from 'lucide-react';
+import { Type, Pilcrow, MousePointerClick, Box, ChevronRight, ChevronDown, Image, Link, Smile, Minus, Video } from 'lucide-react';
 import { useBuilderStore } from '../../store/builderStore';
 
 interface LayerItemProps {
@@ -21,9 +21,10 @@ const LayerItem: React.FC<LayerItemProps> = ({ component, level }) => {
       case 'Button': return <MousePointerClick size={14} />;
       case 'Container': return <Box size={14} />;
       case 'Image': return <Image size={14} />;
+      case 'Video': return <Video size={14} />;
       case 'Link': return <Link size={14} />;
       case 'Icon': return <Smile size={14} />;
-      case 'Spacer': return <Minus size={14} />;
+      case 'Divider': return <Minus size={14} />;
       default: return <Box size={14}/>;
     }
   };

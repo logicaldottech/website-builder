@@ -1,10 +1,6 @@
-import React, { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import LandingPage from './pages/LandingPage';
+import React, { useEffect, useState } from 'react';
 import BuilderPage from './pages/BuilderPage';
-import LayoutGuidePage from './pages/LayoutGuidePage';
-import BlocksPage from './pages/BlocksPage';
-import { useBuilderStore } from './store/builderStore';
+import { useBuilderStore, migrateStateToV2 } from './store/builderStore';
 
 const ThemeManager: React.FC<{children: React.ReactNode}> = ({ children }) => {
   const theme = useBuilderStore((state) => state.theme);
@@ -18,17 +14,31 @@ const ThemeManager: React.FC<{children: React.ReactNode}> = ({ children }) => {
   return <>{children}</>;
 }
 
+const MigrationManager: React.FC<{children: React.ReactNode}> = ({ children }) => {
+  const [isMigrated, setIsMigrated] = useState(false);
+
+  useEffect(() => {
+    // This effect runs once on mount to perform the state migration.
+    useBuilderStore.setState(migrateStateToV2);
+    setIsMigrated(true);
+  }, []);
+
+  if (!isMigrated) {
+    // You can render a loading spinner here if migration takes time
+    return null; 
+  }
+
+  return <>{children}</>;
+}
+
 
 function App() {
   return (
-    <ThemeManager>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/builder" element={<BuilderPage />} />
-        <Route path="/guide" element={<LayoutGuidePage />} />
-        <Route path="/blocks" element={<BlocksPage />} />
-      </Routes>
-    </ThemeManager>
+    <MigrationManager>
+      <ThemeManager>
+        <BuilderPage />
+      </ThemeManager>
+    </MigrationManager>
   );
 }
 

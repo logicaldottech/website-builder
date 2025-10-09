@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { motion } from 'framer-motion';
-import { Component, DraggableComponentType, ItemTypes, LayoutType, StyleProperties, BlockType, ImageFilters } from '../../types/builder';
+import { Component, DraggableComponentType, ItemTypes, LayoutType, BlockType, StyleProperties, ImageFilters } from '../../types/builder';
 import { useBuilderStore } from '../../store/builderStore';
 import * as LucideIcons from 'lucide-react';
 import FloatingToolbar from './FloatingToolbar';
@@ -44,9 +44,9 @@ interface RenderedComponentProps {
 const RenderedComponent: React.FC<RenderedComponentProps> = ({ component, index, path }) => {
   const { id, type, props, children, parent } = component;
   const { 
-    selectedComponentId, selectComponent, addComponent, addLayout, addBlock, moveComponent, device, isPreviewMode,
+    selectedComponentId, selectComponent, addComponent, device, isPreviewMode,
     editingComponentId, setEditingComponentId, updateComponentProps, openContextMenu,
-    hoveredComponentId, setHoveredComponentId, setActiveTab
+    hoveredComponentId, setHoveredComponentId, setActiveSidebarTab
   } = useBuilderStore();
   
   const ref = useRef<HTMLDivElement>(null);
@@ -93,29 +93,7 @@ const RenderedComponent: React.FC<RenderedComponentProps> = ({ component, index,
       }
     },
     drop(item: any, monitor) {
-      if (!monitor.didDrop()) {
-        const dropPosition = dropIndicator;
-        setDropIndicator(null);
-        if (!dropPosition) return;
-
-        const itemType = monitor.getItemType();
-        if (itemType === ItemTypes.CANVAS_COMPONENT) {
-          moveComponent(item.id, id, dropPosition);
-        } else {
-          const newType = item.type;
-          if (dropPosition === 'inside') {
-            if (itemType === ItemTypes.COMPONENT) addComponent(newType as DraggableComponentType, id);
-            else if (itemType === ItemTypes.LAYOUT) addLayout(newType as LayoutType, id);
-            else if (itemType === ItemTypes.BLOCK) addBlock(newType as BlockType, id);
-          } else {
-            const targetParentId = parent;
-            const targetIndex = dropPosition === 'top' ? index : index + 1;
-            if (itemType === ItemTypes.COMPONENT) addComponent(newType as DraggableComponentType, targetParentId, targetIndex);
-            else if (itemType === ItemTypes.LAYOUT) addLayout(newType as LayoutType, targetParentId, targetIndex);
-            else if (itemType === ItemTypes.BLOCK) addBlock(newType as BlockType, targetParentId, targetIndex);
-          }
-        }
-      }
+      // Drop logic is now handled in the store
     },
     collect: (monitor) => ({ isOver: monitor.isOver({ shallow: true }) }),
   });
@@ -253,7 +231,7 @@ const RenderedComponent: React.FC<RenderedComponentProps> = ({ component, index,
 
     const emptyPlaceholder = () => !isPreviewMode && (
       <div className={`flex items-center justify-center p-4 min-h-[80px] border-2 border-dashed rounded-md transition-colors ${dropIndicator === 'inside' ? 'border-primary bg-primary/10' : 'border-border'}`}>
-        <button onClick={() => setActiveTab('components')} className="flex items-center gap-2 text-text-muted hover:text-primary">
+        <button onClick={() => setActiveSidebarTab('add')} className="flex items-center gap-2 text-text-muted hover:text-primary">
           <Plus size={16} />
           Add Element
         </button>
@@ -289,7 +267,7 @@ const RenderedComponent: React.FC<RenderedComponentProps> = ({ component, index,
         }
         return <button {...combinedProps}>{content}</button>;
       }
-      case 'Image': return <img src={props.src} alt={props.altText || 'Image'} {...combinedProps} />;
+      case 'Image': return <img src={props.src || undefined} alt={props.altText || 'Image'} {...combinedProps} />;
       case 'Video': {
         const embedUrl = getYoutubeEmbedUrl(props.src);
         return embedUrl ? (
@@ -322,73 +300,108 @@ const RenderedComponent: React.FC<RenderedComponentProps> = ({ component, index,
           {isEditing ? props.text : (children?.length ? renderChildren() : props.text)}
         </a>
       );
-      case 'Section':
-        const sectionProps = props.sectionSpecificProps || {};
-        const background = sectionProps.background || {};
-        
-        const bgStyle: React.CSSProperties = {};
-        const overlayStyle: React.CSSProperties = { position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 1 };
+      case 'Section': {
+        const sectionProps = props.sectionProps || {};
+        const { paddingY, background, fullBleed } = sectionProps;
 
-        if (background.type === 'color') {
-          bgStyle.backgroundColor = background.color;
-        } else if (background.type === 'gradient') {
-          bgStyle.backgroundImage = background.gradient;
-        } else if (background.type === 'image' && background.image?.src) {
-          bgStyle.backgroundImage = `url(${background.image.src})`;
-          bgStyle.backgroundPosition = background.image.position || 'center';
-          bgStyle.backgroundRepeat = background.image.repeat || 'no-repeat';
-          bgStyle.backgroundSize = background.image.size || 'cover';
-          bgStyle.backgroundAttachment = background.image.attachment || 'scroll';
+        const sectionStyle: React.CSSProperties = {
+            position: 'relative',
+            width: '100%',
+            paddingTop: paddingY?.[device] || paddingY?.lg,
+            paddingBottom: paddingY?.[device] || paddingY?.lg,
+            ...finalStyle,
+        };
+        
+        const bgStyle: React.CSSProperties = {
+            position: 'absolute',
+            inset: 0,
+            zIndex: -1,
+            pointerEvents: 'none',
+        };
+
+        if (fullBleed) {
+          bgStyle.width = '100vw';
+          bgStyle.left = '50%';
+          bgStyle.transform = 'translateX(-50%)';
         }
 
-        if (background.overlay?.color) {
-          overlayStyle.backgroundColor = background.overlay.color;
-          overlayStyle.opacity = background.overlay.opacity ?? 0.5;
+        if (background?.type === 'color') bgStyle.backgroundColor = background.color;
+        if (background?.type === 'gradient') bgStyle.backgroundImage = background.gradient;
+        if (background?.type === 'image' && background.image?.src) {
+            bgStyle.backgroundImage = `url(${background.image.src})`;
+            bgStyle.backgroundPosition = background.image.position || 'center';
+            bgStyle.backgroundRepeat = background.image.repeat || 'no-repeat';
+            bgStyle.backgroundSize = background.image.size || 'cover';
         }
 
-        const borderTopStyle = sectionProps.borderTop ? {
-          borderTopStyle: sectionProps.borderTop.style,
-          borderTopWidth: sectionProps.borderTop.width,
-          borderTopColor: sectionProps.borderTop.color,
-        } : {};
+        const overlayStyle: React.CSSProperties = {
+            ...bgStyle,
+            backgroundColor: background?.overlay?.color || 'transparent',
+            opacity: background?.overlay?.opacity || 0,
+            backgroundImage: 'none',
+            zIndex: -1,
+        };
 
-        const borderBottomStyle = sectionProps.borderBottom ? {
-          borderBottomStyle: sectionProps.borderBottom.style,
-          borderBottomWidth: sectionProps.borderBottom.width,
-          borderBottomColor: sectionProps.borderBottom.color,
-        } : {};
-
-        const combinedSectionStyle = { ...finalStyle, ...borderTopStyle, ...borderBottomStyle, position: 'relative' as const };
-        
-        const videoEmbedUrl = background.type === 'video' ? getYoutubeEmbedUrl(background.video?.src) : undefined;
-        const videoId = videoEmbedUrl?.split('/').pop();
+        const Tag = sectionProps.htmlTag || 'section';
 
         return (
-          <div style={combinedSectionStyle}>
-            <div style={{...bgStyle, position: 'absolute', inset: 0, zIndex: 0}} />
-            
-            {videoEmbedUrl && (
-              <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-                 <iframe
-                    className="absolute top-1/2 left-1/2 w-full h-full -translate-x-1/2 -translate-y-1/2"
-                    style={{ minWidth: '177.77vh', minHeight: '100vw' }} // Maintain 16:9 aspect ratio and cover
-                    src={`${videoEmbedUrl}?autoplay=1&mute=1&loop=1&controls=0&playlist=${videoId}`}
-                    frameBorder="0"
-                    allow="autoplay; encrypted-media"
-                    title="Background Video"
-                  />
-              </div>
-            )}
+            <Tag style={sectionStyle} aria-label={sectionProps.ariaLabel}>
+                <div style={bgStyle} />
+                <div style={overlayStyle} />
+                {children && children.length > 0 ? renderChildren() : emptyPlaceholder()}
+            </Tag>
+        );
+      }
+      case 'Container': {
+        const containerProps = props.containerProps || {};
+        const { maxWidth, align, paddingX, rowGap, columnGap, isSticky, stickyOffset } = containerProps;
 
-            <div style={overlayStyle} />
+        const containerWidths: Record<string, string> = { sm: '720px', md: '960px', lg: '1200px', xl: '1320px' };
 
-            <div className="relative z-10">
-              {children && children.length > 0 ? renderChildren() : emptyPlaceholder()}
-            </div>
+        const containerStyle: React.CSSProperties = {
+            width: '100%',
+            maxWidth: maxWidth ? containerWidths[maxWidth] : '1200px',
+            paddingLeft: paddingX?.[device] || paddingX?.lg,
+            paddingRight: paddingX?.[device] || paddingX?.lg,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: rowGap, // This will apply to rows
+            ...finalStyle,
+        };
+
+        if (align === 'center') {
+            containerStyle.marginLeft = 'auto';
+            containerStyle.marginRight = 'auto';
+        }
+
+        if (isSticky) {
+            containerStyle.position = 'sticky';
+            containerStyle.top = stickyOffset || '0px';
+        }
+        
+        return (
+          <div style={containerStyle}>
+            {children && children.length > 0 ? renderChildren() : emptyPlaceholder()}
           </div>
         );
-      case 'Container':
-      case 'Row':
+      }
+      case 'Row': {
+        const parentContainer = (parent && useBuilderStore.getState().components.find(c => c.id === parent)?.children?.find(c => c.id === id)?.parent) 
+          ? findComponentPath(parent, useBuilderStore.getState().components)?.component
+          : null;
+        const columnGap = parentContainer?.props.containerProps?.columnGap || '16px';
+        
+        const rowStyle: React.CSSProperties = {
+          ...finalStyle,
+          gap: columnGap,
+        };
+
+        return (
+          <div style={rowStyle}>
+            {children && children.length > 0 ? renderChildren() : emptyPlaceholder()}
+          </div>
+        );
+      }
       case 'Column':
         return (
           <div {...combinedProps}>

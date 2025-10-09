@@ -9,12 +9,13 @@ interface FloatingToolbarProps {
 }
 
 const FloatingToolbar: React.FC<FloatingToolbarProps> = ({ componentId, dragHandleRef }) => {
-  const { deleteComponent, duplicateComponent, setActiveTab, selectComponent, openConfirmModal } = useBuilderStore();
+  const { deleteComponent, duplicateComponent, setActiveSidebarTab, setActivePropertiesTab, selectComponent, openConfirmModal } = useBuilderStore();
 
   const handleSettingsClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     selectComponent(componentId);
-    setActiveTab('styles');
+    setActiveSidebarTab('properties');
+    setActivePropertiesTab('Style');
   };
 
   const handleDeleteClick = (e: React.MouseEvent) => {

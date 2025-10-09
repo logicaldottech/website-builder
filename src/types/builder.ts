@@ -2,6 +2,7 @@ export const ItemTypes = {
   COMPONENT: 'component',
   LAYOUT: 'layout',
   BLOCK: 'block',
+  WIDGET: 'widget', // New type for composite elements
   CANVAS_COMPONENT: 'canvas_component'
 };
 
@@ -28,7 +29,7 @@ export interface StyleProperties {
   paddingBottom?: string;
   paddingLeft?: string;
   // Flexbox (for containers)
-  display?: 'flex';
+  display?: 'flex' | 'block' | 'inline-block' | 'grid';
   flexDirection?: 'row' | 'column' | 'row-reverse' | 'column-reverse';
   gap?: string;
   columnGap?: string;
@@ -60,6 +61,11 @@ export interface StyleProperties {
   flex?: string;
   aspectRatio?: string;
   // Position
+  position?: 'relative' | 'absolute' | 'fixed' | 'sticky';
+  top?: string;
+  left?: string;
+  right?: string;
+  bottom?: string;
   zIndex?: string;
   order?: string;
   // Overflow
@@ -70,6 +76,8 @@ export interface StyleProperties {
   objectFit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down';
   // Transform
   transform?: string;
+  // Blend Mode
+  mixBlendMode?: string;
 }
 
 export interface ComponentStyle {
@@ -80,7 +88,7 @@ export interface ComponentStyle {
 }
 
 export interface SectionBackground {
-  type: 'color' | 'gradient' | 'image' | 'video';
+  type: 'none' | 'color' | 'gradient' | 'image' | 'video';
   color?: string;
   gradient?: string;
   image?: {
@@ -99,26 +107,34 @@ export interface SectionBackground {
   };
 }
 
-export interface SectionShapeDivider {
-  shape?: string;
-  color?: string;
-  width?: number; // %
-  height?: number; // px
-  flip?: boolean;
-  bringToFront?: boolean;
-}
-
-export interface SectionBorder {
-  style?: 'solid' | 'dashed' | 'dotted';
-  color?: string;
-  width?: string;
-}
-
 export interface ImageFilters {
   brightness?: number; // 100 is default
   contrast?: number; // 100 is default
   saturate?: number; // 100 is default
   blur?: number; // 0 is default
+}
+
+export interface SectionProps {
+  paddingY?: { sm: string; md: string; lg: string };
+  background?: SectionBackground;
+  fullBleed?: boolean;
+  htmlTag?: 'section' | 'header' | 'footer' | 'div';
+  ariaLabel?: string;
+  animation?: {
+    preset?: 'fadeIn' | 'fadeInUp' | 'slideUp' | 'pulse' | 'scaleIn';
+    duration?: number;
+    delay?: number;
+  };
+}
+
+export interface ContainerProps {
+  maxWidth?: 'sm' | 'md' | 'lg' | 'xl';
+  align?: 'left' | 'center';
+  paddingX?: { sm: string; md: string; lg: string };
+  rowGap?: string;
+  columnGap?: string;
+  isSticky?: boolean;
+  stickyOffset?: string;
 }
 
 export interface ComponentProps {
@@ -131,28 +147,22 @@ export interface ComponentProps {
   linkTarget?: '_self' | '_blank';
   iconPosition?: 'before' | 'after';
   // Structure
-  htmlTag?: 'div' | 'section' | 'header' | 'footer' | 'main' | 'nav' | 'aside' | 'article' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p';
+  htmlTag?: 'div' | 'section' | 'header' | 'footer' | 'main' | 'nav' | 'aside' | 'article' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'details' | 'summary';
   customId?: string;
   customClassName?: string;
   // Styling & Layout
   style: ComponentStyle;
-  backgroundType?: 'color' | 'gradient';
   filters?: ImageFilters;
   visibility?: {
     desktop?: boolean;
     tablet?: boolean;
     mobile?: boolean;
   };
-  animation?: {
-    type?: 'fadeIn';
-  };
-  sectionSpecificProps?: {
-    background?: SectionBackground;
-    shapeDividerTop?: SectionShapeDivider;
-    shapeDividerBottom?: SectionShapeDivider;
-    borderTop?: SectionBorder;
-    borderBottom?: SectionBorder;
-  };
+  // New structured props
+  sectionProps?: SectionProps;
+  containerProps?: ContainerProps;
+  widgetType?: WidgetType;
+  variant?: string;
   [key: string]: any;
 }
 
@@ -168,6 +178,8 @@ export type ComponentType = 'Section' | 'Container' | 'Row' | 'Column' | 'Headin
 export type DraggableComponentType = ComponentType;
 export type LayoutType = 'TwoColumn' | 'Grid';
 export type BlockType = 'Card';
+export type WidgetType = 'FeatureCard' | 'Testimonial' | 'PricingCard' | 'StatsCounter' | 'Steps' | 'Accordion' | 'Tabs' | 'Alert' | 'Badge' | 'Divider';
+
 
 export interface GlobalColorState {
   globalColors: Record<string, string>;

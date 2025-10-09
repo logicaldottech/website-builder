@@ -1,8 +1,8 @@
 import React, { useCallback, useState, useRef } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { X, Settings } from 'lucide-react';
-import EditorHeader from '../components/builder/EditorHeader';
+import { X } from 'lucide-react';
+import NewEditorHeader from '../components/builder/NewEditorHeader';
 import LeftSidebar from '../components/builder/LeftSidebar';
 import Canvas from '../components/builder/Canvas';
 import { useBuilderStore } from '../store/builderStore';
@@ -11,6 +11,7 @@ import ExportModal from '../components/builder/ExportModal';
 import ConfirmModal from '../components/builder/ConfirmModal';
 import ImageManagerModal from '../components/builder/advanced-controls/ImageManagerModal';
 import IconPickerModal from '../components/builder/advanced-controls/IconPickerModal';
+import BlocksGallery from '../components/builder/BlocksGallery';
 import { generatePageTsx, generatePackageJson, generateTailwindConfig, generateGlobalCss } from '../utils/generateNextJsCode';
 
 const BuilderPage: React.FC = () => {
@@ -41,7 +42,7 @@ const BuilderPage: React.FC = () => {
       requestAnimationFrame(() => {
         let newWidth = e.clientX;
         if (newWidth < 280) newWidth = 280;
-        if (newWidth > 420) newWidth = 420;
+        if (newWidth > 500) newWidth = 500;
         setSidebarWidth(newWidth);
       });
     }
@@ -91,15 +92,16 @@ const BuilderPage: React.FC = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="flex flex-col h-screen w-full bg-bg text-text">
-        <EditorHeader onExport={handleExport} />
-        <div className="flex flex-grow overflow-hidden">
-          <div style={{ width: `${sidebarWidth}px` }} className="flex-shrink-0 bg-surface border-r border-border">
+      <div className="flex flex-col h-screen w-full bg-bg text-text overflow-hidden">
+        <NewEditorHeader onExport={handleExport} />
+        <BlocksGallery />
+        <div className="flex flex-grow overflow-hidden relative">
+          <div style={{ width: `${sidebarWidth}px` }} className="flex-shrink-0 bg-surface border-r border-border h-full">
             <LeftSidebar />
           </div>
           <div 
             onMouseDown={handleMouseDown}
-            className="w-1.5 cursor-col-resize hover:bg-primary transition-colors flex-shrink-0 group"
+            className="w-1.5 cursor-col-resize hover:bg-primary transition-colors flex-shrink-0 group z-10"
           >
             <div className="w-0.5 h-full bg-border group-hover:bg-primary mx-auto"></div>
           </div>
@@ -120,6 +122,7 @@ const BuilderPage: React.FC = () => {
           message={confirmModal.message}
           onConfirm={handleConfirm}
           onCancel={closeConfirmModal}
+          options={confirmModal.options}
         />
         <ImageManagerModal />
         <IconPickerModal />

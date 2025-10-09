@@ -7,7 +7,7 @@ const MenuItem: React.FC<{ onClick: () => void; children: React.ReactNode; disab
     onClick={onClick}
     disabled={disabled}
     className={`w-full flex items-center gap-3 px-3 py-2 text-sm text-left rounded-md transition-colors 
-      ${isDestructive ? 'text-destructive' : 'text-text-primary'}
+      ${isDestructive ? 'text-danger' : 'text-text'}
       ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-primary hover:text-white'}
     `}
   >
@@ -79,7 +79,7 @@ const ContextMenu: React.FC = () => {
   return (
     <div
       ref={menuRef}
-      className="fixed z-50 w-56 bg-secondary border border-border rounded-lg shadow-2xl p-2"
+      className="fixed z-50 w-56 bg-surface border border-border rounded-lg shadow-2xl p-2 max-h-[calc(100vh-32px)] overflow-y-auto"
       style={{ top: position.y, left: position.x, visibility: contextMenu.isVisible ? 'visible' : 'hidden' }}
     >
       {targetComponent.type === 'Row' && (

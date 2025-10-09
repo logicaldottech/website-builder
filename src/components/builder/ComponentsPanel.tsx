@@ -1,17 +1,18 @@
 import React from 'react';
 import { useDrag } from 'react-dnd';
-import { ItemTypes, DraggableComponentType } from '../../types/builder';
-import { Type, Pilcrow, MousePointerClick, Box, RectangleHorizontal, RectangleVertical, Image, Link, Smile, Minus, Video, Square } from 'lucide-react';
+import { ItemTypes, DraggableComponentType, WidgetType } from '../../types/builder';
+import { Type, Pilcrow, MousePointerClick, Box, RectangleHorizontal, RectangleVertical, Image, Link, Smile, Minus, Video, Square, Star, CreditCard, MessageSquare, BarChart3, ListOrdered, ChevronsUpDown, PanelTop, AlertTriangle, Badge as BadgeIcon } from 'lucide-react';
 
-interface DraggableComponentProps {
-  type: DraggableComponentType;
+interface DraggableItemProps {
+  itemType: typeof ItemTypes.COMPONENT | typeof ItemTypes.WIDGET;
+  type: DraggableComponentType | WidgetType;
   icon: React.ReactNode;
   label: string;
 }
 
-const DraggableComponent: React.FC<DraggableComponentProps> = ({ type, icon, label }) => {
+const DraggableItem: React.FC<DraggableItemProps> = ({ itemType, type, icon, label }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
-    type: ItemTypes.COMPONENT,
+    type: itemType,
     item: { type },
     collect: (monitor) => ({ isDragging: !!monitor.isDragging() }),
   }));
@@ -31,14 +32,23 @@ const layoutComponents: { type: DraggableComponentType; icon: React.ReactNode; l
   { type: 'Column', icon: <RectangleVertical size={22} />, label: 'Column' },
 ];
 
-const elementComponents: { type: DraggableComponentType; icon: React.ReactNode; label: string }[] = [
+const basicElementComponents: { type: DraggableComponentType; icon: React.ReactNode; label: string }[] = [
   { type: 'Heading', icon: <Type size={22} />, label: 'Heading' },
   { type: 'Paragraph', icon: <Pilcrow size={22} />, label: 'Paragraph' },
   { type: 'Button', icon: <MousePointerClick size={22} />, label: 'Button' },
   { type: 'Image', icon: <Image size={22} />, label: 'Image' },
-  { type: 'Video', icon: <Video size={22} />, label: 'Video' },
-  { type: 'Link', icon: <Link size={22} />, label: 'Link' },
-  { type: 'Icon', icon: <Smile size={22} />, label: 'Icon' },
+];
+
+const advancedElementComponents: { type: WidgetType; icon: React.ReactNode; label: string }[] = [
+  { type: 'FeatureCard', icon: <Star size={22} />, label: 'Feature Card' },
+  { type: 'Testimonial', icon: <MessageSquare size={22} />, label: 'Testimonial' },
+  { type: 'PricingCard', icon: <CreditCard size={22} />, label: 'Pricing Card' },
+  { type: 'StatsCounter', icon: <BarChart3 size={22} />, label: 'Stats' },
+  { type: 'Steps', icon: <ListOrdered size={22} />, label: 'Steps' },
+  { type: 'Accordion', icon: <ChevronsUpDown size={22} />, label: 'Accordion' },
+  { type: 'Tabs', icon: <PanelTop size={22} />, label: 'Tabs' },
+  { type: 'Alert', icon: <AlertTriangle size={22} />, label: 'Alert' },
+  { type: 'Badge', icon: <BadgeIcon size={22} />, label: 'Badge' },
   { type: 'Divider', icon: <Minus size={22} />, label: 'Divider' },
 ];
 
@@ -49,15 +59,23 @@ const ComponentsPanel: React.FC = () => {
         <h3 className="px-1 mb-3 text-xs font-semibold text-text-muted uppercase tracking-wider">Layout</h3>
         <div className="grid grid-cols-2 gap-2">
           {layoutComponents.map(({ type, icon, label }) => (
-            <DraggableComponent key={type} type={type} icon={icon} label={label} />
+            <DraggableItem key={type} itemType={ItemTypes.COMPONENT} type={type} icon={icon} label={label} />
           ))}
         </div>
       </div>
       <div>
-        <h3 className="px-1 mb-3 text-xs font-semibold text-text-muted uppercase tracking-wider">Elements</h3>
+        <h3 className="px-1 mb-3 text-xs font-semibold text-text-muted uppercase tracking-wider">Basic Elements</h3>
         <div className="grid grid-cols-2 gap-2">
-          {elementComponents.map(({ type, icon, label }) => (
-            <DraggableComponent key={type} type={type} icon={icon} label={label} />
+          {basicElementComponents.map(({ type, icon, label }) => (
+            <DraggableItem key={type} itemType={ItemTypes.COMPONENT} type={type} icon={icon} label={label} />
+          ))}
+        </div>
+      </div>
+       <div>
+        <h3 className="px-1 mb-3 text-xs font-semibold text-text-muted uppercase tracking-wider">Advanced Elements</h3>
+        <div className="grid grid-cols-2 gap-2">
+          {advancedElementComponents.map(({ type, icon, label }) => (
+            <DraggableItem key={type} itemType={ItemTypes.WIDGET} type={type} icon={icon} label={label} />
           ))}
         </div>
       </div>

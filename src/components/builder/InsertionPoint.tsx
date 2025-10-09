@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Plus, Square, Library } from 'lucide-react';
 import { useDrop } from 'react-dnd';
 import { useBuilderStore } from '../../store/builderStore';
-import { ItemTypes, DraggableComponentType, LayoutType, BlockType } from '../../types/builder';
+import { ItemTypes, DraggableComponentType, LayoutType, BlockType, WidgetType } from '../../types/builder';
 import { useClickAway } from 'react-use';
 
 interface AddSectionMenuProps {
@@ -37,7 +37,7 @@ interface InsertionPointProps {
 }
 
 const InsertionPoint: React.FC<InsertionPointProps> = ({ parentId, index }) => {
-  const { addComponent, addLayout, addBlock, setActiveTab, openSectionLibrary, isPreviewMode } = useBuilderStore();
+  const { addComponent, insertWidget, setActiveSidebarTab, isPreviewMode } = useBuilderStore();
   const [isHovered, setIsHovered] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
@@ -47,14 +47,14 @@ const InsertionPoint: React.FC<InsertionPointProps> = ({ parentId, index }) => {
   });
 
   const [{ isOver, canDrop, isDragging }, drop] = useDrop(() => ({
-    accept: [ItemTypes.COMPONENT, ItemTypes.LAYOUT, ItemTypes.BLOCK, ItemTypes.CANVAS_COMPONENT],
+    accept: [ItemTypes.COMPONENT, ItemTypes.LAYOUT, ItemTypes.BLOCK, ItemTypes.WIDGET, ItemTypes.CANVAS_COMPONENT],
     drop: (item: any, monitor) => {
       if (!monitor.didDrop()) {
         const itemType = monitor.getItemType();
         if (itemType === ItemTypes.CANVAS_COMPONENT) return;
         if (itemType === ItemTypes.COMPONENT) addComponent(item.type as DraggableComponentType, parentId, index);
-        else if (itemType === ItemTypes.LAYOUT) addLayout(item.type as LayoutType, parentId, index);
-        else if (itemType === ItemTypes.BLOCK) addBlock(item.type as BlockType, parentId, index);
+        if (itemType === ItemTypes.WIDGET) insertWidget(item.type as WidgetType, parentId, index);
+        // Note: Layout and Block types are currently not used from the sidebar but the drop target is ready.
       }
     },
     collect: (monitor) => ({
@@ -62,27 +62,13 @@ const InsertionPoint: React.FC<InsertionPointProps> = ({ parentId, index }) => {
       canDrop: monitor.canDrop(),
       isDragging: monitor.getItem() !== null,
     }),
-  }), [parentId, index, addComponent, addLayout, addBlock]);
+  }), [parentId, index, addComponent, insertWidget]);
 
   if (isPreviewMode) return null;
 
   const handlePlusClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (parentId === null) {
-      setIsMenuOpen(prev => !prev);
-    } else {
-      setActiveTab('components');
-    }
-  };
-  
-  const handleAddBlank = () => {
-    addComponent('Section', parentId, index);
-    setIsMenuOpen(false);
-  };
-
-  const handleBrowseLibrary = () => {
-    openSectionLibrary();
-    setIsMenuOpen(false);
+    setActiveSidebarTab('add');
   };
 
   const showIndicator = !isDragging && (isHovered || (isOver && canDrop));
@@ -104,9 +90,6 @@ const InsertionPoint: React.FC<InsertionPointProps> = ({ parentId, index }) => {
           >
             <Plus size={16} />
           </button>
-          {isMenuOpen && parentId === null && (
-            <AddSectionMenu onAddBlank={handleAddBlank} onBrowseLibrary={handleBrowseLibrary} />
-          )}
         </div>
       )}
     </div>

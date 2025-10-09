@@ -1,0 +1,390 @@
+{
+  "tokens": {
+    "colors": {
+      "background": "var(--bg)",
+      "surface": "var(--surface)",
+      "text": "var(--text)",
+      "textMuted": "var(--muted)",
+      "primary": "var(--primary)",
+      "accent": "var(--accent)",
+      "border": "var(--border)"
+    },
+    "borderRadius": {
+      "sm": "10px",
+      "md": "14px"
+    },
+    "spacing": [4, 8, 12, 16, 20, 24, 32],
+    "typography": {
+      "fontFamilyHead": "var(--font-head)",
+      "fontFamilyBody": "var(--font-body)"
+    }
+  },
+  "blocks": [
+    {
+      "type": "hero",
+      "label": "Hero Section",
+      "version": "1.0.0",
+      "schema": {
+        "eyebrow": { "type": "text", "maxLength": 50 },
+        "headline": { "type": "text", "maxLength": 100, "required": true },
+        "subhead": { "type": "richText", "maxLength": 180 },
+        "media": { "type": "media", "allowedRatios": ["16:9", "21:9"] },
+        "ctas": { "type": "list", "min": 0, "max": 2, "itemSchema": { "type": "cta", "fields": ["label", "url"] } },
+        "layout": { "container": ["md", "lg", "xl"], "padY": ["sm", "md", "lg"] },
+        "theme": { "background": ["solid", "gradient", "image", "video"], "overlay": { "min": 0, "max": 60 } },
+        "a11y": { "mediaAlt": true }
+      },
+      "sample": {
+        "eyebrow": "NEW & IMPROVED",
+        "headline": "The Future of Web Design is Here",
+        "subhead": "Visually build, customize, and launch stunning websites with an intuitive no-code interface. No credit card required.",
+        "media": { "url": "https://img-wrapper.vercel.app/image?url=https://placehold.co/1920x1080/6C63FF/ffffff?text=Product+Video", "alt": "A video showing the builder in action." },
+        "ctas": [{ "label": "Start Building", "url": "/signup" }, { "label": "Learn More", "url": "/features" }],
+        "layout": { "container": "lg", "padY": "lg" },
+        "theme": { "background": { "type": "gradient", "value": "linear-gradient(to right, #1a1d2c, #0f1220)" } }
+      },
+      "thumbnail": "https://img-wrapper.vercel.app/image?url=https://placehold.co/1600x900/1a1d2c/f0f2f7?text=Hero",
+      "html_hint": "<section> with a <h1>, <p>, and <button>s"
+    },
+    {
+      "type": "features-grid",
+      "label": "Features Grid",
+      "version": "1.0.0",
+      "schema": {
+        "headline": { "type": "text", "maxLength": 120 },
+        "subhead": { "type": "richText", "maxLength": 200 },
+        "items": { "type": "list", "min": 3, "max": 8, "itemSchema": { "icon": { "type": "icon" }, "title": { "type": "text", "maxLength": 60 }, "description": { "type": "text", "maxLength": 150 } } },
+        "layout": { "container": ["md", "lg", "xl"], "padY": ["sm", "md", "lg"], "cols": [2, 3, 4] },
+        "theme": { "background": ["solid", "gradient"] },
+        "a11y": {}
+      },
+      "sample": {
+        "headline": "Everything You Need, All in One Place",
+        "subhead": "Discover the powerful features that make our platform the best choice for your business.",
+        "items": [
+          { "icon": "Layers", "title": "Drag & Drop", "description": "Build layouts effortlessly with our intuitive visual editor." },
+          { "icon": "Palette", "title": "Live Styling", "description": "See your design changes in real-time as you edit." },
+          { "icon": "Smartphone", "title": "Fully Responsive", "description": "Designs adapt perfectly to desktop, tablet, and mobile." }
+        ],
+        "layout": { "container": "lg", "padY": "md", "cols": 3 },
+        "theme": { "background": { "type": "solid", "value": "var(--surface)" } }
+      },
+      "thumbnail": "https://img-wrapper.vercel.app/image?url=https://placehold.co/1600x900/f7f8fc/0b1020?text=Features+Grid",
+      "html_hint": "<div> containing a grid of items, each with an icon, title, and description"
+    },
+    {
+      "type": "benefits-split",
+      "label": "Benefits Split",
+      "version": "1.0.0",
+      "schema": {
+        "headline": { "type": "text", "maxLength": 120 },
+        "bullets": { "type": "list", "min": 2, "max": 5, "itemSchema": { "icon": { "type": "icon" }, "text": { "type": "text", "maxLength": 100 } } },
+        "cta": { "type": "cta", "fields": ["label", "url"] },
+        "media": { "type": "media", "allowedRatios": ["1:1", "4:3", "3:4"] },
+        "layout": { "container": ["lg", "xl"], "padY": ["md", "lg"], "mediaPosition": ["left", "right"] },
+        "theme": { "background": ["solid"] },
+        "a11y": { "mediaAlt": true }
+      },
+      "sample": {
+        "headline": "Work Smarter, Not Harder",
+        "bullets": [
+          { "icon": "CheckCircle", "text": "Automate repetitive tasks." },
+          { "icon": "CheckCircle", "text": "Collaborate with your team in real-time." },
+          { "icon": "CheckCircle", "text": "Gain actionable insights from data." }
+        ],
+        "cta": { "label": "Discover How", "url": "/product" },
+        "media": { "url": "https://img-wrapper.vercel.app/image?url=https://placehold.co/800x800/e6e8f0/5b6478?text=Benefit", "alt": "A person efficiently working at a clean desk." },
+        "layout": { "container": "lg", "padY": "lg", "mediaPosition": "left" },
+        "theme": { "background": { "type": "solid", "value": "var(--bg)" } }
+      },
+      "thumbnail": "https://img-wrapper.vercel.app/image?url=https://placehold.co/1600x900/ffffff/0b1020?text=Benefits+Split",
+      "html_hint": "A two-column layout with media on one side and text content on the other"
+    },
+    {
+      "type": "testimonials-carousel",
+      "label": "Testimonials Carousel",
+      "version": "1.0.0",
+      "schema": {
+        "headline": { "type": "text", "maxLength": 120 },
+        "items": { "type": "list", "min": 2, "max": 9, "itemSchema": { "quote": { "type": "text", "maxLength": 250 }, "name": { "type": "text", "maxLength": 50 }, "role": { "type": "text", "maxLength": 50 }, "avatar": { "type": "media", "minSize": [64, 64] }, "rating": { "type": "number", "min": 0, "max": 5 } } },
+        "layout": { "container": ["md", "lg", "xl"], "padY": ["md", "lg"] },
+        "theme": { "background": ["solid", "gradient"] },
+        "a11y": { "avatarAlt": true }
+      },
+      "sample": {
+        "headline": "Loved by Teams Everywhere",
+        "items": [
+          { "quote": "This product transformed our workflow. We're more efficient than ever.", "name": "Jane Doe", "role": "CEO, Innovate Inc.", "avatar": { "url": "https://img-wrapper.vercel.app/image?url=https://placehold.co/64x64/6C63FF/ffffff?text=JD", "alt": "Avatar of Jane Doe" }, "rating": 5 }
+        ],
+        "layout": { "container": "lg", "padY": "lg" },
+        "theme": { "background": { "type": "solid", "value": "var(--surface)" } }
+      },
+      "thumbnail": "https://img-wrapper.vercel.app/image?url=https://placehold.co/1600x900/1a1d2c/f0f2f7?text=Testimonials",
+      "html_hint": "A slider or carousel of testimonial cards"
+    },
+    {
+      "type": "pricing-table",
+      "label": "Pricing Table",
+      "version": "1.0.0",
+      "schema": {
+        "headline": { "type": "text", "maxLength": 120 },
+        "billingToggle": { "type": "boolean", "labels": ["Monthly", "Yearly"] },
+        "tiers": { "type": "list", "min": 2, "max": 4, "itemSchema": { "title": { "type": "text", "maxLength": 40 }, "price": { "type": "text", "maxLength": 20 }, "features": { "type": "list", "itemSchema": { "text": { "type": "text" } } }, "badge": { "type": "text", "maxLength": 30 }, "cta": { "type": "cta" } } },
+        "layout": { "container": ["lg", "xl"], "padY": ["md", "lg"] },
+        "theme": { "background": ["solid"] },
+        "a11y": {}
+      },
+      "sample": {
+        "headline": "Find the Perfect Plan",
+        "billingToggle": true,
+        "tiers": [
+          { "title": "Starter", "price": "$19/mo", "features": [{ "text": "1 Project" }, { "text": "Basic Analytics" }], "badge": null, "cta": { "label": "Choose Plan", "url": "/signup?plan=starter" } },
+          { "title": "Pro", "price": "$49/mo", "features": [{ "text": "10 Projects" }, { "text": "Advanced Analytics" }], "badge": "Most Popular", "cta": { "label": "Choose Plan", "url": "/signup?plan=pro" } }
+        ],
+        "layout": { "container": "lg", "padY": "lg" },
+        "theme": { "background": { "type": "solid", "value": "var(--bg)" } }
+      },
+      "thumbnail": "https://img-wrapper.vercel.app/image?url=https://placehold.co/1600x900/ffffff/0b1020?text=Pricing",
+      "html_hint": "A set of columns, each representing a pricing tier"
+    },
+    {
+      "type": "faq-accordion",
+      "label": "FAQ Accordion",
+      "version": "1.0.0",
+      "schema": {
+        "headline": { "type": "text", "maxLength": 120 },
+        "items": { "type": "list", "min": 4, "max": 12, "itemSchema": { "question": { "type": "text", "maxLength": 150 }, "answer": { "type": "richText", "maxLength": 500 } } },
+        "multiOpen": { "type": "boolean" },
+        "layout": { "container": ["md", "lg"], "padY": ["md", "lg"] },
+        "theme": { "background": ["solid"] },
+        "a11y": { "accordionControls": true }
+      },
+      "sample": {
+        "headline": "Frequently Asked Questions",
+        "items": [
+          { "question": "Can I cancel my subscription anytime?", "answer": "Yes, you can cancel your plan at any time from your account dashboard. Your subscription will remain active until the end of the current billing period." },
+          { "question": "Do you offer a free trial?", "answer": "We offer a 14-day free trial on our Pro plan, no credit card required. You can explore all features during the trial period." }
+        ],
+        "multiOpen": false,
+        "layout": { "container": "lg", "padY": "lg" },
+        "theme": { "background": { "type": "solid", "value": "var(--surface)" } }
+      },
+      "thumbnail": "https://img-wrapper.vercel.app/image?url=https://placehold.co/1600x900/f7f8fc/0b1020?text=FAQ",
+      "html_hint": "A list of <details> or button-controlled expandable sections"
+    },
+    {
+      "type": "blog-teaser",
+      "label": "Blog Teaser",
+      "version": "1.0.0",
+      "schema": {
+        "headline": { "type": "text", "maxLength": 120 },
+        "items": { "type": "list", "min": 2, "max": 9, "itemSchema": { "image": { "type": "media", "allowedRatios": ["4:3", "1:1"] }, "title": { "type": "text", "maxLength": 100 }, "excerpt": { "type": "text", "maxLength": 180 }, "date": { "type": "date" }, "tag": { "type": "text", "maxLength": 30 } } },
+        "layout": { "container": ["lg", "xl"], "padY": ["md", "lg"], "cols": [1, 2, 3] },
+        "theme": { "background": ["solid"] },
+        "a11y": { "imageAlt": true }
+      },
+      "sample": {
+        "headline": "From Our Blog",
+        "items": [
+          { "image": { "url": "https://img-wrapper.vercel.app/image?url=https://placehold.co/400x300/e6e8f0/5b6478?text=Blog+Post", "alt": "Abstract design elements." }, "title": "The Principles of Good Design", "excerpt": "Explore the fundamental concepts that underpin every great user interface.", "date": "2025-10-26", "tag": "Design" }
+        ],
+        "layout": { "container": "xl", "padY": "lg", "cols": 3 },
+        "theme": { "background": { "type": "solid", "value": "var(--bg)" } }
+      },
+      "thumbnail": "https://img-wrapper.vercel.app/image?url=https://placehold.co/1600x900/ffffff/0b1020?text=Blog+Teaser",
+      "html_hint": "A grid of cards, each representing a blog post"
+    },
+    {
+      "type": "stats",
+      "label": "Stats Section",
+      "version": "1.0.0",
+      "schema": {
+        "items": { "type": "list", "min": 2, "max": 5, "itemSchema": { "value": { "type": "text", "maxLength": 20 }, "label": { "type": "text", "maxLength": 40 }, "icon": { "type": "icon" } } },
+        "layout": { "container": ["md", "lg", "xl"], "padY": ["md", "lg"] },
+        "theme": { "background": ["solid", "gradient"] },
+        "a11y": {}
+      },
+      "sample": {
+        "items": [
+          { "value": "10M+", "label": "Active Users", "icon": "Users" },
+          { "value": "98%", "label": "Customer Satisfaction", "icon": "Smile" },
+          { "value": "24/7", "label": "Support", "icon": "Headphones" }
+        ],
+        "layout": { "container": "lg", "padY": "md" },
+        "theme": { "background": { "type": "solid", "value": "var(--surface)" } }
+      },
+      "thumbnail": "https://img-wrapper.vercel.app/image?url=https://placehold.co/1600x900/f7f8fc/0b1020?text=Stats",
+      "html_hint": "A row of key statistics, each with a value and a label"
+    },
+    {
+      "type": "cta-banner",
+      "label": "CTA Banner",
+      "version": "1.0.0",
+      "schema": {
+        "headline": { "type": "text", "maxLength": 150 },
+        "cta": { "type": "cta" },
+        "layout": { "container": ["md", "lg", "xl"], "padY": ["sm", "md"] },
+        "theme": { "background": ["solid", "gradient"] },
+        "a11y": {}
+      },
+      "sample": {
+        "headline": "Ready to get started?",
+        "cta": { "label": "Sign Up Now", "url": "/signup" },
+        "layout": { "container": "lg", "padY": "md" },
+        "theme": { "background": { "type": "gradient", "value": "linear-gradient(to right, var(--primary), var(--accent))" } }
+      },
+      "thumbnail": "https://img-wrapper.vercel.app/image?url=https://placehold.co/1600x900/6C63FF/ffffff?text=CTA+Banner",
+      "html_hint": "A simple banner with text and a call-to-action button"
+    },
+    {
+      "type": "footer",
+      "label": "Site Footer",
+      "version": "1.0.0",
+      "schema": {
+        "logo": { "type": "media" },
+        "navGroups": { "type": "list", "min": 1, "max": 4, "itemSchema": { "title": { "type": "text" }, "links": { "type": "list", "itemSchema": { "type": "cta" } } } },
+        "socials": { "type": "list", "itemSchema": { "icon": { "type": "icon" }, "url": { "type": "url" } } },
+        "copyright": { "type": "text", "maxLength": 100 },
+        "layout": { "container": ["lg", "xl"], "padY": ["md", "lg"] },
+        "theme": { "background": ["solid"] },
+        "a11y": {}
+      },
+      "sample": {
+        "logo": { "url": "https://img-wrapper.vercel.app/image?url=https://placehold.co/120x40/f0f2f7/0b1020?text=LOGO", "alt": "Company Logo" },
+        "navGroups": [
+          { "title": "Product", "links": [{ "label": "Features", "url": "/features" }, { "label": "Pricing", "url": "/pricing" }] }
+        ],
+        "socials": [{ "icon": "Twitter", "url": "https://twitter.com" }, { "icon": "Linkedin", "url": "https://linkedin.com" }],
+        "copyright": "© 2025 Your Company, Inc. All rights reserved.",
+        "layout": { "container": "lg", "padY": "lg" },
+        "theme": { "background": { "type": "solid", "value": "var(--surface)" } }
+      },
+      "thumbnail": "https://img-wrapper.vercel.app/image?url=https://placehold.co/1600x900/1a1d2c/f0f2f7?text=Footer",
+      "html_hint": "<footer> element with navigation, social links, and copyright text"
+    }
+  ],
+  "ui": {
+    "topBar": {
+      "height": { "desktop": 64, "tablet": 56, "mobile": 48 },
+      "isSticky": true,
+      "shadow": "light",
+      "maxWidth": 1280,
+      "padding": { "y": 12, "x": 16 },
+      "tabs": [
+        { "id": "blocks", "label": "Blocks", "default": true },
+        { "id": "templates", "label": "Templates" },
+        { "id": "styles", "label": "Styles" },
+        { "id": "assets", "label": "Assets" },
+        { "id": "publish", "label": "Publish" }
+      ]
+    },
+    "blocksTab": {
+      "layout": { "left": "categories", "center": "search", "right": "controls" },
+      "categories": {
+        "control": "select",
+        "label": "Category",
+        "options": ["All", "Hero", "Features", "Benefits", "Testimonials", "Pricing", "FAQ", "Blog", "Stats", "CTA", "Footer"]
+      },
+      "tags": {
+        "control": "multiselect-chips",
+        "label": "Tags",
+        "options": ["Minimal", "SaaS", "Agency", "Blog", "E-com"]
+      },
+      "search": {
+        "placeholder": "Search blocks...",
+        "keyboardShortcut": "/",
+        "behavior": "fuzzy",
+        "debounceMs": 200
+      },
+      "controls": [
+        { "id": "layout", "label": "Layout", "control": "toggle", "options": ["grid", "list"], "default": "grid" },
+        { "id": "density", "label": "Density", "control": "toggle", "options": ["comfortable", "compact"], "default": "comfortable" },
+        { "id": "previewSize", "label": "Preview Size", "control": "segmented", "options": ["S", "M", "L"], "default": "M" },
+        { "id": "sort", "label": "Sort By", "control": "select", "options": ["Popular", "New", "A-Z"], "default": "Popular" }
+      ]
+    },
+    "gallery": {
+      "height": "60-70vh",
+      "layout": {
+        "grid": {
+          "card": {
+            "thumbnailRatio": "16:9",
+            "thumbnailRatioHero": "21:9",
+            "elements": ["thumbnail", "title", "description", "badges"],
+            "hoverActions": ["insert", "preview", "info"],
+            "dragHandle": true
+          }
+        },
+        "list": {
+          "row": {
+            "thumbnailSize": 120,
+            "elements": ["thumbnail", "title", "description"],
+            "actionsAlignment": "right"
+          }
+        }
+      },
+      "emptyState": {
+        "message": "No blocks match your criteria.",
+        "action": "Reset filters"
+      },
+      "badges": ["New", "Updated", "Accessible", "AI-Ready"]
+    }
+  },
+  "templates": {
+    "source": "existing",
+    "action": "reference"
+  },
+  "interactions": {
+    "keyboard": {
+      "searchFocus": "/",
+      "closeGallery": "Escape",
+      "navigation": "ArrowKeys",
+      "insertAction": "Enter",
+      "cycleActions": "Tab"
+    },
+    "mouse": {
+      "hoverBehavior": "reveals actions",
+      "dragAndDrop": true,
+      "placementGuide": true,
+      "cancelDrag": "Escape"
+    },
+    "touch": {
+      "dragInitiation": "long-press",
+      "actionsDisplay": "bottom-sheet"
+    },
+    "accessibility": {
+      "cardRole": "button",
+      "cardLabel": "Insert {BlockName} block",
+      "focusRing": true,
+      "contrastRatio": 4.5,
+      "accordion": {
+        "aria-expanded": true,
+        "aria-controls": true
+      }
+    }
+  },
+  "performance": {
+    "virtualization": true,
+    "lazyLoadThumbnails": {
+      "enabled": true,
+      "method": "IntersectionObserver"
+    },
+    "caching": {
+      "enabled": true,
+      "scope": "session"
+    },
+    "animations": {
+      "enabled": true,
+      "type": "fade",
+      "durationMs": {
+        "min": 80,
+        "max": 120
+      }
+    }
+  },
+  "removed": {
+    "features": ["Import Project"],
+    "templates": []
+  },
+  "version": "topbar-blocks-1.0.0"
+}

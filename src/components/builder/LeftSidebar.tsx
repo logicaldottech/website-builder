@@ -13,7 +13,7 @@ const LeftSidebar: React.FC = () => {
   const TabButton: React.FC<{ tabName: typeof activeTab; icon: React.ReactNode; children: React.ReactNode }> = ({ tabName, icon, children }) => (
     <button
       onClick={() => setActiveTab(tabName)}
-      className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 text-xs font-medium transition-colors border-b-2 ${activeTab === tabName ? 'border-primary-purple text-text-primary' : 'border-transparent text-text-secondary hover:bg-border-color/50'}`}
+      className={`flex-1 flex flex-col items-center justify-center gap-1.5 py-3 text-xs font-medium transition-colors border-b-2 ${activeTab === tabName ? 'border-primary text-text-primary' : 'border-transparent text-text-secondary hover:bg-border/50'}`}
     >
       {icon}
       {children}
@@ -21,9 +21,9 @@ const LeftSidebar: React.FC = () => {
   );
 
   return (
-    <aside className="w-full h-full bg-secondary-gray border-r border-border-color flex flex-col">
+    <aside className="w-full h-full bg-secondary border-r border-border flex flex-col">
       <div className="flex-shrink-0">
-        <div className="flex items-center border-b border-border-color">
+        <div className="flex items-center border-b border-border">
           <TabButton tabName="layers" icon={<Layers size={18} />}>Layers</TabButton>
           <TabButton tabName="components" icon={<Puzzle size={18} />}>Add</TabButton>
           <TabButton tabName="styles" icon={<Settings size={18} />}>Inspect</TabButton>

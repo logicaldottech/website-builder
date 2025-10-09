@@ -26,13 +26,13 @@ export const testimonialSectionBlueprint = (): Component => {
       style: {
         desktop: {
           flex: '1', display: 'flex', flexDirection: 'column', gap: '24px',
-          backgroundColor: '#15141A', border: '1px solid #2A292F', borderRadius: '12px', padding: '32px',
+          backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '12px', padding: '32px',
         },
         mobile: { padding: '24px' }
       }
     },
     children: [
-      { id: '', type: 'Paragraph', parent: '', props: { text: '"This is an amazing product that completely changed our workflow. The support team is also fantastic!"', style: { desktop: { fontStyle: 'italic', color: '#A0A0A0', fontSize: '16px', lineHeight: '1.7' } } } },
+      { id: '', type: 'Paragraph', parent: '', props: { text: '"This is an amazing product that completely changed our workflow. The support team is also fantastic!"', style: { desktop: { fontStyle: 'italic', color: '#94a3b8', fontSize: '16px', lineHeight: '1.7' } } } },
       {
         id: '', type: 'Container', parent: '', props: {
           style: { desktop: { display: 'flex', alignItems: 'center', gap: '16px', marginTop: '16px' } }
@@ -44,8 +44,8 @@ export const testimonialSectionBlueprint = (): Component => {
               style: { desktop: { display: 'flex', flexDirection: 'column' } }
             },
             children: [
-              { id: '', type: 'Heading', parent: '', props: { text: 'Jane Doe', htmlTag: 'h5', style: { desktop: { fontSize: '16px', fontWeight: '600', color: '#F0F0F0' } } } },
-              { id: '', type: 'Paragraph', parent: '', props: { text: 'CEO, Tech Innovators', style: { desktop: { fontSize: '14px', color: '#A0A0A0' } } } }
+              { id: '', type: 'Heading', parent: '', props: { text: 'Jane Doe', htmlTag: 'h5', style: { desktop: { fontSize: '16px', fontWeight: '600', color: '#f1f5f9' } } } },
+              { id: '', type: 'Paragraph', parent: '', props: { text: 'CEO, Tech Innovators', style: { desktop: { fontSize: '14px', color: '#94a3b8' } } } }
             ]
           }
         ]
@@ -62,7 +62,7 @@ export const testimonialSectionBlueprint = (): Component => {
         style: { desktop: { maxWidth: '1200px', paddingLeft: '16px', paddingRight: '16px' } }
       },
       children: [
-        { id: '', type: 'Heading', parent: '', props: { text: 'What Our Clients Say', htmlTag: 'h2', style: { desktop: { textAlign: 'center', fontSize: '36px', fontWeight: '900', color: '#F0F0F0', marginBottom: '48px' } } } },
+        { id: '', type: 'Heading', parent: '', props: { text: 'What Our Clients Say', htmlTag: 'h2', style: { desktop: { textAlign: 'center', fontSize: '36px', fontWeight: '900', color: '#f1f5f9', marginBottom: '48px' } } } },
         {
           id: '', type: 'Row', parent: '', props: {
             style: { desktop: { display: 'flex', gap: '32px' }, mobile: { flexDirection: 'column' } }
@@ -83,7 +83,7 @@ export const ctaSectionBlueprint = (): Component => {
   const blueprint: Component = {
     id: '', type: 'Section', parent: null, props: {
       htmlTag: 'section',
-      sectionSpecificProps: { background: { type: 'gradient', gradient: 'linear-gradient(105deg, #6E42E8, #4A2CB8)' } },
+      sectionSpecificProps: { background: { type: 'gradient', gradient: 'linear-gradient(105deg, #64748b, #334155)' } },
       style: { desktop: { paddingTop: '64px', paddingBottom: '64px' } }
     },
     children: [{
@@ -108,7 +108,7 @@ export const ctaSectionBlueprint = (): Component => {
           {
             id: '', type: 'Column', parent: '', props: { style: { mobile: { width: '100%' } } },
             children: [
-              { id: '', type: 'Button', parent: '', props: { text: 'Get a Free Quote', style: { desktop: { backgroundColor: '#FFFFFF', color: '#6E42E8', padding: '16px 32px', borderRadius: '8px', fontSize: '16px', fontWeight: '700' }, mobile: { width: '100%' } } } }
+              { id: '', type: 'Button', parent: '', props: { text: 'Get a Free Quote', style: { desktop: { backgroundColor: '#FFFFFF', color: '#64748b', padding: '16px 32px', borderRadius: '8px', fontSize: '16px', fontWeight: '700' }, mobile: { width: '100%' } } } }
             ]
           }
         ]
@@ -137,10 +137,10 @@ export const aboutUsSectionBlueprint = (): Component => {
             { id: '', type: 'Image', parent: '', props: { src: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=1974&auto=format&fit=crop', style: { desktop: { borderRadius: '12px', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)' } } } }
           ]},
           { id: '', type: 'Column', parent: '', props: { style: { desktop: { flex: '3' } } }, children: [
-            { id: '', type: 'Heading', parent: '', props: { text: 'About Our Company', htmlTag: 'h3', style: { desktop: { fontSize: '30px', fontWeight: '800', color: '#F0F0F0', marginBottom: '16px' } } } },
-            { id: '', type: 'Paragraph', parent: '', props: { text: 'We are a passionate team of developers and designers dedicated to creating high-quality software solutions. Our mission is to empower businesses with tools that are both powerful and a joy to use.', style: { desktop: { color: '#A0A0A0', lineHeight: '1.7', marginBottom: '16px' } } } },
-            { id: '', type: 'Paragraph', parent: '', props: { text: 'Founded in 2025, we have been helping clients from all over the world to achieve their goals.', style: { desktop: { color: '#A0A0A0', lineHeight: '1.7', marginBottom: '24px' } } } },
-            { id: '', type: 'Button', parent: '', props: { text: 'Read Our Story', style: { desktop: { backgroundColor: 'transparent', border: '1px solid #2A292F', color: '#F0F0F0', padding: '12px 24px', borderRadius: '8px' } } } }
+            { id: '', type: 'Heading', parent: '', props: { text: 'About Our Company', htmlTag: 'h3', style: { desktop: { fontSize: '30px', fontWeight: '800', color: '#f1f5f9', marginBottom: '16px' } } } },
+            { id: '', type: 'Paragraph', parent: '', props: { text: 'We are a passionate team of developers and designers dedicated to creating high-quality software solutions. Our mission is to empower businesses with tools that are both powerful and a joy to use.', style: { desktop: { color: '#94a3b8', lineHeight: '1.7', marginBottom: '16px' } } } },
+            { id: '', type: 'Paragraph', parent: '', props: { text: 'Founded in 2025, we have been helping clients from all over the world to achieve their goals.', style: { desktop: { color: '#94a3b8', lineHeight: '1.7', marginBottom: '24px' } } } },
+            { id: '', type: 'Button', parent: '', props: { text: 'Read Our Story', style: { desktop: { backgroundColor: 'transparent', border: '1px solid #334155', color: '#f1f5f9', padding: '12px 24px', borderRadius: '8px' } } } }
           ]}
         ]
       }]
@@ -152,7 +152,7 @@ export const aboutUsSectionBlueprint = (): Component => {
 export const contactSectionBlueprint = (): Component => {
   const formField: Component = {
     id: '', type: 'Paragraph', parent: '', props: {
-      text: 'Your Name', style: { desktop: { width: '100%', backgroundColor: '#0B0A0E', border: '1px solid #2A292F', borderRadius: '8px', padding: '12px', color: '#A0A0A0' } }
+      text: 'Your Name', style: { desktop: { width: '100%', backgroundColor: '#0f172a', border: '1px solid #334155', borderRadius: '8px', padding: '12px', color: '#94a3b8' } }
     }
   };
   const blueprint: Component = {
@@ -162,16 +162,16 @@ export const contactSectionBlueprint = (): Component => {
     children: [{
       id: '', type: 'Container', parent: '', props: { style: { desktop: { maxWidth: '1100px', paddingLeft: '16px', paddingRight: '16px' } } },
       children: [
-        { id: '', type: 'Heading', parent: '', props: { text: 'Get In Touch', htmlTag: 'h2', style: { desktop: { textAlign: 'center', fontSize: '36px', fontWeight: '900', color: '#F0F0F0', marginBottom: '48px' } } } },
+        { id: '', type: 'Heading', parent: '', props: { text: 'Get In Touch', htmlTag: 'h2', style: { desktop: { textAlign: 'center', fontSize: '36px', fontWeight: '900', color: '#f1f5f9', marginBottom: '48px' } } } },
         { id: '', type: 'Row', parent: '', props: { style: { desktop: { display: 'flex', gap: '48px' }, mobile: { flexDirection: 'column' } } },
           children: [
             { id: '', type: 'Column', parent: '', props: { style: { desktop: { flex: '1', display: 'flex', flexDirection: 'column', gap: '16px' } } }, children: [
-              { id: '', type: 'Heading', parent: '', props: { text: 'Send Us a Message', htmlTag: 'h4', style: { desktop: { fontSize: '22px', fontWeight: '700', color: '#F0F0F0', marginBottom: '8px' } } } },
+              { id: '', type: 'Heading', parent: '', props: { text: 'Send Us a Message', htmlTag: 'h4', style: { desktop: { fontSize: '22px', fontWeight: '700', color: '#f1f5f9', marginBottom: '8px' } } } },
               formField,
               { ...assignNewIds(formField), props: { ...formField.props, text: 'Your Email' } },
               { ...assignNewIds(formField), props: { ...formField.props, text: 'Subject' } },
               { ...assignNewIds(formField), props: { ...formField.props, text: 'Your Message', style: { ...formField.props.style, desktop: { ...formField.props.style.desktop, minHeight: '120px' } } } },
-              { id: '', type: 'Button', parent: '', props: { text: 'Submit Message', style: { desktop: { width: '100%', backgroundColor: '#6E42E8', color: '#FFFFFF', padding: '12px', borderRadius: '8px', marginTop: '8px' } } } }
+              { id: '', type: 'Button', parent: '', props: { text: 'Submit Message', style: { desktop: { width: '100%', backgroundColor: '#64748b', color: '#FFFFFF', padding: '12px', borderRadius: '8px', marginTop: '8px' } } } }
             ]},
             { id: '', type: 'Column', parent: '', props: { style: { desktop: { flex: '1' }, mobile: { minHeight: '300px' } } }, children: [
               { id: '', type: 'Image', parent: '', props: { src: 'https://i.ibb.co/F8Zt2Yh/map-placeholder.png', style: { desktop: { width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' } } } }
@@ -196,12 +196,12 @@ export const logoCloudSectionBlueprint = (): Component => {
   };
   const blueprint: Component = {
     id: '', type: 'Section', parent: null, props: {
-      htmlTag: 'section', style: { desktop: { paddingTop: '64px', paddingBottom: '64px', backgroundColor: '#15141A' } }
+      htmlTag: 'section', style: { desktop: { paddingTop: '64px', paddingBottom: '64px', backgroundColor: '#1e293b' } }
     },
     children: [{
       id: '', type: 'Container', parent: '', props: { style: { desktop: { maxWidth: '1100px', paddingLeft: '16px', paddingRight: '16px' } } },
       children: [
-        { id: '', type: 'Heading', parent: '', props: { text: 'TRUSTED BY COMPANIES WORLDWIDE', htmlTag: 'h6', style: { desktop: { textAlign: 'center', fontSize: '12px', fontWeight: '700', color: '#A0A0A0', letterSpacing: '0.1em', marginBottom: '32px' } } } },
+        { id: '', type: 'Heading', parent: '', props: { text: 'TRUSTED BY COMPANIES WORLDWIDE', htmlTag: 'h6', style: { desktop: { textAlign: 'center', fontSize: '12px', fontWeight: '700', color: '#94a3b8', letterSpacing: '0.1em', marginBottom: '32px' } } } },
         { id: '', type: 'Row', parent: '', props: {
           style: {
             desktop: { display: 'flex', justifyContent: 'space-around', alignItems: 'center', gap: '48px' },

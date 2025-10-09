@@ -46,7 +46,7 @@ const Canvas: React.FC = () => {
 
   const canvasClass = isPreviewMode
     ? "bg-canvas-light-bg text-black"
-    : "bg-canvas-light-bg text-black shadow-lg transition-all duration-300 transform origin-top relative";
+    : "bg-canvas-light-bg text-black shadow-2xl shadow-primary/10 transition-all duration-300 transform origin-top relative";
 
   return (
     <div className={canvasWrapperClass}>
@@ -57,7 +57,7 @@ const Canvas: React.FC = () => {
         style={{ width: deviceWidths[device], minHeight: isPreviewMode ? '100vh' : 'calc(100vh - 168px)' /* Adjusted for breadcrumbs */ }}
       >
         {components.length === 0 ? (
-          <div className={`flex items-center justify-center h-full pointer-events-none py-48 transition-colors border-2 border-dashed ${isOver && canDrop ? 'border-primary-purple bg-primary-purple/10' : 'border-gray-300'}`}>
+          <div className={`flex items-center justify-center h-full pointer-events-none py-48 transition-colors border-2 border-dashed ${isOver && canDrop ? 'border-primary bg-primary/10' : 'border-gray-300'}`}>
             <div className="text-center text-gray-400">
               <h3 className="text-xl font-semibold text-gray-600">Empty Canvas</h3>
               <p className="mt-2 text-sm">Drag components from the 'Add' panel to start building.</p>

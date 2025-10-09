@@ -56,7 +56,7 @@ const TextShadowInput: React.FC<TextShadowInputProps> = ({ label, value, onChang
     <div className="space-y-3 p-3 border border-border-color rounded-lg">
       <div className="flex justify-between items-center">
         <label className="text-sm font-medium text-text-primary block">{label}</label>
-        <button onClick={handleToggle} className="text-xs text-primary-purple hover:underline">
+        <button onClick={handleToggle} className="text-xs text-primary-slate hover:underline">
           {hasShadow ? 'Remove' : 'Add'}
         </button>
       </div>

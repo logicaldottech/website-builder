@@ -69,7 +69,7 @@ const ImageManagerModal: React.FC = () => {
 
   const UploadTab = () => (
     <div className="p-8 flex items-center justify-center">
-      <label className="w-full h-64 border-2 border-dashed border-border-color rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-primary-purple hover:bg-primary-purple/10">
+      <label className="w-full h-64 border-2 border-dashed border-border-color rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-primary-slate hover:bg-primary-slate/10">
         <Upload size={48} className="text-text-secondary mb-4" />
         <span className="text-text-primary font-semibold">Drag & drop or click to upload</span>
         <span className="text-text-secondary text-sm mt-1">PNG, JPG, GIF up to 10MB</span>
@@ -116,7 +116,7 @@ const ImageManagerModal: React.FC = () => {
         <div className="flex-shrink-0 border-b border-border-color px-2">
           <div className="flex items-center -mb-px">
             {['My Library', 'Upload New', 'Stock Photos'].map(tab => (
-              <button key={tab} onClick={() => setActiveTab(tab)} className={`px-4 py-2.5 text-sm font-medium border-b-2 ${activeTab === tab ? 'border-primary-purple text-primary-purple' : 'border-transparent text-text-secondary hover:text-text-primary'}`}>{tab}</button>
+              <button key={tab} onClick={() => setActiveTab(tab)} className={`px-4 py-2.5 text-sm font-medium border-b-2 ${activeTab === tab ? 'border-primary-slate text-primary-slate' : 'border-transparent text-text-secondary hover:text-text-primary'}`}>{tab}</button>
             ))}
           </div>
         </div>

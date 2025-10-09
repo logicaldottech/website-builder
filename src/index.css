@@ -3,9 +3,11 @@
 @tailwind utilities;
 
 body {
-    @apply bg-background text-text-primary;
+    @apply bg-background text-text-primary font-sans;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-    @apply bg-border-color text-primary-purple font-mono text-sm px-1.5 py-0.5 rounded-md;
+    @apply bg-border text-primary font-mono text-sm px-1.5 py-0.5 rounded-md;
 }

@@ -14,7 +14,7 @@ const SelectInput: React.FC<SelectInputProps> = ({ label, value, onChange, optio
       <select
         value={value || ''}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full px-3 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary-purple focus:outline-none transition-all text-sm"
+        className="w-full px-3 py-2 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:outline-none transition-all text-sm"
       >
         {options.map(option => (
           <option key={option.value} value={option.value}>{option.label}</option>

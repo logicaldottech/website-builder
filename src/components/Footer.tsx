@@ -13,7 +13,7 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8 border-t border-white/10 pt-8">
           <div className="flex items-center gap-2 text-lg font-bold text-text-primary">
-            <Code className="w-6 h-6 text-primary-purple" />
+            <Code className="w-6 h-6 text-primary-slate" />
             Builder
           </div>
           <p className="text-sm text-text-secondary order-last md:order-none">
@@ -21,7 +21,7 @@ const Footer: React.FC = () => {
           </p>
           <div className="flex gap-6">
             {socialLinks.map((link, index) => (
-              <a key={index} href={link.href} className="text-text-secondary hover:text-primary-purple transition-colors">
+              <a key={index} href={link.href} className="text-text-secondary hover:text-primary-slate transition-colors">
                 <link.icon size={20} />
               </a>
             ))}

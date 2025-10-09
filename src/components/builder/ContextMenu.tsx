@@ -7,8 +7,8 @@ const MenuItem: React.FC<{ onClick: () => void; children: React.ReactNode; disab
     onClick={onClick}
     disabled={disabled}
     className={`w-full flex items-center gap-3 px-3 py-2 text-sm text-left rounded-md transition-colors 
-      ${isDestructive ? 'text-red-400' : 'text-text-primary'}
-      ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-primary-purple hover:text-white'}
+      ${isDestructive ? 'text-destructive' : 'text-text-primary'}
+      ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-primary hover:text-white'}
     `}
   >
     {children}
@@ -79,7 +79,7 @@ const ContextMenu: React.FC = () => {
   return (
     <div
       ref={menuRef}
-      className="fixed z-50 w-56 bg-secondary-gray border border-border-color rounded-lg shadow-2xl p-2"
+      className="fixed z-50 w-56 bg-secondary border border-border rounded-lg shadow-2xl p-2"
       style={{ top: position.y, left: position.x, visibility: contextMenu.isVisible ? 'visible' : 'hidden' }}
     >
       {targetComponent.type === 'Row' && (
@@ -97,7 +97,7 @@ const ContextMenu: React.FC = () => {
           </MenuItem>
         </>
       )}
-      {(targetComponent.type === 'Row' || (targetComponent.type === 'Section' && isRootLevel)) && <div className="h-px my-1 bg-border-color" />}
+      {(targetComponent.type === 'Row' || (targetComponent.type === 'Section' && isRootLevel)) && <div className="h-px my-1 bg-border" />}
 
       <MenuItem onClick={() => handleAction(() => duplicateComponent(targetComponent.id))}>
         <Copy size={16} /> Duplicate
@@ -109,7 +109,7 @@ const ContextMenu: React.FC = () => {
         <ClipboardPaste size={16} /> Paste
       </MenuItem>
       
-      <div className="h-px my-1 bg-border-color" />
+      <div className="h-px my-1 bg-border" />
 
       <MenuItem onClick={() => handleAction(copyStyles)}>
         <Paintbrush size={16} /> Copy Styles
@@ -118,7 +118,7 @@ const ContextMenu: React.FC = () => {
         <Paintbrush size={16} /> Paste Styles
       </MenuItem>
 
-      <div className="h-px my-1 bg-border-color" />
+      <div className="h-px my-1 bg-border" />
       
       <MenuItem onClick={() => handleAction(() => openConfirmModal('Are you sure you want to delete this component?', () => deleteComponent(targetComponent.id)))} isDestructive>
         <Trash2 size={16} /> Delete

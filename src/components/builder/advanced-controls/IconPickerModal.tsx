@@ -52,7 +52,7 @@ const IconPickerModal: React.FC = () => {
                 <button
                   key={iconName}
                   onClick={() => handleIconSelect(iconName)}
-                  className="flex flex-col items-center justify-center gap-1 p-2 rounded-md aspect-square text-text-secondary hover:bg-primary-purple hover:text-white transition-colors"
+                  className="flex flex-col items-center justify-center gap-1 p-2 rounded-md aspect-square text-text-secondary hover:bg-primary-slate hover:text-white transition-colors"
                   title={iconName}
                 >
                   <IconComponent size={24} />

@@ -43,7 +43,7 @@ export const defaultComponents: Component[] = [
         children: [
           { id: nanoid(), type: 'Paragraph', props: { text: 'Features', style: { fontSize: '16px', color: '#4B5563', cursor: 'pointer' } } },
           { id: nanoid(), type: 'Paragraph', props: { text: 'Pricing', style: { fontSize: '16px', color: '#4B5563', cursor: 'pointer' } } },
-          { id: nanoid(), type: 'Button', props: { text: 'Sign Up', style: { backgroundColor: '#6E42E8', color: '#FFFFFF', padding: '8px 16px', borderRadius: '8px' } } },
+          { id: nanoid(), type: 'Button', props: { text: 'Sign Up', style: { backgroundColor: '#64748b', color: '#FFFFFF', padding: '8px 16px', borderRadius: '8px' } } },
         ]
       }
     ]
@@ -95,7 +95,7 @@ export const defaultComponents: Component[] = [
         props: {
           text: 'Start Building for Free',
           style: {
-            backgroundColor: '#6E42E8',
+            backgroundColor: '#64748b',
             color: '#FFFFFF',
             fontSize: '18px',
             padding: '16px 32px',

@@ -21,7 +21,7 @@ const DraggableBlock: React.FC<DraggableBlockProps> = ({ type, icon, label }) =>
   return (
     <div
       ref={drag}
-      className="flex items-center gap-3 p-2.5 bg-background rounded-lg border border-border-color cursor-grab hover:border-primary-purple hover:bg-primary-purple/10 transition-all"
+      className="flex items-center gap-3 p-2.5 bg-background rounded-lg border border-border-color cursor-grab hover:border-primary-slate hover:bg-primary-slate/10 transition-all"
       style={{ opacity: isDragging ? 0.5 : 1 }}
     >
       {icon}

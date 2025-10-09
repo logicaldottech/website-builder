@@ -92,7 +92,7 @@ const SectionLibraryModal: React.FC<SectionLibraryModalProps> = ({ isOpen, onClo
                   onClick={() => setActiveCategory(cat.name)}
                   className={`flex items-center gap-3 px-3 py-2 text-sm rounded-md transition-colors ${
                     activeCategory === cat.name
-                      ? 'bg-primary-purple text-white font-semibold'
+                      ? 'bg-primary-slate text-white font-semibold'
                       : 'text-text-secondary hover:text-text-primary hover:bg-border-color'
                   }`}
                 >
@@ -109,14 +109,14 @@ const SectionLibraryModal: React.FC<SectionLibraryModalProps> = ({ isOpen, onClo
               {filteredItems.map(item => (
                 <div
                   key={item.name}
-                  className="group cursor-pointer border-2 border-border-color rounded-lg overflow-hidden hover:border-primary-purple transition-all"
+                  className="group cursor-pointer border-2 border-border-color rounded-lg overflow-hidden hover:border-primary-slate transition-all"
                   onClick={() => handleSelectBlueprint(item.blueprint)}
                 >
                   <div className="aspect-[16/9] bg-secondary-gray overflow-hidden">
                     <img src={item.preview} alt={item.name} className="w-full h-full object-cover object-top" />
                   </div>
                   <div className="p-3 bg-secondary-gray border-t border-border-color">
-                    <h4 className="text-sm font-semibold text-text-primary group-hover:text-primary-purple transition-colors">{item.name}</h4>
+                    <h4 className="text-sm font-semibold text-text-primary group-hover:text-primary-slate transition-colors">{item.name}</h4>
                   </div>
                 </div>
               ))}

@@ -5,7 +5,7 @@ import { GitBranch, Link, FileCode, Server, MousePointerClick, Save, ChevronsRig
 
 const GuideStep: React.FC<{ icon: React.ReactNode; title: string; children: React.ReactNode; }> = ({ icon, title, children }) => (
   <div className="flex gap-6">
-    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary-purple/10 flex items-center justify-center text-primary-purple">
+    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary-slate/10 flex items-center justify-center text-primary-slate">
       {icon}
     </div>
     <div>
@@ -30,7 +30,7 @@ const ImporterGuidePage: React.FC = () => {
             </p>
 
             <section className="mb-16">
-              <h2 className="text-3xl font-bold text-primary-purple mb-6">1. The Project Onboarding Flow</h2>
+              <h2 className="text-3xl font-bold text-primary-slate mb-6">1. The Project Onboarding Flow</h2>
               <div className="space-y-10">
                 <GuideStep icon={<GitBranch size={24} />} title="Step 1: Connect Git Repository">
                   <p>Connect your GitHub, GitLab, or Bitbucket account using OAuth. Once connected, you'll select the Next.js project you wish to make editable. Our system requires clone access to your repository to create preview deployments.</p>
@@ -61,7 +61,7 @@ const ImporterGuidePage: React.FC = () => {
             </section>
 
             <section className="mb-16">
-              <h2 className="text-3xl font-bold text-primary-purple mb-6">2. The In-Place Editing Experience</h2>
+              <h2 className="text-3xl font-bold text-primary-slate mb-6">2. The In-Place Editing Experience</h2>
               <div className="space-y-6 text-text-secondary">
                 <p>To activate the editor, simply navigate to your deployed preview site and add the <code>?edit=true</code> query parameter to the URL. This will load the builder's UI on top of your live site.</p>
                 <p>The builder's script automatically scans the page for <code>data-editable-field</code> attributes. When you click on an element with this attribute, it becomes highlighted, and the corresponding content and style controls will appear in the sidebar, ready for you to edit.</p>
@@ -69,26 +69,26 @@ const ImporterGuidePage: React.FC = () => {
             </section>
 
             <section>
-              <h2 className="text-3xl font-bold text-primary-purple mb-6">3. The Content Update Flow (How Saving Works)</h2>
+              <h2 className="text-3xl font-bold text-primary-slate mb-6">3. The Content Update Flow (How Saving Works)</h2>
               <p className="text-text-secondary mb-6">A crucial principle of this system is that <strong>we never modify your code</strong>. All changes are saved as content to your specified API endpoint. Here's the flow:</p>
               <div className="space-y-4">
                 <div className="flex items-center gap-4 p-4 bg-secondary-gray rounded-lg border border-border-color">
-                  <MousePointerClick size={20} className="text-primary-purple flex-shrink-0" />
+                  <MousePointerClick size={20} className="text-primary-slate flex-shrink-0" />
                   <p>A user changes a headline in the visual editor and clicks "Save".</p>
                 </div>
                 <div className="flex justify-center"><ChevronsRight size={20} className="text-text-secondary rotate-90" /></div>
                 <div className="flex items-center gap-4 p-4 bg-secondary-gray rounded-lg border border-border-color">
-                  <Server size={20} className="text-primary-purple flex-shrink-0" />
+                  <Server size={20} className="text-primary-slate flex-shrink-0" />
                   <p>The builder sends the updated JSON content to our backend.</p>
                 </div>
                 <div className="flex justify-center"><ChevronsRight size={20} className="text-text-secondary rotate-90" /></div>
                 <div className="flex items-center gap-4 p-4 bg-secondary-gray rounded-lg border border-border-color">
-                  <Save size={20} className="text-primary-purple flex-shrink-0" />
+                  <Save size={20} className="text-primary-slate flex-shrink-0" />
                   <p>Our backend makes a secure request to your Content API Endpoint, saving the new JSON data.</p>
                 </div>
                 <div className="flex justify-center"><ChevronsRight size={20} className="text-text-secondary rotate-90" /></div>
                 <div className="flex items-center gap-4 p-4 bg-secondary-gray rounded-lg border border-border-color">
-                  <GitBranch size={20} className="text-primary-purple flex-shrink-0" />
+                  <GitBranch size={20} className="text-primary-slate flex-shrink-0" />
                   <p>The next time your Next.js site loads, it fetches the updated content. Your code remains untouched in your Git repository.</p>
                 </div>
               </div>

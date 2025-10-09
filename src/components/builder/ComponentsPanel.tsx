@@ -17,7 +17,7 @@ const DraggableComponent: React.FC<DraggableComponentProps> = ({ type, icon, lab
   }));
 
   return (
-    <div ref={drag} className="flex items-center gap-3 p-2.5 bg-background rounded-lg border border-border-color cursor-grab hover:border-primary-purple hover:bg-primary-purple/10 transition-all" style={{ opacity: isDragging ? 0.5 : 1 }}>
+    <div ref={drag} className="flex items-center gap-3 p-2.5 bg-background rounded-lg border border-border cursor-grab hover:border-primary hover:bg-primary/10 transition-all" style={{ opacity: isDragging ? 0.5 : 1 }}>
       {icon}
       <span className="text-sm font-medium text-text-primary">{label}</span>
     </div>

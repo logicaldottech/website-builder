@@ -39,7 +39,7 @@ const ExportModal: React.FC<ExportModalProps> = ({ isOpen, onClose, generatedCod
                 onClick={() => setActiveTab(filename)}
                 className={`px-4 py-2.5 text-sm font-medium border-b-2 ${
                   activeTab === filename
-                    ? 'border-primary-purple text-primary-purple'
+                    ? 'border-primary-slate text-primary-slate'
                     : 'border-transparent text-text-secondary hover:text-text-primary'
                 }`}
               >
@@ -55,7 +55,7 @@ const ExportModal: React.FC<ExportModalProps> = ({ isOpen, onClose, generatedCod
           </pre>
           <button
             onClick={() => handleCopy(generatedCode[activeTab], activeTab)}
-            className="absolute top-3 right-3 flex items-center gap-2 px-3 py-1.5 bg-border-color text-text-secondary text-xs font-semibold rounded-md hover:bg-primary-purple hover:text-white transition-all"
+            className="absolute top-3 right-3 flex items-center gap-2 px-3 py-1.5 bg-border-color text-text-secondary text-xs font-semibold rounded-md hover:bg-primary-slate hover:text-white transition-all"
           >
             {copiedStates[activeTab] ? (
               <>

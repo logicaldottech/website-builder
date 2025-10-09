@@ -25,7 +25,7 @@ const Header: React.FC = () => {
         <div className="flex items-center justify-between h-20 border-b border-white/10">
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center gap-2 text-2xl font-bold text-text-primary">
-              <Code className="w-7 h-7 text-primary-purple" />
+              <Code className="w-7 h-7 text-primary-slate" />
               Builder
             </Link>
           </div>
@@ -40,7 +40,7 @@ const Header: React.FC = () => {
             <Link to="/builder" className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors">
               Log In
             </Link>
-            <Link to="/builder" className="px-5 py-2.5 text-sm font-semibold bg-primary-purple text-white rounded-lg hover:bg-opacity-90 transition-all">
+            <Link to="/builder" className="px-5 py-2.5 text-sm font-semibold bg-primary-slate text-white rounded-lg hover:bg-opacity-90 transition-all">
               Sign Up
             </Link>
           </div>
@@ -63,7 +63,7 @@ const Header: React.FC = () => {
                <Link to="/builder" className="block px-3 py-2 rounded-md text-base font-medium text-text-secondary hover:text-text-primary hover:bg-white/5" onClick={() => setIsMenuOpen(false)}>
                 Log In
               </Link>
-              <Link to="/builder" className="w-full text-center px-5 py-2.5 text-sm font-semibold bg-primary-purple text-white rounded-lg hover:bg-opacity-90 transition-all" onClick={() => setIsMenuOpen(false)}>
+              <Link to="/builder" className="w-full text-center px-5 py-2.5 text-sm font-semibold bg-primary-slate text-white rounded-lg hover:bg-opacity-90 transition-all" onClick={() => setIsMenuOpen(false)}>
                 Sign Up
               </Link>
             </div>

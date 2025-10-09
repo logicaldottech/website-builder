@@ -30,14 +30,14 @@ const SliderInput: React.FC<SliderInputProps> = ({
           step={step}
           value={value}
           onChange={(e) => onChange(Number(e.target.value))}
-          className="w-full h-2 bg-border-color rounded-lg appearance-none cursor-pointer accent-primary-purple"
+          className="w-full h-2 bg-border rounded-lg appearance-none cursor-pointer accent-primary"
         />
         <div className="relative">
           <input
             type="number"
             value={value}
             onChange={(e) => onChange(Number(e.target.value))}
-            className="w-20 pl-2 pr-7 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary-purple focus:outline-none transition-all text-sm"
+            className="w-20 pl-2 pr-7 py-2 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:outline-none transition-all text-sm"
           />
           {unit && <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-text-secondary pointer-events-none">{unit}</span>}
         </div>

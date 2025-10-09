@@ -8,7 +8,7 @@ interface GradientPickerProps {
 }
 
 const parseGradient = (value: string) => {
-  const defaultState = { type: 'linear', angle: 90, stops: [{ color: '#6E42E8', pos: 0 }, { color: '#F0F0F0', pos: 100 }] };
+  const defaultState = { type: 'linear', angle: 90, stops: [{ color: '#64748b', pos: 0 }, { color: '#F0F0F0', pos: 100 }] };
   if (!value || !value.includes('gradient')) return defaultState;
 
   const type = value.includes('linear') ? 'linear' : 'radial';
@@ -58,7 +58,7 @@ const GradientPicker: React.FC<GradientPickerProps> = ({ value, onChange }) => {
           <div
             key={index}
             onClick={() => setActiveStop(index)}
-            className={`absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-2 cursor-pointer ${index === activeStop ? 'border-primary-purple scale-125' : 'border-white'}`}
+            className={`absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-2 cursor-pointer ${index === activeStop ? 'border-primary-slate scale-125' : 'border-white'}`}
             style={{ left: `${stop.pos}%`, backgroundColor: stop.color }}
           />
         ))}
@@ -75,7 +75,7 @@ const GradientPicker: React.FC<GradientPickerProps> = ({ value, onChange }) => {
             newStops[activeStop].pos = parseInt(e.target.value, 10);
             setState({ ...state, stops: newStops });
           }}
-          className="w-full h-2 bg-border-color rounded-lg appearance-none cursor-pointer accent-primary-purple"
+          className="w-full h-2 bg-border-color rounded-lg appearance-none cursor-pointer accent-primary-slate"
         />
       </div>
       <div className="flex items-center gap-4">
@@ -84,7 +84,7 @@ const GradientPicker: React.FC<GradientPickerProps> = ({ value, onChange }) => {
           type="number"
           value={state.angle}
           onChange={e => setState({ ...state, angle: parseInt(e.target.value, 10) })}
-          className="w-20 pl-2 pr-7 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary-purple focus:outline-none transition-all text-sm"
+          className="w-20 pl-2 pr-7 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary-slate focus:outline-none transition-all text-sm"
         />
         <RotateCw size={16} />
       </div>

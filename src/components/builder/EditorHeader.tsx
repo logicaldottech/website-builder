@@ -21,6 +21,15 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({ onExport }) => {
   const pastStatesLength = useStore(useBuilderStore.temporal, (state) => state.pastStates.length);
   const futureStatesLength = useStore(useBuilderStore.temporal, (state) => state.futureStates.length);
 
+  const HeaderButton: React.FC<{ onClick?: () => void; children: React.ReactNode; to?: string; title?: string, disabled?: boolean, isDestructive?: boolean }> = ({ onClick, children, to, title, disabled, isDestructive }) => {
+    const className = `flex items-center gap-2 text-sm px-3 py-1.5 bg-secondary border border-border text-text-secondary rounded-md hover:text-text-primary hover:border-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-border disabled:hover:text-text-secondary ${isDestructive ? 'hover:border-destructive hover:text-destructive' : ''}`;
+    
+    if (to) {
+      return <Link to={to} className={className} title={title}>{children}</Link>;
+    }
+    return <button onClick={onClick} className={className} title={title} disabled={disabled}>{children}</button>;
+  };
+
   const DeviceButton: React.FC<{
     currentDevice: Device;
     targetDevice: Device;
@@ -30,8 +39,8 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({ onExport }) => {
       onClick={() => setDevice(targetDevice)}
       className={`p-2 rounded-md transition-colors ${
         currentDevice === targetDevice
-          ? 'bg-primary-purple text-white'
-          : 'text-text-secondary hover:bg-border-color hover:text-text-primary'
+          ? 'bg-primary text-white'
+          : 'text-text-secondary hover:bg-border hover:text-text-primary'
       }`}
     >
       {children}
@@ -43,27 +52,17 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({ onExport }) => {
   };
 
   return (
-    <div className="h-16 w-full bg-secondary-gray border-b border-border-color flex items-center justify-between px-4 z-10 flex-shrink-0">
+    <div className="h-16 w-full bg-secondary border-b border-border flex items-center justify-between px-4 z-10 flex-shrink-0">
       <div className="flex items-center gap-2">
-        <Link to="/templates" className="flex items-center gap-2 text-sm px-3 py-1.5 bg-border-color text-text-primary rounded-lg hover:bg-opacity-90 transition-all">
-          <LayoutTemplate size={14} /> <span>Templates</span>
-        </Link>
-        <button onClick={() => openSectionLibrary()} className="flex items-center gap-2 text-sm px-3 py-1.5 bg-border-color text-text-primary rounded-lg hover:bg-opacity-90 transition-all">
-          <Library size={14} /> <span>Blocks</span>
-        </button>
-        <Link to="/importer" className="flex items-center gap-2 text-sm px-3 py-1.5 bg-border-color text-text-primary rounded-lg hover:bg-opacity-90 transition-all">
-          <GitBranch size={14} /> <span>Import Project</span>
-        </Link>
-        <div className="w-px h-6 bg-border-color mx-2"></div>
-        <button onClick={undo} disabled={pastStatesLength === 0} className="p-2 rounded-md text-text-secondary hover:bg-border-color hover:text-text-primary disabled:text-border-color disabled:hover:bg-transparent disabled:cursor-not-allowed" title="Undo">
-          <Undo size={18} />
-        </button>
-        <button onClick={redo} disabled={futureStatesLength === 0} className="p-2 rounded-md text-text-secondary hover:bg-border-color hover:text-text-primary disabled:text-border-color disabled:hover:bg-transparent disabled:cursor-not-allowed" title="Redo">
-          <Redo size={18} />
-        </button>
-         <button onClick={handleClearCanvas} className="p-2 rounded-md text-text-secondary hover:bg-red-500/20 hover:text-red-400" title="Clear Canvas">
-          <Trash2 size={18} />
-        </button>
+        <HeaderButton to="/templates" title="Templates"><LayoutTemplate size={14} /></HeaderButton>
+        <HeaderButton onClick={() => openSectionLibrary()} title="Blocks"><Library size={14} /></HeaderButton>
+        <HeaderButton to="/importer" title="Import Project"><GitBranch size={14} /></HeaderButton>
+        
+        <div className="w-px h-6 bg-border mx-2"></div>
+
+        <HeaderButton onClick={undo} disabled={pastStatesLength === 0} title="Undo"><Undo size={18} /></HeaderButton>
+        <HeaderButton onClick={redo} disabled={futureStatesLength === 0} title="Redo"><Redo size={18} /></HeaderButton>
+        <HeaderButton onClick={handleClearCanvas} title="Clear Canvas" isDestructive><Trash2 size={18} /></HeaderButton>
       </div>
 
       <div className="flex items-center gap-1 p-1 bg-background rounded-lg">
@@ -73,10 +72,8 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({ onExport }) => {
       </div>
 
       <div className="flex items-center gap-3">
-        <button onClick={togglePreviewMode} className="flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors">
-          <Eye size={16} /> <span>Preview</span>
-        </button>
-        <button onClick={onExport} className="flex items-center gap-2 text-sm px-4 py-2 bg-primary-purple text-white rounded-lg hover:bg-opacity-90 transition-all">
+        <HeaderButton onClick={togglePreviewMode}><Eye size={16} /> <span>Preview</span></HeaderButton>
+        <button onClick={onExport} className="flex items-center gap-2 text-sm px-4 py-2 bg-primary text-white rounded-md hover:bg-opacity-90 transition-all">
           <Download size={14} className="mr-1" /> <span>Export Code</span>
         </button>
       </div>

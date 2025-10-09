@@ -16,8 +16,8 @@ import GradientPicker from './advanced-controls/GradientPicker';
 import ImageInput from './advanced-controls/ImageInput';
 
 const StyleSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <details className="group border-b border-border-color" open>
-    <summary className="flex items-center justify-between p-3 cursor-pointer hover:bg-border-color/50">
+  <details className="group border-b border-border" open>
+    <summary className="flex items-center justify-between p-3 cursor-pointer hover:bg-border/50">
       <span className="text-sm font-medium text-text-primary">{title}</span>
       <ChevronDown size={16} className="text-text-secondary group-open:rotate-180 transition-transform" />
     </summary>
@@ -28,11 +28,11 @@ const StyleSection: React.FC<{ title: string; children: React.ReactNode }> = ({ 
 );
 
 const ButtonGroup: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="flex items-center bg-background border border-border-color rounded-lg p-0.5">{children}</div>
+  <div className="flex items-center bg-background border border-border rounded-lg p-0.5">{children}</div>
 );
 
 const ButtonGroupButton: React.FC<{ onClick: () => void; isActive: boolean; children: React.ReactNode; title?: string }> = ({ onClick, isActive, children, title }) => (
-  <button onClick={onClick} title={title} className={`flex-1 p-1.5 rounded-md transition-colors text-xs capitalize ${isActive ? 'bg-primary-purple text-white' : 'text-text-secondary hover:bg-border-color'}`}>
+  <button onClick={onClick} title={title} className={`flex-1 p-1.5 rounded-md transition-colors text-xs capitalize ${isActive ? 'bg-primary text-white' : 'text-text-secondary hover:bg-border'}`}>
     {children}
   </button>
 );
@@ -49,6 +49,7 @@ const TypographyControls: React.FC<{ styles: any, onStyleChange: (style: any) =>
         <>
             <SelectInput label="Font Family" value={styles.fontFamily} onChange={v => onStyleChange({ fontFamily: v })} options={[
                 { value: 'inherit', label: 'Inherit' },
+                { value: 'Poppins, sans-serif', label: 'Poppins' },
                 { value: 'Arial, sans-serif', label: 'Arial' },
                 { value: 'Verdana, sans-serif', label: 'Verdana' },
                 { value: 'Georgia, serif', label: 'Georgia' },
@@ -171,7 +172,7 @@ const StylePanel: React.FC = () => {
           <label className="text-xs text-text-secondary mb-1.5 block font-medium">Text Color Type</label>
           <ButtonGroup>
             <ButtonGroupButton onClick={() => handleStyleChange({ backgroundImage: 'none', backgroundClip: 'border-box', WebkitBackgroundClip: 'border-box' })} isActive={!isGradient}>Solid</ButtonGroupButton>
-            <ButtonGroupButton onClick={() => handleStyleChange({ backgroundImage: 'linear-gradient(to right, #6E42E8, #A0A0A0)', backgroundClip: 'text', WebkitBackgroundClip: 'text', color: 'transparent' })} isActive={isGradient}>Gradient</ButtonGroupButton>
+            <ButtonGroupButton onClick={() => handleStyleChange({ backgroundImage: 'linear-gradient(to right, #3B82F6, #9CA3AF)', backgroundClip: 'text', WebkitBackgroundClip: 'text', color: 'transparent' })} isActive={isGradient}>Gradient</ButtonGroupButton>
           </ButtonGroup>
           <div className="mt-4">
             {isGradient ? (
@@ -180,7 +181,7 @@ const StylePanel: React.FC = () => {
               <ColorInput label="Color" value={currentStyles.color || ''} onChange={color => handleStyleChange({ color })} />
             )}
           </div>
-          <div className="mt-4 pt-4 border-t border-border-color">
+          <div className="mt-4 pt-4 border-t border-border">
             <TextShadowInput label="Text Shadow" value={currentStyles.textShadow} onChange={v => handleStyleChange({ textShadow: v })} />
           </div>
         </StyleSection>
@@ -268,7 +269,7 @@ const StylePanel: React.FC = () => {
           </div>
 
           {(bgType === 'image' || bgType === 'video') && (
-            <div className="space-y-4 mt-4 pt-4 border-t border-border-color">
+            <div className="space-y-4 mt-4 pt-4 border-t border-border">
               <h4 className="text-sm font-semibold text-text-primary">Background Overlay</h4>
               <ColorInput label="Overlay Color" value={background.overlay?.color || ''} onChange={v => handleSectionPropChange('background.overlay.color', v)} />
               <SliderInput label="Opacity" value={background.overlay?.opacity !== undefined ? background.overlay.opacity * 100 : 50} onChange={v => handleSectionPropChange('background.overlay.opacity', v / 100)} min={0} max={100} unit="%" />
@@ -357,7 +358,7 @@ const StylePanel: React.FC = () => {
             )}
           </div>
 
-          <div className="space-y-4 mt-4 pt-4 border-t border-border-color">
+          <div className="space-y-4 mt-4 pt-4 border-t border-border">
             <TextInput label="Border" value={currentStyles.border} placeholder="e.g., 1px solid #ccc" onChange={v => handleStyleChange({ border: v })} />
             <SliderInput label="Border Radius" value={parseUnit(currentStyles.borderRadius).value} onChange={v => handleStyleChange({ borderRadius: `${v}px` })} min={0} max={100} unit="px" />
             <BoxShadowInput label="Box Shadow" value={currentStyles.boxShadow} onChange={v => handleStyleChange({ boxShadow: v })} />
@@ -484,7 +485,7 @@ const StylePanel: React.FC = () => {
             )}
         </div>
         
-        <div className="mt-4 pt-4 border-t border-border-color space-y-4">
+        <div className="mt-4 pt-4 border-t border-border space-y-4">
             <TextInput label="Border" value={currentStyles.border} placeholder="e.g., 1px solid #ccc" onChange={v => handleStyleChange({ border: v })} />
             <SliderInput label="Border Radius" value={parseUnit(currentStyles.borderRadius).value} onChange={v => handleStyleChange({ borderRadius: `${v}px` })} min={0} max={100} unit="px" />
             <BoxShadowInput label="Box Shadow" value={currentStyles.boxShadow} onChange={v => handleStyleChange({ boxShadow: v })} />
@@ -506,7 +507,7 @@ const StylePanel: React.FC = () => {
           </div>
           <div className="mt-4">
             <label className="text-xs text-text-secondary mb-1.5 block font-medium">Icon</label>
-            <button onClick={() => openIconPicker((icon) => handlePropChange({ icon }))} className="w-full p-2 bg-background border border-border-color rounded-lg flex items-center gap-2 text-sm">
+            <button onClick={() => openIconPicker((icon) => handlePropChange({ icon }))} className="w-full p-2 bg-background border border-border rounded-lg flex items-center gap-2 text-sm">
               {currentProps.icon ? (
                 <>
                   {React.createElement((LucideIcons as any)[currentProps.icon])}
@@ -542,7 +543,7 @@ const StylePanel: React.FC = () => {
             <label className="text-xs text-text-secondary mb-1.5 block font-medium">Background Type</label>
             <ButtonGroup>
               <ButtonGroupButton onClick={() => handleStyleChange({ backgroundImage: 'none' })} isActive={!isGradient}>Solid</ButtonGroupButton>
-              <ButtonGroupButton onClick={() => handleStyleChange({ backgroundImage: 'linear-gradient(to right, #6E42E8, #8868F9)' })} isActive={isGradient}>Gradient</ButtonGroupButton>
+              <ButtonGroupButton onClick={() => handleStyleChange({ backgroundImage: 'linear-gradient(to right, #3B82F6, #60A5FA)' })} isActive={isGradient}>Gradient</ButtonGroupButton>
             </ButtonGroup>
             {isGradient ? (
               <GradientPicker value={currentStyles.backgroundImage} onChange={v => handleStyleChange({ backgroundImage: v })} />
@@ -609,7 +610,7 @@ const StylePanel: React.FC = () => {
     <>
       <StyleSection title="Content">
         <label className="text-xs text-text-secondary mb-1.5 block font-medium">Icon</label>
-        <button onClick={() => openIconPicker((icon) => handlePropChange({ icon }))} className="w-full p-2 bg-background border border-border-color rounded-lg flex items-center gap-2 text-sm">
+        <button onClick={() => openIconPicker((icon) => handlePropChange({ icon }))} className="w-full p-2 bg-background border border-border rounded-lg flex items-center gap-2 text-sm">
           {currentProps.icon ? (
             <>
               {React.createElement((LucideIcons as any)[currentProps.icon])}
@@ -660,7 +661,7 @@ const StylePanel: React.FC = () => {
 
   return (
     <div className="text-text-primary">
-      <div className="p-3 border-b border-border-color">
+      <div className="p-3 border-b border-border">
         <h3 className="font-semibold">{selectedComponent.type}</h3>
         <p className="text-xs text-text-secondary truncate">ID: {selectedComponent.id}</p>
       </div>

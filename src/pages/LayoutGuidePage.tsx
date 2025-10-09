@@ -17,7 +17,7 @@ const LayoutGuidePage: React.FC = () => {
             </p>
 
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-primary-purple mb-4">1. The Core Concept: A Hierarchy of Blocks</h2>
+              <h2 className="text-3xl font-bold text-primary-slate mb-4">1. The Core Concept: A Hierarchy of Blocks</h2>
               <p className="text-text-secondary mb-6">
                 Every webpage layout is built upon a nested structure of four key elements. To make this easy to grasp, let's use a simple analogy: <strong>Furnishing a Room</strong>.
               </p>
@@ -30,7 +30,7 @@ const LayoutGuidePage: React.FC = () => {
             </section>
 
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-primary-purple mb-4">2. Detailed Element Definitions</h2>
+              <h2 className="text-3xl font-bold text-primary-slate mb-4">2. Detailed Element Definitions</h2>
               <div className="space-y-8">
                 <div>
                   <h3 className="text-2xl font-semibold text-text-primary mb-2">Section</h3>
@@ -51,7 +51,7 @@ const LayoutGuidePage: React.FC = () => {
             </section>
 
             <section>
-              <h2 className="text-3xl font-bold text-primary-purple mb-4">3. The Practical Workflow: Building a Layout</h2>
+              <h2 className="text-3xl font-bold text-primary-slate mb-4">3. The Practical Workflow: Building a Layout</h2>
               <p className="text-text-secondary mb-6">
                 Here’s a step-by-step tutorial demonstrating how you would combine these elements to create a classic "image on the left, text on the right" layout.
               </p>

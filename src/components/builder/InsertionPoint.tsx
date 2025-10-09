@@ -12,17 +12,17 @@ interface AddSectionMenuProps {
 
 const AddSectionMenu: React.FC<AddSectionMenuProps> = ({ onAddBlank, onBrowseLibrary }) => {
   return (
-    <div className="absolute left-1/2 -translate-x-1/2 z-20 mt-2 w-56 bg-secondary-gray border border-border-color rounded-lg shadow-2xl p-2">
+    <div className="absolute left-1/2 -translate-x-1/2 z-20 mt-2 w-56 bg-secondary border border-border rounded-lg shadow-2xl p-2">
       <button
         onClick={onAddBlank}
-        className="w-full flex items-center gap-3 px-3 py-2 text-sm text-left rounded-md transition-colors text-text-primary hover:bg-primary-purple hover:text-white"
+        className="w-full flex items-center gap-3 px-3 py-2 text-sm text-left rounded-md transition-colors text-text-primary hover:bg-primary hover:text-white"
       >
         <Square size={16} />
         <span>Add Blank Section</span>
       </button>
       <button
         onClick={onBrowseLibrary}
-        className="w-full flex items-center gap-3 px-3 py-2 text-sm text-left rounded-md transition-colors text-text-primary hover:bg-primary-purple hover:text-white"
+        className="w-full flex items-center gap-3 px-3 py-2 text-sm text-left rounded-md transition-colors text-text-primary hover:bg-primary hover:text-white"
       >
         <Library size={16} />
         <span>Browse Library</span>
@@ -97,10 +97,10 @@ const InsertionPoint: React.FC<InsertionPointProps> = ({ parentId, index }) => {
     >
       {showIndicator && (
         <div ref={menuRef} className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none">
-          <div className="h-0.5 w-full bg-primary-purple" />
+          <div className="h-0.5 w-full bg-primary" />
           <button
             onClick={handlePlusClick}
-            className="absolute z-10 p-1 bg-primary-purple text-white rounded-full transition-transform hover:scale-110 pointer-events-auto"
+            className="absolute z-10 p-1 bg-primary text-white rounded-full transition-transform hover:scale-110 pointer-events-auto"
           >
             <Plus size={16} />
           </button>

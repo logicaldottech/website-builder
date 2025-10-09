@@ -39,7 +39,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ component, level }) => {
           e.stopPropagation();
           selectComponent(component.id);
         }}
-        className={`flex items-center gap-2 p-2 rounded-md text-sm cursor-pointer transition-colors ${isSelected ? 'bg-primary-purple/20 text-text-primary' : 'text-text-secondary hover:bg-border-color/50'}`}
+        className={`flex items-center gap-2 p-2 rounded-md text-sm cursor-pointer transition-colors ${isSelected ? 'bg-primary/20 text-text-primary' : 'text-text-secondary hover:bg-border/50'}`}
         style={{ paddingLeft: `${level * 16 + 8}px` }}
       >
         {hasChildren ? (
@@ -49,7 +49,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ component, level }) => {
         ) : (
           <span className="w-[18px]"></span>
         )}
-        <span className="text-primary-purple">{getIcon(component.type)}</span>
+        <span className="text-primary">{getIcon(component.type)}</span>
         <span>{component.type}</span>
       </div>
       {hasChildren && isOpen && (

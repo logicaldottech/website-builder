@@ -8,21 +8,6 @@ import FloatingToolbar from './FloatingToolbar';
 import InsertionPoint from './InsertionPoint';
 import { Plus } from 'lucide-react';
 
-const typeToColorClass: Record<string, { outline: string; bg: string }> = {
-  Section: { outline: 'outline-blue-500', bg: 'bg-blue-500' },
-  Container: { outline: 'outline-green-500', bg: 'bg-green-500' },
-  Row: { outline: 'outline-orange-500', bg: 'bg-orange-500' },
-  Column: { outline: 'outline-purple-500', bg: 'bg-purple-500' },
-  Heading: { outline: 'outline-sky-500', bg: 'bg-sky-500' },
-  Paragraph: { outline: 'outline-sky-500', bg: 'bg-sky-500' },
-  Button: { outline: 'outline-pink-500', bg: 'bg-pink-500' },
-  Image: { outline: 'outline-teal-500', bg: 'bg-teal-500' },
-  Video: { outline: 'outline-teal-500', bg: 'bg-teal-500' },
-  Link: { outline: 'outline-indigo-500', bg: 'bg-indigo-500' },
-  Icon: { outline: 'outline-yellow-500', bg: 'bg-yellow-500' },
-  Divider: { outline: 'outline-slate-500', bg: 'bg-slate-500' },
-};
-
 const getYoutubeEmbedUrl = (url: string | undefined): string | undefined => {
   if (!url) return undefined;
   let videoId;
@@ -267,8 +252,8 @@ const RenderedComponent: React.FC<RenderedComponentProps> = ({ component, index,
     );
 
     const emptyPlaceholder = () => !isPreviewMode && (
-      <div className={`flex items-center justify-center p-4 min-h-[80px] border-2 border-dashed rounded-md transition-colors ${dropIndicator === 'inside' ? 'border-primary-purple bg-primary-purple/10' : 'border-gray-300'}`}>
-        <button onClick={() => setActiveTab('components')} className="flex items-center gap-2 text-gray-500 hover:text-primary-purple">
+      <div className={`flex items-center justify-center p-4 min-h-[80px] border-2 border-dashed rounded-md transition-colors ${dropIndicator === 'inside' ? 'border-primary bg-primary/10' : 'border-gray-300'}`}>
+        <button onClick={() => setActiveTab('components')} className="flex items-center gap-2 text-gray-500 hover:text-primary">
           <Plus size={16} />
           Add Element
         </button>
@@ -414,20 +399,19 @@ const RenderedComponent: React.FC<RenderedComponentProps> = ({ component, index,
     }
   };
 
-  const colorClasses = typeToColorClass[type] || { outline: 'outline-gray-500', bg: 'bg-gray-500' };
   let outlineStyle = '';
   if (!isPreviewMode) {
     if (isSelected) {
-      outlineStyle = `outline outline-2 outline-offset-2 outline-primary-purple`;
+      outlineStyle = `outline outline-2 outline-offset-2 outline-primary`;
     } else if (isCurrentlyHovered) {
-      outlineStyle = `outline outline-1 ${colorClasses.outline}`;
+      outlineStyle = `outline outline-1 outline-primary/50`;
     }
   }
   
   const dropIndicatorStyle = dropIndicator === 'inside' && ['Section', 'Container', 'Row', 'Column', 'Link'].includes(type)
-    ? 'outline outline-2 outline-primary-purple outline-dashed'
-    : dropIndicator === 'top' ? 'border-t-2 border-primary-purple'
-    : dropIndicator === 'bottom' ? 'border-b-2 border-primary-purple'
+    ? 'outline outline-2 outline-primary outline-dashed'
+    : dropIndicator === 'top' ? 'border-t-2 border-primary'
+    : dropIndicator === 'bottom' ? 'border-b-2 border-primary'
     : '';
 
   const isLayoutElement = ['Section', 'Container', 'Row', 'Column'].includes(type);
@@ -449,7 +433,7 @@ const RenderedComponent: React.FC<RenderedComponentProps> = ({ component, index,
         <FloatingToolbar componentId={id} dragHandleRef={drag} />
       )}
       {isCurrentlyHovered && !isSelected && !isPreviewMode && (
-        <div className={`absolute -top-5 left-0 text-xs text-white px-1.5 py-0.5 rounded z-20 ${colorClasses.bg}`}>
+        <div className={`absolute -top-5 left-0 text-xs text-white px-1.5 py-0.5 rounded z-20 bg-primary`}>
           {type}
         </div>
       )}

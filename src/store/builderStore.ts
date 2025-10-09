@@ -158,10 +158,10 @@ export const useBuilderStore = create<BuilderState>()(
       clipboard: { data: null, type: null },
       confirmModal: { isOpen: false, message: '', onConfirm: null },
       globalColors: {
-        primary: '#6E42E8',
-        secondary: '#15141A',
-        text: '#F0F0F0',
-        background: '#0B0A0E',
+        primary: '#64748b',
+        secondary: '#1e293b',
+        text: '#f1f5f9',
+        background: '#0f172a',
         accent: '#FBBF24',
       },
       savedColors: [],
@@ -293,7 +293,7 @@ export const useBuilderStore = create<BuilderState>()(
           parent: parentId,
           props: {
             text: (type === 'Heading' || type === 'Paragraph') ? `This is a ${type.toLowerCase()}` : type === 'Button' ? 'Click Me' : type === 'Link' ? 'Link Text' : undefined,
-            src: type === 'Image' ? 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://placehold.co/600x400/EEE/31343C' : type === 'Video' ? 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' : undefined,
+            src: type === 'Image' ? 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://placehold.co/600x400/EEE/31343C' : type === 'Video' ? 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' : undefined,
             altText: type === 'Image' ? 'Placeholder Image' : undefined,
             icon: type === 'Icon' ? 'Smile' : undefined,
             href: type === 'Link' ? '#' : undefined,
@@ -304,10 +304,10 @@ export const useBuilderStore = create<BuilderState>()(
               desktop: {
                 ...(type === 'Heading' && { margin: '0', fontSize: '36px', fontWeight: '700' }),
                 ...(type === 'Paragraph' && { margin: '0', fontSize: '16px', lineHeight: '1.6' }),
-                ...(type === 'Button' && { display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '12px 24px', borderRadius: '8px', backgroundColor: '#6E42E8', color: '#FFFFFF', fontWeight: '600' }),
+                ...(type === 'Button' && { display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '12px 24px', borderRadius: '8px', backgroundColor: '#64748b', color: '#FFFFFF', fontWeight: '600' }),
                 ...(type === 'Image' && { width: '100%', objectFit: 'cover' }),
-                ...(type === 'Icon' && { color: '#F0F0F0', fontSize: '48px' }),
-                ...(type === 'Divider' && { height: '1px', width: '100%', backgroundColor: '#A0A0A0' }),
+                ...(type === 'Icon' && { color: '#f1f5f9', fontSize: '48px' }),
+                ...(type === 'Divider' && { height: '1px', width: '100%', backgroundColor: '#94a3b8' }),
                 ...(type === 'Video' && { width: '100%', aspectRatio: '16 / 9' }),
                 ...(type === 'Section' && { width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '64px', paddingBottom: '64px', paddingLeft: '16px', paddingRight: '16px' }),
                 ...(type === 'Container' && { width: '100%', maxWidth: '1200px', display: 'flex', flexDirection: 'column', gap: '16px' }),
@@ -390,15 +390,15 @@ export const useBuilderStore = create<BuilderState>()(
                 desktop: {
                   display: 'flex',
                   flexDirection: 'column',
-                  backgroundColor: '#15141A',
+                  backgroundColor: '#1e293b',
                   borderRadius: '12px',
-                  border: '1px solid #2A292F',
+                  border: '1px solid #334155',
                   width: '320px',
                 }
               }
             },
             children: [
-              { id: nanoid(), type: 'Image', parent: cardId, props: { htmlTag: 'div', src: 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://placehold.co/400x250/EEE/31343C', style: { desktop: { borderRadius: '12px 12px 0 0' } } } },
+              { id: nanoid(), type: 'Image', parent: cardId, props: { htmlTag: 'div', src: 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://placehold.co/400x250/EEE/31343C', style: { desktop: { borderRadius: '12px 12px 0 0' } } } },
               {
                 id: nanoid(), type: 'Container', parent: cardId, props: {
                   htmlTag: 'div',
@@ -410,8 +410,8 @@ export const useBuilderStore = create<BuilderState>()(
                   }
                 }, children: [
                   { id: nanoid(), type: 'Heading', parent: cardId, props: { htmlTag: 'h2', text: 'Card Title', style: { desktop: { fontSize: '20px' } } } },
-                  { id: nanoid(), type: 'Paragraph', parent: cardId, props: { htmlTag: 'p', text: 'This is a short description for the card component.', style: { desktop: { color: '#A0A0A0', fontSize: '14px' } } } },
-                  { id: nanoid(), type: 'Button', parent: cardId, props: { htmlTag: 'div', text: 'Learn More', style: { desktop: { backgroundColor: '#6E42E8', color: '#FFFFFF', paddingTop: '8px', paddingBottom: '8px', paddingLeft: '16px', paddingRight: '16px', borderRadius: '8px', marginTop: '16px' } } } },
+                  { id: nanoid(), type: 'Paragraph', parent: cardId, props: { htmlTag: 'p', text: 'This is a short description for the card component.', style: { desktop: { color: '#94a3b8', fontSize: '14px' } } } },
+                  { id: nanoid(), type: 'Button', parent: cardId, props: { htmlTag: 'div', text: 'Learn More', style: { desktop: { backgroundColor: '#64748b', color: '#FFFFFF', paddingTop: '8px', paddingBottom: '8px', paddingLeft: '16px', paddingRight: '16px', borderRadius: '8px', marginTop: '16px' } } } },
                 ]
               }
             ]

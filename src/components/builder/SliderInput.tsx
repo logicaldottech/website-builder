@@ -21,8 +21,8 @@ const SliderInput: React.FC<SliderInputProps> = ({
 }) => {
   return (
     <div>
-      <label className="text-xs text-text-secondary mb-1.5 block font-medium">{label}</label>
-      <div className="flex items-center gap-2">
+      <label className="text-xs font-semibold text-text-muted mb-1.5 block">{label}</label>
+      <div className="flex items-center gap-3">
         <input
           type="range"
           min={min}
@@ -30,16 +30,16 @@ const SliderInput: React.FC<SliderInputProps> = ({
           step={step}
           value={value}
           onChange={(e) => onChange(Number(e.target.value))}
-          className="w-full h-2 bg-border rounded-lg appearance-none cursor-pointer accent-primary"
+          className="w-full h-2 bg-surface-alt rounded-lg appearance-none cursor-pointer accent-primary"
         />
         <div className="relative">
           <input
             type="number"
             value={value}
             onChange={(e) => onChange(Number(e.target.value))}
-            className="w-20 pl-2 pr-7 py-2 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:outline-none transition-all text-sm"
+            className="w-20 h-11 pl-3 pr-7 bg-surface-alt border border-border rounded-md focus:border-primary transition-all text-sm"
           />
-          {unit && <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-text-secondary pointer-events-none">{unit}</span>}
+          {unit && <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-text-muted pointer-events-none">{unit}</span>}
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { ItemTypes, DraggableComponentType, LayoutType, BlockType } from '../../
 import RenderedComponent from './RenderedComponent';
 import InsertionPoint from './InsertionPoint';
 import { useBuilderStore } from '../../store/builderStore';
+import { PlusCircle } from 'lucide-react';
 
 const deviceWidths = {
   desktop: '100%',
@@ -41,12 +42,12 @@ const Canvas: React.FC = () => {
   };
 
   const canvasWrapperClass = isPreviewMode 
-    ? "flex-grow bg-canvas-light-bg text-black"
-    : "flex-grow bg-canvas-bg flex items-start justify-center overflow-auto p-8";
+    ? "flex-grow bg-white text-black"
+    : "flex-grow bg-surface-alt flex items-start justify-center overflow-auto p-8";
 
   const canvasClass = isPreviewMode
-    ? "bg-canvas-light-bg text-black"
-    : "bg-canvas-light-bg text-black shadow-2xl shadow-primary/10 transition-all duration-300 transform origin-top relative";
+    ? "bg-white text-black"
+    : "bg-white text-black shadow-lg transition-all duration-300 transform origin-top relative";
 
   return (
     <div className={canvasWrapperClass}>
@@ -54,12 +55,13 @@ const Canvas: React.FC = () => {
         ref={drop}
         onClick={handleCanvasClick}
         className={canvasClass}
-        style={{ width: deviceWidths[device], minHeight: isPreviewMode ? '100vh' : 'calc(100vh - 168px)' /* Adjusted for breadcrumbs */ }}
+        style={{ width: deviceWidths[device], minHeight: isPreviewMode ? '100vh' : 'calc(100vh - 128px)' }}
       >
-        {components.length === 0 ? (
-          <div className={`flex items-center justify-center h-full pointer-events-none py-48 transition-colors border-2 border-dashed ${isOver && canDrop ? 'border-primary bg-primary/10' : 'border-gray-300'}`}>
-            <div className="text-center text-gray-400">
-              <h3 className="text-xl font-semibold text-gray-600">Empty Canvas</h3>
+        {components.length === 0 && !isPreviewMode ? (
+          <div className={`flex items-center justify-center h-full pointer-events-none py-48 transition-colors border-2 border-dashed rounded-lg ${isOver && canDrop ? 'border-primary bg-primary/10' : 'border-border'}`}>
+            <div className="text-center text-text-muted">
+              <PlusCircle size={40} className="mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-text">Empty Canvas</h3>
               <p className="mt-2 text-sm">Drag components from the 'Add' panel to start building.</p>
             </div>
           </div>

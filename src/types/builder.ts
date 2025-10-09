@@ -175,9 +175,13 @@ export interface GlobalColorState {
   recentColors: string[];
 }
 
-export interface Template {
+export interface BlockLibraryItem {
   id: string;
-  name: string;
+  type: 'section' | 'template';
+  title: string;
   description: string;
-  previewImage: string;
+  categories: string[];
+  tags: string[];
+  thumbnail: string;
+  blueprint: Component | Component[];
 }

@@ -7,6 +7,7 @@ import { nanoid } from 'nanoid';
 export type Device = 'desktop' | 'tablet' | 'mobile';
 export type ActiveTab = 'layers' | 'components' | 'styles';
 export type StyleState = 'desktop' | 'tablet' | 'mobile' | 'hover';
+export type Theme = 'light' | 'dark';
 
 export interface ContextMenuState {
   isVisible: boolean;
@@ -25,6 +26,21 @@ export interface ConfirmModalState {
   message: string;
   onConfirm: (() => void) | null;
 }
+
+// Helper to recursively assign new IDs
+export const assignNewIds = (component: Component): Component => {
+  const newId = nanoid();
+  const newComponent: Component = { ...component, id: newId };
+  if (component.children) {
+    newComponent.children = component.children.map(child => {
+      const newChild = assignNewIds(child);
+      newChild.parent = newId;
+      return newChild;
+    });
+  }
+  return newComponent;
+};
+
 
 // Helper to find a component and its parent/index in a nested structure
 export const findComponentPath = (id: string, components: Component[]): { path: number[], component: Component } | null => {
@@ -77,8 +93,8 @@ export interface BuilderState extends GlobalColorState {
   editingComponentId: string | null;
   device: Device;
   activeTab: ActiveTab;
+  theme: Theme;
   isExportModalOpen: boolean;
-  isSectionLibraryOpen: boolean;
   isImageManagerOpen: boolean;
   isIconPickerOpen: boolean;
   imageManagerCallback: ((url: string) => void) | null;
@@ -95,11 +111,14 @@ export interface BuilderState extends GlobalColorState {
   setEditingComponentId: (id: string | null) => void;
   setDevice: (device: Device) => void;
   setActiveTab: (tab: ActiveTab) => void;
+  setTheme: (theme: Theme) => void;
   
   addComponent: (type: DraggableComponentType, parentId: string | null, index?: number) => void;
   addLayout: (type: LayoutType, parentId: string | null, index?: number) => void;
   addBlock: (type: BlockType, parentId: string | null, index?: number) => void;
-  addSectionFromBlueprint: (blueprint: Component) => void;
+  insertSection: (blueprint: Component) => void;
+  replaceCanvas: (blueprint: Component[]) => void;
+  appendToCanvas: (blueprint: Component[]) => void;
   updateComponentProps: (componentId: string, newProps: Partial<ComponentProps>) => void;
   updateComponentStyle: (componentId: string, style: Partial<ComponentStyle['desktop']>, state?: StyleState) => void;
   deleteComponent: (componentId: string) => void;
@@ -109,8 +128,6 @@ export interface BuilderState extends GlobalColorState {
   clearCanvas: () => void;
   openExportModal: () => void;
   closeExportModal: () => void;
-  openSectionLibrary: () => void;
-  closeSectionLibrary: () => void;
   openImageManager: (callback: (url: string) => void) => void;
   closeImageManager: () => void;
   openIconPicker: (callback: (iconName: string) => void) => void;
@@ -146,8 +163,8 @@ export const useBuilderStore = create<BuilderState>()(
       editingComponentId: null,
       device: 'desktop',
       activeTab: 'components',
+      theme: 'light',
       isExportModalOpen: false,
-      isSectionLibraryOpen: false,
       isImageManagerOpen: false,
       isIconPickerOpen: false,
       imageManagerCallback: null,
@@ -158,7 +175,7 @@ export const useBuilderStore = create<BuilderState>()(
       clipboard: { data: null, type: null },
       confirmModal: { isOpen: false, message: '', onConfirm: null },
       globalColors: {
-        primary: '#64748b',
+        primary: '#6C63FF',
         secondary: '#1e293b',
         text: '#f1f5f9',
         background: '#0f172a',
@@ -178,6 +195,7 @@ export const useBuilderStore = create<BuilderState>()(
       setEditingComponentId: (id) => set({ editingComponentId: id }),
       setDevice: (device) => set({ device }),
       setActiveTab: (tab) => set({ activeTab: tab }),
+      setTheme: (theme) => set({ theme }),
       togglePreviewMode: () => set(state => ({ isPreviewMode: !state.isPreviewMode })),
 
       openContextMenu: (targetId, x, y) => set({ contextMenu: { isVisible: true, targetId, x, y } }),
@@ -201,14 +219,7 @@ export const useBuilderStore = create<BuilderState>()(
         const { clipboard } = draft;
         if (!targetId || clipboard.type !== 'component' || !clipboard.data) return;
 
-        const duplicateRecursive = (comp: Component): Component => {
-          const newId = nanoid();
-          const newComp: Component = { ...JSON.parse(JSON.stringify(comp)), id: newId, children: comp.children ? comp.children.map(c => duplicateRecursive(c)) : undefined };
-          if (newComp.children) { newComp.children.forEach(child => child.parent = newId); }
-          return newComp;
-        };
-
-        const newComponent = duplicateRecursive(clipboard.data as Component);
+        const newComponent = assignNewIds(clipboard.data as Component);
         
         const targetPathResult = findComponentPath(targetId, draft.components);
         if (!targetPathResult) return;
@@ -293,7 +304,7 @@ export const useBuilderStore = create<BuilderState>()(
           parent: parentId,
           props: {
             text: (type === 'Heading' || type === 'Paragraph') ? `This is a ${type.toLowerCase()}` : type === 'Button' ? 'Click Me' : type === 'Link' ? 'Link Text' : undefined,
-            src: type === 'Image' ? 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://placehold.co/600x400/EEE/31343C' : type === 'Video' ? 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' : undefined,
+            src: type === 'Image' ? 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://placehold.co/600x400/EEE/31343C' : type === 'Video' ? 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' : undefined,
             altText: type === 'Image' ? 'Placeholder Image' : undefined,
             icon: type === 'Icon' ? 'Smile' : undefined,
             href: type === 'Link' ? '#' : undefined,
@@ -304,10 +315,10 @@ export const useBuilderStore = create<BuilderState>()(
               desktop: {
                 ...(type === 'Heading' && { margin: '0', fontSize: '36px', fontWeight: '700' }),
                 ...(type === 'Paragraph' && { margin: '0', fontSize: '16px', lineHeight: '1.6' }),
-                ...(type === 'Button' && { display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '12px 24px', borderRadius: '8px', backgroundColor: '#64748b', color: '#FFFFFF', fontWeight: '600' }),
+                ...(type === 'Button' && { display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '12px 24px', borderRadius: '8px', backgroundColor: 'var(--primary)', color: '#FFFFFF', fontWeight: '600' }),
                 ...(type === 'Image' && { width: '100%', objectFit: 'cover' }),
-                ...(type === 'Icon' && { color: '#f1f5f9', fontSize: '48px' }),
-                ...(type === 'Divider' && { height: '1px', width: '100%', backgroundColor: '#94a3b8' }),
+                ...(type === 'Icon' && { color: 'var(--text)', fontSize: '48px' }),
+                ...(type === 'Divider' && { height: '1px', width: '100%', backgroundColor: 'var(--border)' }),
                 ...(type === 'Video' && { width: '100%', aspectRatio: '16 / 9' }),
                 ...(type === 'Section' && { width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '64px', paddingBottom: '64px', paddingLeft: '16px', paddingRight: '16px' }),
                 ...(type === 'Container' && { width: '100%', maxWidth: '1200px', display: 'flex', flexDirection: 'column', gap: '16px' }),
@@ -390,15 +401,15 @@ export const useBuilderStore = create<BuilderState>()(
                 desktop: {
                   display: 'flex',
                   flexDirection: 'column',
-                  backgroundColor: '#1e293b',
+                  backgroundColor: 'var(--surface)',
                   borderRadius: '12px',
-                  border: '1px solid #334155',
+                  border: '1px solid var(--border)',
                   width: '320px',
                 }
               }
             },
             children: [
-              { id: nanoid(), type: 'Image', parent: cardId, props: { htmlTag: 'div', src: 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://placehold.co/400x250/EEE/31343C', style: { desktop: { borderRadius: '12px 12px 0 0' } } } },
+              { id: nanoid(), type: 'Image', parent: cardId, props: { htmlTag: 'div', src: 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://placehold.co/400x250/EEE/31343C', style: { desktop: { borderRadius: '12px 12px 0 0' } } } },
               {
                 id: nanoid(), type: 'Container', parent: cardId, props: {
                   htmlTag: 'div',
@@ -410,8 +421,8 @@ export const useBuilderStore = create<BuilderState>()(
                   }
                 }, children: [
                   { id: nanoid(), type: 'Heading', parent: cardId, props: { htmlTag: 'h2', text: 'Card Title', style: { desktop: { fontSize: '20px' } } } },
-                  { id: nanoid(), type: 'Paragraph', parent: cardId, props: { htmlTag: 'p', text: 'This is a short description for the card component.', style: { desktop: { color: '#94a3b8', fontSize: '14px' } } } },
-                  { id: nanoid(), type: 'Button', parent: cardId, props: { htmlTag: 'div', text: 'Learn More', style: { desktop: { backgroundColor: '#64748b', color: '#FFFFFF', paddingTop: '8px', paddingBottom: '8px', paddingLeft: '16px', paddingRight: '16px', borderRadius: '8px', marginTop: '16px' } } } },
+                  { id: nanoid(), type: 'Paragraph', parent: cardId, props: { htmlTag: 'p', text: 'This is a short description for the card component.', style: { desktop: { color: 'var(--text-muted)', fontSize: '14px' } } } },
+                  { id: nanoid(), type: 'Button', parent: cardId, props: { htmlTag: 'div', text: 'Learn More', style: { desktop: { backgroundColor: 'var(--primary)', color: '#FFFFFF', paddingTop: '8px', paddingBottom: '8px', paddingLeft: '16px', paddingRight: '16px', borderRadius: '8px', marginTop: '16px' } } } },
                 ]
               }
             ]
@@ -435,8 +446,31 @@ export const useBuilderStore = create<BuilderState>()(
         }
       })),
 
-      addSectionFromBlueprint: (blueprint) => set(produce(draft => {
-        draft.components.push(blueprint);
+      insertSection: (blueprint) => set(produce(draft => {
+        const newSection = assignNewIds(blueprint);
+        let insertIndex = draft.components.length;
+
+        if (draft.selectedComponentId) {
+          const ancestry = getComponentAncestry(draft.selectedComponentId, draft.components);
+          if (ancestry.length > 0) {
+            const rootParentId = ancestry[0].id;
+            const rootParentIndex = draft.components.findIndex(c => c.id === rootParentId);
+            if (rootParentIndex !== -1) {
+              insertIndex = rootParentIndex + 1;
+            }
+          }
+        }
+        draft.components.splice(insertIndex, 0, newSection);
+      })),
+
+      replaceCanvas: (blueprint) => set({
+        components: blueprint.map(c => assignNewIds(c)),
+        selectedComponentId: null,
+      }),
+
+      appendToCanvas: (blueprint) => set(produce(draft => {
+        const newComponents = blueprint.map(c => assignNewIds(c));
+        draft.components.push(...newComponents);
       })),
 
       updateComponentProps: (componentId, newProps) => set(produce(draft => {
@@ -483,15 +517,7 @@ export const useBuilderStore = create<BuilderState>()(
         if (!pathResult) return;
         
         const originalComponent = getComponentAtPath(pathResult.path, draft.components);
-        
-        const duplicateRecursive = (comp: Component): Component => {
-          const newId = nanoid();
-          const newComp: Component = { ...JSON.parse(JSON.stringify(comp)), id: newId, children: comp.children ? comp.children.map(c => duplicateRecursive(c)) : undefined };
-          if (newComp.children) { newComp.children.forEach(child => child.parent = newId); }
-          return newComp;
-        };
-        
-        const newComponent = duplicateRecursive(originalComponent);
+        const newComponent = assignNewIds(originalComponent);
         const parentId = originalComponent.parent;
         const parentPathResult = parentId ? findComponentPath(parentId, draft.components) : null;
         
@@ -548,8 +574,6 @@ export const useBuilderStore = create<BuilderState>()(
       clearCanvas: () => set({ components: [] }),
       openExportModal: () => set({ isExportModalOpen: true }),
       closeExportModal: () => set({ isExportModalOpen: false }),
-      openSectionLibrary: () => set({ isSectionLibraryOpen: true }),
-      closeSectionLibrary: () => set({ isSectionLibraryOpen: false }),
       openImageManager: (callback) => set({ isImageManagerOpen: true, imageManagerCallback: callback }),
       closeImageManager: () => set({ isImageManagerOpen: false, imageManagerCallback: null }),
       openIconPicker: (callback) => set({ isIconPickerOpen: true, iconPickerCallback: callback }),
@@ -566,8 +590,8 @@ export const useBuilderStore = create<BuilderState>()(
     }),
     {
       partialize: (state) => {
-        const { components, selectedComponentId, globalColors, savedColors, recentColors, userImages } = state;
-        return { components, selectedComponentId, globalColors, savedColors, recentColors, userImages };
+        const { components, selectedComponentId, globalColors, savedColors, recentColors, userImages, theme } = state;
+        return { components, selectedComponentId, globalColors, savedColors, recentColors, userImages, theme };
       },
       equality: (a, b) => JSON.stringify(a) === JSON.stringify(b),
     }

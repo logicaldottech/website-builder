@@ -13,13 +13,13 @@ const ColorInput: React.FC<ColorInputProps> = ({ label, value, onChange }) => {
 
   return (
     <div>
-      <label className="text-xs text-text-secondary mb-1.5 block font-medium">{label}</label>
+      <label className="text-xs font-semibold text-text-muted mb-1.5 block">{label}</label>
       <div
         onClick={handleOpen}
-        className="w-full h-10 bg-background border border-border-color rounded-lg flex items-center px-3 cursor-pointer"
+        className="w-full h-11 bg-surface-alt border border-border rounded-md flex items-center px-3 cursor-pointer"
       >
         <div
-          className="w-6 h-6 rounded border-2 border-white/20"
+          className="w-6 h-6 rounded-sm border-2 border-white/20 dark:border-black/20"
           style={{ backgroundColor: value || 'transparent' }}
         />
         <span className="ml-3 text-sm">{value || 'No Color'}</span>

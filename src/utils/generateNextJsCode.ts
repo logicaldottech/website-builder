@@ -3,14 +3,22 @@ import { Component, StyleProperties } from '../types/builder';
 // Theme configuration to be used in the exported project
 const theme = {
   colors: {
-    background: '#0B0A0E',
-    'primary-purple': '#6E42E8',
-    'secondary-gray': '#15141A',
-    'text-primary': '#F0F0F0',
-    'text-secondary': '#A0A0A0',
-    'border-color': '#2A292F',
-    'canvas-bg': '#0F0E13',
-    'canvas-light-bg': '#FFFFFF'
+    bg: '#ffffff',
+    surface: '#ffffff',
+    'surface-alt': '#f7f8fc',
+    elevated: '#ffffff',
+    primary: '#6C63FF',
+    'primary-600': '#5a51ff',
+    'primary-700': '#4b44ea',
+    accent: '#00C2FF',
+    'accent-600': '#00aee4',
+    success: '#16a34a',
+    warning: '#f59e0b',
+    danger: '#ef4444',
+    text: '#0b1020',
+    'text-muted': '#5b6478',
+    border: '#e6e8f0',
+    ring: '#9aa4ff',
   }
 };
 
@@ -123,7 +131,7 @@ function generateComponentJsx(component: Component, indentLevel = 1): string {
     case 'Image': 
         tag = 'img';
         content = undefined;
-        tagProps.push(`src="${props.src || 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://placehold.co/600x400'}"`);
+        tagProps.push(`src="${props.src || 'https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://img-wrapper.vercel.app/image?url=https://placehold.co/600x400'}"`);
         tagProps.push(`alt="${props.text || 'Image'}"`);
         break;
     case 'Video':

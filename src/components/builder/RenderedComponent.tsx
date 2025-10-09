@@ -252,8 +252,8 @@ const RenderedComponent: React.FC<RenderedComponentProps> = ({ component, index,
     );
 
     const emptyPlaceholder = () => !isPreviewMode && (
-      <div className={`flex items-center justify-center p-4 min-h-[80px] border-2 border-dashed rounded-md transition-colors ${dropIndicator === 'inside' ? 'border-primary bg-primary/10' : 'border-gray-300'}`}>
-        <button onClick={() => setActiveTab('components')} className="flex items-center gap-2 text-gray-500 hover:text-primary">
+      <div className={`flex items-center justify-center p-4 min-h-[80px] border-2 border-dashed rounded-md transition-colors ${dropIndicator === 'inside' ? 'border-primary bg-primary/10' : 'border-border'}`}>
+        <button onClick={() => setActiveTab('components')} className="flex items-center gap-2 text-text-muted hover:text-primary">
           <Plus size={16} />
           Add Element
         </button>
@@ -301,7 +301,7 @@ const RenderedComponent: React.FC<RenderedComponentProps> = ({ component, index,
             title="Embedded youtube"
             {...combinedProps}
           />
-        ) : <div {...combinedProps} className="flex items-center justify-center bg-gray-200 text-gray-500">Invalid YouTube URL</div>;
+        ) : <div {...combinedProps} className="flex items-center justify-center bg-surface-alt text-text-muted">Invalid YouTube URL</div>;
       }
       case 'Divider': {
         const { borderStyle, borderWidth, borderColor, ...restStyle } = finalStyle;
@@ -309,7 +309,7 @@ const RenderedComponent: React.FC<RenderedComponentProps> = ({ component, index,
             ...restStyle,
             borderBottomStyle: borderStyle || 'solid',
             borderBottomWidth: borderWidth || '1px',
-            borderBottomColor: borderColor || '#A0A0A0',
+            borderBottomColor: borderColor || 'var(--border)',
         };
         return <div style={dividerStyle} />;
       }
@@ -433,7 +433,7 @@ const RenderedComponent: React.FC<RenderedComponentProps> = ({ component, index,
         <FloatingToolbar componentId={id} dragHandleRef={drag} />
       )}
       {isCurrentlyHovered && !isSelected && !isPreviewMode && (
-        <div className={`absolute -top-5 left-0 text-xs text-white px-1.5 py-0.5 rounded z-20 bg-primary`}>
+        <div className={`absolute -top-5 left-0 text-xs text-white px-1.5 py-0.5 rounded-sm z-20 bg-primary`}>
           {type}
         </div>
       )}

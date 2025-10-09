@@ -13,16 +13,47 @@ module.exports = {
         sans: ['Poppins', ...fontFamily.sans],
       },
       colors: {
-        background: '#111827',     // Dark blue-gray, almost black
-        secondary: '#1F2937',       // Lighter panel color
-        primary: '#3B82F6',         // Vibrant Blue
-        destructive: '#EF4444',     // Vibrant Red
-        'text-primary': '#F9FAFB',   // Off-white
-        'text-secondary': '#9CA3AF', // Muted gray
-        border: '#374151',           // Mid-gray for borders
-        'canvas-bg': '#000000',      // Pure black for canvas background
-        'canvas-light-bg': '#FFFFFF' // White for the actual page canvas
-      }
+        // Using CSS variables defined in index.css
+        bg: 'var(--bg)',
+        surface: 'var(--surface)',
+        'surface-alt': 'var(--surface-alt)',
+        elevated: 'var(--elevated)',
+        
+        primary: {
+          DEFAULT: 'var(--primary)',
+          600: 'var(--primary-600)',
+          700: 'var(--primary-700)',
+        },
+        accent: {
+          DEFAULT: 'var(--accent)',
+          600: 'var(--accent-600)',
+        },
+
+        success: 'var(--success)',
+        warning: 'var(--warning)',
+        danger: 'var(--danger)',
+
+        text: {
+          DEFAULT: 'var(--text)',
+          muted: 'var(--text-muted)',
+        },
+        
+        border: 'var(--border)',
+        ring: 'var(--ring)',
+      },
+      borderRadius: {
+        sm: '8px',
+        md: '12px',
+        lg: '16px',
+        xl: '20px',
+        '2xl': '24px',
+      },
+      boxShadow: {
+        xs: '0 1px 2px rgba(16,24,40,.06)',
+        sm: '0 2px 8px rgba(16,24,40,.08)',
+        md: '0 8px 24px rgba(16,24,40,.10)',
+        lg: '0 12px 32px rgba(16,24,40,.12)',
+      },
     },
   },
   plugins: [],

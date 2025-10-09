@@ -74,7 +74,7 @@ const SmartInput: React.FC<SmartInputProps> = ({ value, placeholder, onChange })
       onChange={(e) => setInternalValue(e.target.value)}
       onBlur={handleBlur}
       onKeyDown={handleKeyDown}
-      className="w-full pl-7 pr-2 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary-slate focus:outline-none transition-all text-sm"
+      className="w-full h-11 pl-9 pr-2 bg-surface-alt border border-border rounded-md focus:border-primary transition-all text-sm"
     />
   );
 };

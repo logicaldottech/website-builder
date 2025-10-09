@@ -2,12 +2,76 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    @apply bg-background text-text-primary font-sans;
+:root {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-alt: #f7f8fc;
+  --elevated: #ffffff;
+  
+  --primary: #6C63FF;
+  --primary-600: #5a51ff;
+  --primary-700: #4b44ea;
+  
+  --accent: #00C2FF;
+  --accent-600: #00aee4;
+  
+  --success: #16a34a;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  
+  --text: #0b1020;
+  --text-muted: #5b6478;
+  --border: #e6e8f0;
+  --ring: #9aa4ff;
+}
+
+.dark {
+  --bg: #0f1220;
+  --surface: #1a1d2c;
+  --surface-alt: #151825;
+  --elevated: #24283b;
+  
+  --primary: #6C63FF;
+  --primary-600: #7e77ff;
+  --primary-700: #908aff;
+
+  --text: #f0f2f7;
+  --text-muted: #8a93a5;
+  --border: #2d3145;
+  --ring: #9aa4ff;
+}
+
+
+@layer base {
+  body {
+    @apply bg-bg text-text font-sans;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Custom focus ring */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-offset-2 ring-ring ring-offset-bg;
+  }
+}
+
+@layer components {
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-surface-alt;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-text-muted;
+  }
 }
 
 code {
-    @apply bg-border text-primary font-mono text-sm px-1.5 py-0.5 rounded-md;
+    @apply bg-surface-alt text-primary font-mono text-sm px-1.5 py-0.5 rounded-sm;
 }
